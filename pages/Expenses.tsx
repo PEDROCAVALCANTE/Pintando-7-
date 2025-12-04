@@ -332,7 +332,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                     ))}
                   </Pie>
                   <Tooltip 
-                    formatter={(value: any) => formatCurrency(Number(value))}
+                    formatter={(value: any) => formatCurrency(value as number)}
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontWeight: 'bold' }}
                   />
                 </PieChart>

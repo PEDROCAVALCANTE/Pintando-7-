@@ -112,3 +112,29 @@ export interface Expense {
   notes?: string;
   createdAt: string;
 }
+
+// --- AGENDA TYPES ---
+
+export type EventAudience = 'GLOBAL' | 'CLASS' | 'STUDENT';
+export type EventStatus = 'DRAFT' | 'PUBLISHED' | 'CANCELLED';
+
+export interface SchoolEvent {
+  id: string;
+  title: string;
+  description: string;
+  date: string; // YYYY-MM-DD
+  time: string; // HH:MM
+  audience: EventAudience;
+  targetId?: string; // ID of class or student if not global
+  status: EventStatus;
+  
+  // WhatsApp Integration
+  whatsappStatus: 'PENDING' | 'SENDING' | 'COMPLETED' | 'FAILED';
+  deliveryStats?: {
+    total: number;
+    success: number;
+    failed: number;
+  };
+  
+  createdAt: string;
+}

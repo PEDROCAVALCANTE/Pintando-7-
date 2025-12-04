@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, UserRole, Student, MealLog, Appointment, WeeklyGoal, Expense } from './types';
+import { User, UserRole, Student, MealLog, Appointment, WeeklyGoal, Expense, SchoolEvent } from './types';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import StudentsPage from './pages/Students';
 import StudentProfile from './pages/StudentProfile';
 import NutritionPanel from './pages/NutritionPanel';
 import ExpensesPage from './pages/Expenses';
+import Agenda from './pages/Agenda';
 import { Palette, Loader2, ArrowRight, Bell } from 'lucide-react';
 import { auth, db, messaging, onMessage, requestNotificationPermission } from './services/firebase';
 import { 
@@ -45,6 +46,7 @@ interface DataContextType {
   appointments: Appointment[];
   goals: WeeklyGoal[];
   expenses: Expense[];
+  events: SchoolEvent[];
   addStudent: (s: Student) => void;
   updateStudent: (s: Student) => void;
   deleteStudent: (id: string) => void;
@@ -57,6 +59,9 @@ interface DataContextType {
   addExpense: (e: Expense) => void;
   updateExpense: (e: Expense) => void;
   deleteExpense: (id: string) => void;
+  addEvent: (e: SchoolEvent) => void;
+  updateEvent: (e: SchoolEvent) => void;
+  deleteEvent: (id: string) => void;
 }
 const DataContext = createContext<DataContextType>({} as DataContextType);
 
@@ -223,6 +228,7 @@ export default function App() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [events, setEvents] = useState<SchoolEvent[]>([]);
   
   // Navigation State
   const [activePage, setActivePage] = useState('dashboard');
@@ -282,6 +288,7 @@ export default function App() {
       setAppointments([]);
       setGoals([]);
       setExpenses([]);
+      setEvents([]);
       return;
     }
 
@@ -340,12 +347,19 @@ export default function App() {
       setExpenses(expenseData);
     });
 
+    const qEvents = query(collection(db, "events"), orderBy("date", "asc"));
+    const unsubEvents = onSnapshot(qEvents, (snapshot) => {
+      const eventData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as SchoolEvent));
+      setEvents(eventData);
+    });
+
     return () => {
       unsubStudents();
       unsubLogs();
       unsubApts();
       unsubGoals();
       unsubExpenses();
+      unsubEvents();
     };
   }, [user]);
 
@@ -462,6 +476,25 @@ export default function App() {
     }
   };
 
+  const addEvent = async (e: SchoolEvent) => {
+    try {
+      const { id, ...data } = e;
+      await addDoc(collection(db, "events"), data);
+    } catch (e) { console.error(e); }
+  };
+
+  const updateEvent = async (e: SchoolEvent) => {
+    try {
+      const { id, ...data } = e;
+      await updateDoc(doc(db, "events", id), data as any);
+    } catch (e) { console.error(e); }
+  };
+
+  const deleteEvent = async (id: string) => {
+    if(confirm('Tem certeza que deseja excluir este evento?')) {
+      try { await deleteDoc(doc(db, "events", id)); } catch (e) { console.error(e); }
+    }
+  };
 
   const handleNavigate = (page: string) => {
     setActivePage(page);
@@ -487,10 +520,11 @@ export default function App() {
   return (
     <AuthContext.Provider value={{ user, login, register, logout, loading: false, error: authError, setError: setAuthError }}>
       <DataContext.Provider value={{ 
-        students, logs, appointments, goals, expenses,
+        students, logs, appointments, goals, expenses, events,
         addStudent, updateStudent, deleteStudent, addLog,
         addAppointment, deleteAppointment, addGoal, toggleGoal, deleteGoal,
-        addExpense, updateExpense, deleteExpense
+        addExpense, updateExpense, deleteExpense,
+        addEvent, updateEvent, deleteEvent
       }}>
         {notificationMsg && <NotificationToast message={notificationMsg} onClose={() => setNotificationMsg(null)} />}
         <Layout activePage={selectedStudent ? 'students' : activePage} onNavigate={handleNavigate}>
@@ -531,6 +565,15 @@ export default function App() {
                   onAddExpense={addExpense}
                   onUpdateExpense={updateExpense}
                   onDeleteExpense={deleteExpense}
+                />
+              )}
+              {activePage === 'agenda' && (
+                <Agenda 
+                  events={events}
+                  students={students}
+                  onAddEvent={addEvent}
+                  onUpdateEvent={updateEvent}
+                  onDeleteEvent={deleteEvent}
                 />
               )}
             </>

@@ -7,7 +7,8 @@ import {
   Menu, 
   X,
   Palette,
-  Wallet
+  Wallet,
+  CalendarDays
 } from 'lucide-react';
 import { useAuth } from '../App';
 
@@ -26,6 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
     { id: 'students', label: 'Meus Alunos', icon: Users, color: 'text-brand-green', activeBg: 'bg-green-50' },
     { id: 'nutrition', label: 'Nutrição', icon: Utensils, color: 'text-brand-pink', activeBg: 'bg-pink-50' },
     { id: 'expenses', label: 'Despesas', icon: Wallet, color: 'text-brand-red', activeBg: 'bg-red-50' },
+    { id: 'agenda', label: 'Agenda', icon: CalendarDays, color: 'text-brand-yellow', activeBg: 'bg-yellow-50' },
   ];
 
   // Minimalist Logo Component
@@ -67,10 +69,12 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
       <aside className="hidden md:flex flex-col w-20 lg:w-64 bg-white fixed h-full z-20 border-r border-stone-100/80 transition-all duration-300 shadow-[2px_0_24px_-12px_rgba(0,0,0,0.05)]">
         <div className="h-32 flex items-center justify-center pt-4">
           <div className="hidden lg:block">
-            <BrandLogo />
+            {/* Imagem Local da Logo para manter consistência */}
+            <img src="/cover.png" alt="Pintando 7" className="w-40 h-auto object-contain" />
           </div>
           <div className="lg:hidden">
-             <Palette className="text-brand-red" size={32} />
+             {/* Fallback icon if needed, but using image is preferred */}
+             <img src="/cover.png" alt="P7" className="w-12 h-auto object-contain" />
           </div>
         </div>
 
@@ -118,7 +122,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 w-full bg-white/80 backdrop-blur-md z-30 px-6 py-4 flex items-center justify-between border-b border-stone-100">
          <div className="scale-75 origin-left -ml-4">
-            <BrandLogo size="small" />
+             <img src="/cover.png" alt="P7" className="h-10 w-auto object-contain" />
          </div>
          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-stone-600 p-2 rounded-xl hover:bg-stone-50">
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
