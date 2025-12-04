@@ -1,0 +1,73 @@
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  NUTRITIONIST = 'NUTRITIONIST'
+}
+
+export enum AllergySeverity {
+  MILD = 'Leve',
+  MODERATE = 'Moderada',
+  SEVERE = 'Grave'
+}
+
+export enum MealType {
+  BREAKFAST = 'Café da Manhã',
+  LUNCH = 'Almoço',
+  SNACK = 'Lanche',
+  DINNER = 'Jantar'
+}
+
+export interface Allergy {
+  id: string;
+  name: string;
+  severity: AllergySeverity;
+  notes?: string;
+}
+
+export interface MedicalRecord {
+  hasRestriction: boolean;
+  allergies: Allergy[];
+  intolerances: string[];
+  medicalNotes: string;
+  bloodType?: string;
+}
+
+export interface Student {
+  id: string;
+  fullName: string;
+  dateOfBirth: string; // YYYY-MM-DD
+  gender: 'M' | 'F';
+  heightCm: number;
+  weightKg: number;
+  guardianName: string;
+  contactPhone: string;
+  contactEmail: string;
+  schoolClass: string; // e.g., "Berçário 1"
+  shift: 'Matutino' | 'Vespertino' | 'Integral';
+  teacherName: string;
+  medical: MedicalRecord;
+  avatarUrl?: string;
+  generalNotes?: string;
+}
+
+export interface MealLog {
+  id: string;
+  studentId: string;
+  date: string;
+  mealType: MealType;
+  consumptionPercentage: number; // 0-100
+  mood: 'Happy' | 'Neutral' | 'Fussy' | 'Refused';
+  notes: string;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  role: UserRole;
+  name: string;
+}
+
+export interface AIAnalysisResult {
+  summary: string;
+  recommendations: string[];
+  riskAssessment: string;
+}
