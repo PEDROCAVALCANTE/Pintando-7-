@@ -86,35 +86,35 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 relative overflow-hidden">
        {/* Background Mesh Gradient (Sutil) */}
        <div className="absolute inset-0 z-0 bg-white">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-100/50 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-pink-100/50 rounded-full blur-[100px]" />
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/40 rounded-full blur-[80px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-pink-100/40 rounded-full blur-[80px]" />
        </div>
 
-      <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)] p-10 w-full max-w-md text-center border border-white relative z-10 animate-fade-in-up">
+      <div className="bg-white/90 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_-10px_rgba(0,0,0,0.05)] p-8 w-full max-w-[360px] text-center border border-white relative z-10 animate-fade-in-up">
         
         {/* Logo Minimal */}
-        <div className="mb-10">
-           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-yellow/10 mb-4 text-brand-brown">
-             <Palette size={32} />
+        <div className="mb-6">
+           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-brand-yellow/10 mb-3 text-brand-brown">
+             <Palette size={24} />
            </div>
-           <h1 className="font-display text-4xl font-black mb-1 text-slate-800">
+           <h1 className="font-display text-2xl font-black mb-1 text-slate-800">
              <span className="text-brand-red">P</span>
              <span className="text-brand-green">int</span>
              <span className="text-brand-blue">and</span>
              <span className="text-brand-pink">o</span>
              <span className="text-brand-red ml-1">7</span>
            </h1>
-           <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em]">Bem-vindo de volta</p>
+           <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">Bem-vindo</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-left">
+        <form onSubmit={handleSubmit} className="space-y-3 text-left">
           <div>
             <input 
               type="text" 
-              className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-slate-800 placeholder-slate-400"
+              className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-slate-800 placeholder-slate-400"
               placeholder={isRegistering ? "Seu melhor email" : "Email ou usuário"}
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -124,8 +124,8 @@ const LoginPage = () => {
           <div>
             <input 
               type="password" 
-              className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-slate-800 placeholder-slate-400"
-              placeholder="Sua senha secreta"
+              className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-slate-800 placeholder-slate-400"
+              placeholder="Sua senha"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
@@ -133,7 +133,7 @@ const LoginPage = () => {
           </div>
           
           {error && (
-            <div className="bg-red-50 text-red-500 text-sm p-4 rounded-2xl flex items-center justify-center gap-2 font-bold animate-shake">
+            <div className="bg-red-50 text-red-500 text-xs p-3 rounded-xl flex items-center justify-center gap-2 font-bold animate-shake">
                {error}
             </div>
           )}
@@ -141,15 +141,15 @@ const LoginPage = () => {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-2xl shadow-lg shadow-slate-200 transition-all transform hover:-translate-y-1 active:scale-95 mt-6 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full bg-slate-900 hover:bg-black text-white font-bold py-3 rounded-xl shadow-lg shadow-slate-200 transition-all transform hover:-translate-y-0.5 active:scale-95 mt-4 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed text-sm"
           >
-            {loading ? <Loader2 className="animate-spin" /> : isRegistering ? 'Criar Conta' : 'Acessar Sistema'} <ArrowRight size={18} />
+            {loading ? <Loader2 className="animate-spin" size={16} /> : isRegistering ? 'Criar Conta' : 'Entrar'} { !loading && <ArrowRight size={16} />}
           </button>
         </form>
 
         <button 
           onClick={() => { setIsRegistering(!isRegistering); setError(''); }}
-          className="mt-8 text-xs text-slate-400 font-bold hover:text-slate-600 uppercase tracking-wider transition-colors"
+          className="mt-6 text-[10px] text-slate-400 font-bold hover:text-slate-600 uppercase tracking-wider transition-colors"
         >
           {isRegistering ? 'Já possui conta? Fazer Login' : 'Não tem acesso? Cadastre-se'}
         </button>
