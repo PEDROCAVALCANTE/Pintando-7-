@@ -3,7 +3,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell 
 } from 'recharts';
 import { Student, AllergySeverity } from '../types';
-import { AlertTriangle, TrendingUp, Users, Activity } from 'lucide-react';
+import { AlertTriangle, TrendingUp, Users, Activity, Download } from 'lucide-react';
 
 interface DashboardProps {
   students: Student[];
@@ -23,7 +23,6 @@ const Dashboard: React.FC<DashboardProps> = ({ students }) => {
     { name: 'Com Restrições', value: studentsWithAllergies },
   ];
 
-  // Dummy BMI grouping
   const bmiData = [
     { name: 'Baixo Peso', count: Math.floor(totalStudents * 0.1) },
     { name: 'Peso Adequado', count: Math.floor(totalStudents * 0.7) },
@@ -32,15 +31,21 @@ const Dashboard: React.FC<DashboardProps> = ({ students }) => {
   ];
 
   const StatCard = ({ title, value, icon: Icon, color, subText }: any) => (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-start justify-between">
+    <div className="bg-white p-6 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-lg transition-shadow duration-300 flex items-center justify-between group">
       <div>
-        <p className="text-slate-500 text-sm font-medium mb-1">{title}</p>
-        <h3 className="text-3xl font-bold text-slate-800">{value}</h3>
-        {subText && <p className={`text-xs mt-2 font-medium ${color.text}`}>{subText}</p>}
+        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-colors ${color.bg} group-hover:scale-110 duration-300`}>
+          <Icon className={`w-6 h-6 ${color.text}`} />
+        </div>
+        <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">{title}</p>
+        <h3 className="text-3xl font-black text-slate-800 tracking-tight">{value}</h3>
       </div>
-      <div className={`p-3 rounded-xl ${color.bg}`}>
-        <Icon className={`w-6 h-6 ${color.text}`} />
-      </div>
+      {subText && (
+        <div className="text-right">
+           <span className={`text-xs font-bold px-3 py-1 rounded-full ${color.bg} ${color.text}`}>
+             {subText}
+           </span>
+        </div>
+      )}
     </div>
   );
 
@@ -48,12 +53,13 @@ const Dashboard: React.FC<DashboardProps> = ({ students }) => {
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Visão Geral</h2>
-          <p className="text-slate-500">Monitoramento diário de saúde e alunos</p>
+          <h2 className="text-3xl font-black text-slate-800 tracking-tight">Dashboard</h2>
+          <p className="text-slate-500 font-medium">Resumo diário do berçário</p>
         </div>
-        <div className="flex gap-2">
-            <button className="bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50">
-                Exportar Relatório
+        <div>
+            <button className="bg-white hover:bg-slate-50 text-slate-600 px-5 py-3 rounded-2xl text-sm font-bold shadow-sm transition-all flex items-center gap-2">
+                <Download size={18} />
+                <span>Exportar Dados</span>
             </button>
         </div>
       </div>
@@ -64,37 +70,37 @@ const Dashboard: React.FC<DashboardProps> = ({ students }) => {
           title="Total de Alunos" 
           value={totalStudents} 
           icon={Users} 
-          color={{ bg: 'bg-blue-100', text: 'text-brand-blue' }}
-          subText="+2 novos esta semana"
+          color={{ bg: 'bg-blue-50', text: 'text-brand-blue' }}
+          subText="Ativos"
         />
         <StatCard 
-          title="Restrições Alimentares" 
+          title="Restrições" 
           value={studentsWithAllergies} 
           icon={AlertTriangle} 
-          color={{ bg: 'bg-orange-100', text: 'text-orange-500' }}
-          subText={`${Math.round((studentsWithAllergies/totalStudents)*100 || 0)}% do total`}
+          color={{ bg: 'bg-orange-50', text: 'text-orange-500' }}
+          subText="Atenção"
         />
         <StatCard 
-          title="Alergias Graves" 
+          title="Casos Graves" 
           value={severeAllergies} 
           icon={Activity} 
-          color={{ bg: 'bg-red-100', text: 'text-brand-red' }}
-          subText="Atenção prioritária"
+          color={{ bg: 'bg-red-50', text: 'text-brand-red' }}
+          subText="Prioridade"
         />
         <StatCard 
-          title="Consumo Médio" 
+          title="Consumo" 
           value="87%" 
           icon={TrendingUp} 
-          color={{ bg: 'bg-green-100', text: 'text-brand-green' }}
-          subText="Refeições aceitas hoje"
+          color={{ bg: 'bg-green-50', text: 'text-brand-green' }}
+          subText="Hoje"
         />
       </div>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Allergy Distribution */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h3 className="text-lg font-bold text-slate-800 mb-6">Distribuição de Restrições</h3>
+        <div className="bg-white p-8 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+          <h3 className="text-xl font-bold text-slate-800 mb-8">Restrições Alimentares</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -102,45 +108,46 @@ const Dashboard: React.FC<DashboardProps> = ({ students }) => {
                   data={allergiesData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
+                  innerRadius={70}
+                  outerRadius={90}
+                  paddingAngle={8}
                   dataKey="value"
+                  cornerRadius={6}
                 >
                   {allergiesData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === 1 ? '#F59E0B' : '#3B82F6'} />
+                    <Cell key={`cell-${index}`} fill={index === 1 ? '#F59E0B' : '#E2E8F0'} strokeWidth={0} />
                   ))}
                 </Pie>
                 <Tooltip 
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }}
                 />
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex justify-center gap-6 mt-4">
+          <div className="flex justify-center gap-8 mt-4">
              {allergiesData.map((d, i) => (
-                 <div key={i} className="flex items-center gap-2">
-                     <div className="w-3 h-3 rounded-full" style={{ backgroundColor: i === 1 ? '#F59E0B' : '#3B82F6' }}></div>
-                     <span className="text-sm text-slate-600 font-medium">{d.name} ({d.value})</span>
+                 <div key={i} className="flex items-center gap-3">
+                     <div className={`w-3 h-3 rounded-full ${i === 1 ? 'bg-orange-400' : 'bg-slate-200'}`}></div>
+                     <span className="text-sm text-slate-500 font-bold">{d.name} <span className="text-slate-800">({d.value})</span></span>
                  </div>
              ))}
           </div>
         </div>
 
         {/* Nutritional Status */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h3 className="text-lg font-bold text-slate-800 mb-6">Estado Nutricional (IMC Agregado)</h3>
+        <div className="bg-white p-8 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+          <h3 className="text-xl font-bold text-slate-800 mb-8">Indicadores de IMC</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={bmiData}>
+              <BarChart data={bmiData} barSize={40}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12, fontWeight: 500}} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12}} />
                 <Tooltip 
-                    cursor={{fill: '#f8fafc'}}
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    cursor={{fill: '#f8fafc', radius: 8}}
+                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }}
                 />
-                <Bar dataKey="count" fill="#10B981" radius={[4, 4, 0, 0]} barSize={40} />
+                <Bar dataKey="count" fill="#10B981" radius={[8, 8, 8, 8]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

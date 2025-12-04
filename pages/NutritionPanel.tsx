@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Appointment, WeeklyGoal } from '../types';
 import { 
@@ -10,8 +9,7 @@ import {
   Circle, 
   Clock, 
   Trash2,
-  Target,
-  MoreVertical
+  Target
 } from 'lucide-react';
 
 interface NutritionPanelProps {
@@ -38,7 +36,6 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
   const [isAptModalOpen, setIsAptModalOpen] = useState(false);
   const [newGoalText, setNewGoalText] = useState('');
 
-  // Calendar Logic
   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
   
@@ -47,30 +44,12 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
   ];
 
-  const handlePrevMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-  };
+  const handlePrevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  const handleNextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  const isSameDay = (d1: Date, d2: Date) => d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
+  const getAppointmentsForDay = (date: Date) => appointments.filter(apt => isSameDay(new Date(apt.date), date));
 
-  const handleNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-  };
-
-  const isSameDay = (d1: Date, d2: Date) => {
-    return d1.getDate() === d2.getDate() && 
-           d1.getMonth() === d2.getMonth() && 
-           d1.getFullYear() === d2.getFullYear();
-  };
-
-  const getAppointmentsForDay = (date: Date) => {
-    return appointments.filter(apt => isSameDay(new Date(apt.date), date));
-  };
-
-  // Appointment Form State
-  const [aptForm, setAptForm] = useState({
-    title: '',
-    time: '09:00',
-    type: 'Consultation' as const
-  });
+  const [aptForm, setAptForm] = useState({ title: '', time: '09:00', type: 'Consultation' as const });
 
   const handleSaveAppointment = (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,54 +70,39 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
   const handleAddGoal = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newGoalText.trim()) return;
-    onAddGoal({
-      id: crypto.randomUUID(),
-      text: newGoalText,
-      completed: false,
-      createdAt: new Date().toISOString()
-    });
+    onAddGoal({ id: crypto.randomUUID(), text: newGoalText, completed: false, createdAt: new Date().toISOString() });
     setNewGoalText('');
   };
 
   return (
-    <div className="space-y-6 animate-fade-in pb-10">
+    <div className="space-y-8 animate-fade-in pb-10">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Painel do Nutricionista</h2>
-          <p className="text-slate-500">Gestão de agenda e metas nutricionais</p>
+          <h2 className="text-3xl font-black text-slate-800 tracking-tight">Agenda & Metas</h2>
+          <p className="text-slate-500 font-medium">Planejamento Nutricional</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column: Calendar */}
-        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-          {/* Calendar Header */}
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-brand-green flex items-center gap-2">
-              <CalendarIcon /> {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
+        {/* Calendar Card */}
+        <div className="lg:col-span-2 bg-white rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-8">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
+              {monthNames[currentDate.getMonth()]} <span className="text-slate-300">{currentDate.getFullYear()}</span>
             </h3>
-            <div className="flex gap-2">
-              <button onClick={handlePrevMonth} className="p-2 hover:bg-slate-100 rounded-full text-slate-600">
-                <ChevronLeft />
-              </button>
-              <button onClick={handleNextMonth} className="p-2 hover:bg-slate-100 rounded-full text-slate-600">
-                <ChevronRight />
-              </button>
+            <div className="flex gap-2 bg-slate-50 rounded-2xl p-1">
+              <button onClick={handlePrevMonth} className="p-2 hover:bg-white rounded-xl text-slate-600 shadow-sm transition-all"><ChevronLeft size={18} /></button>
+              <button onClick={handleNextMonth} className="p-2 hover:bg-white rounded-xl text-slate-600 shadow-sm transition-all"><ChevronRight size={18} /></button>
             </div>
           </div>
 
-          {/* Calendar Grid */}
-          <div className="grid grid-cols-7 gap-2 mb-2">
-            {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(day => (
-              <div key={day} className="text-center text-sm font-bold text-slate-400 uppercase tracking-wider py-2">
-                {day}
-              </div>
+          <div className="grid grid-cols-7 gap-2 mb-4">
+            {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map(day => (
+              <div key={day} className="text-center text-xs font-bold text-slate-300 uppercase py-2">{day}</div>
             ))}
           </div>
-          <div className="grid grid-cols-7 gap-2">
-            {Array.from({ length: firstDayOfMonth }).map((_, i) => (
-              <div key={`empty-${i}`} className="h-24 md:h-32 bg-slate-50/50 rounded-xl"></div>
-            ))}
+          <div className="grid grid-cols-7 gap-3">
+            {Array.from({ length: firstDayOfMonth }).map((_, i) => <div key={`empty-${i}`} />)}
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1;
               const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
@@ -150,32 +114,16 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
                 <button
                   key={day}
                   onClick={() => setSelectedDate(date)}
-                  className={`h-24 md:h-32 rounded-xl p-2 text-left relative transition-all border ${
-                    isSelected 
-                      ? 'bg-brand-blue/5 border-brand-blue ring-1 ring-brand-blue' 
-                      : isToday 
-                        ? 'bg-brand-yellow/10 border-brand-yellow' 
-                        : 'bg-white border-slate-100 hover:border-brand-blue/30'
+                  className={`h-24 rounded-2xl p-3 text-left relative transition-all flex flex-col justify-between group ${
+                    isSelected ? 'bg-brand-blue text-white shadow-lg shadow-blue-200 scale-105' : 
+                    isToday ? 'bg-brand-yellow/10 text-brand-brown' : 'bg-slate-50 hover:bg-slate-100 text-slate-600'
                   }`}
                 >
-                  <span className={`inline-block w-7 h-7 text-sm font-bold rounded-full flex items-center justify-center ${
-                    isSelected ? 'bg-brand-blue text-white' : isToday ? 'bg-brand-yellow text-brand-red' : 'text-slate-700'
-                  }`}>
-                    {day}
-                  </span>
-                  
-                  {/* Appointment Dots/List */}
-                  <div className="mt-2 space-y-1 overflow-hidden">
-                    {dayApts.slice(0, 3).map((apt, idx) => (
-                      <div key={apt.id} className="text-[0.65rem] truncate px-1.5 py-0.5 rounded bg-brand-green/10 text-brand-green font-bold border border-brand-green/20">
-                        {apt.title}
-                      </div>
+                  <span className={`text-sm font-bold`}>{day}</span>
+                  <div className="flex gap-1">
+                    {dayApts.slice(0, 3).map((_, idx) => (
+                       <div key={idx} className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-white' : 'bg-brand-green'}`} />
                     ))}
-                    {dayApts.length > 3 && (
-                      <div className="text-[0.6rem] text-slate-400 pl-1">
-                        +{dayApts.length - 3} mais
-                      </div>
-                    )}
                   </div>
                 </button>
               );
@@ -183,46 +131,38 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
           </div>
         </div>
 
-        {/* Right Column: Daily Agenda & Goals */}
-        <div className="space-y-6">
+        {/* Sidebar Cards */}
+        <div className="space-y-8">
           
-          {/* Daily Agenda Card */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-            <div className="flex justify-between items-center mb-4">
+          {/* Daily Agenda */}
+          <div className="bg-white rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-8">
+            <div className="flex justify-between items-center mb-6">
               <div>
-                <h3 className="font-bold text-slate-800 text-lg">Agenda do Dia</h3>
-                <p className="text-slate-500 text-sm">{selectedDate.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+                <h3 className="font-bold text-slate-800 text-lg">Eventos</h3>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">{selectedDate.getDate()} de {monthNames[selectedDate.getMonth()]}</p>
               </div>
-              <button 
-                onClick={() => setIsAptModalOpen(true)}
-                className="bg-brand-blue text-white p-2 rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200"
-              >
+              <button onClick={() => setIsAptModalOpen(true)} className="bg-brand-blue text-white w-10 h-10 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200">
                 <Plus size={20} />
               </button>
             </div>
 
-            <div className="space-y-3 min-h-[150px]">
+            <div className="space-y-3">
               {getAppointmentsForDay(selectedDate).length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-slate-400 py-8">
+                <div className="flex flex-col items-center justify-center py-8 text-slate-300">
                   <CalendarIcon size={32} className="mb-2 opacity-50" />
-                  <p className="text-sm">Nenhum agendamento</p>
+                  <p className="text-xs font-bold uppercase tracking-widest">Vazio</p>
                 </div>
               ) : (
                 getAppointmentsForDay(selectedDate).map(apt => (
-                  <div key={apt.id} className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100 group">
-                    <div className="mt-1 text-brand-blue">
-                      <Clock size={16} />
+                  <div key={apt.id} className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 group hover:bg-white hover:shadow-md transition-all">
+                    <div className="text-brand-blue font-bold text-xs bg-blue-50 px-2 py-1 rounded-lg">
+                      {new Date(apt.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                     </div>
                     <div className="flex-1">
                       <h4 className="font-bold text-slate-800 text-sm">{apt.title}</h4>
-                      <p className="text-xs text-slate-500">
-                        {new Date(apt.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} • {apt.type === 'Consultation' ? 'Consulta' : apt.type === 'Meeting' ? 'Reunião' : 'Revisão'}
-                      </p>
+                      <p className="text-[10px] text-slate-400 uppercase font-bold">{apt.type}</p>
                     </div>
-                    <button 
-                      onClick={() => onDeleteAppointment(apt.id)}
-                      className="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
+                    <button onClick={() => onDeleteAppointment(apt.id)} className="text-slate-300 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -231,103 +171,77 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
             </div>
           </div>
 
-          {/* Weekly Goals Card */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-5">
-               <Target size={100} className="text-brand-purple" />
-            </div>
-            <h3 className="font-bold text-slate-800 text-lg mb-4 flex items-center gap-2">
-              <Target className="text-brand-purple" /> Metas da Semana
-            </h3>
+          {/* Weekly Goals */}
+          <div className="bg-gradient-to-br from-brand-purple to-purple-600 rounded-[2rem] shadow-xl p-8 text-white relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-8 opacity-10">
+               <Target size={120} />
+             </div>
+            <h3 className="font-black text-xl mb-6 relative z-10">Metas da Semana</h3>
             
-            <form onSubmit={handleAddGoal} className="flex gap-2 mb-4 relative z-10">
+            <form onSubmit={handleAddGoal} className="flex gap-2 mb-6 relative z-10">
               <input 
                 type="text" 
                 placeholder="Nova meta..." 
-                className="flex-1 px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-purple/20"
+                className="flex-1 px-4 py-3 text-sm bg-white/10 border border-white/20 rounded-xl outline-none focus:bg-white/20 text-white placeholder-purple-200 font-medium"
                 value={newGoalText}
                 onChange={(e) => setNewGoalText(e.target.value)}
               />
-              <button type="submit" className="bg-brand-purple text-white px-3 py-2 rounded-lg hover:bg-purple-600 transition-colors">
+              <button type="submit" className="bg-white text-brand-purple px-4 rounded-xl hover:bg-purple-50 transition-colors font-bold">
                 <Plus size={18} />
               </button>
             </form>
 
-            <div className="space-y-2 relative z-10">
-              {goals.length === 0 && <p className="text-slate-400 text-sm italic">Nenhuma meta definida.</p>}
+            <div className="space-y-3 relative z-10">
               {goals.map(goal => (
                 <div key={goal.id} className="flex items-center gap-3 group">
-                  <button 
-                    onClick={() => onToggleGoal(goal.id, goal.completed)}
-                    className={`shrink-0 transition-colors ${goal.completed ? 'text-green-500' : 'text-slate-300 hover:text-slate-400'}`}
-                  >
-                    {goal.completed ? <CheckCircle size={20} /> : <Circle size={20} />}
+                  <button onClick={() => onToggleGoal(goal.id, goal.completed)} className="shrink-0 text-white/80 hover:text-white transition-colors">
+                    {goal.completed ? <CheckCircle size={20} className="text-green-300" /> : <Circle size={20} />}
                   </button>
-                  <span className={`text-sm flex-1 ${goal.completed ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
+                  <span className={`text-sm flex-1 font-medium ${goal.completed ? 'opacity-50 line-through' : 'opacity-100'}`}>
                     {goal.text}
                   </span>
-                  <button 
-                    onClick={() => onDeleteGoal(goal.id)}
-                    className="text-slate-300 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
+                  <button onClick={() => onDeleteGoal(goal.id)} className="text-white/40 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity">
                     <Trash2 size={14} />
                   </button>
                 </div>
               ))}
+               {goals.length === 0 && <p className="text-purple-200 text-sm italic opacity-60">Sem metas definidas.</p>}
             </div>
           </div>
 
         </div>
       </div>
 
-      {/* Add Appointment Modal */}
+      {/* Modal */}
       {isAptModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-6">
-            <h3 className="text-lg font-bold text-slate-800 mb-4">Novo Agendamento</h3>
+        <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl w-full max-w-sm shadow-2xl p-8 animate-fade-in-up">
+            <h3 className="text-xl font-black text-slate-800 mb-6">Novo Evento</h3>
             <form onSubmit={handleSaveAppointment} className="space-y-4">
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Título / Aluno</label>
-                <input 
-                  type="text" 
-                  required
-                  className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-blue/20"
-                  placeholder="Ex: Consulta Gabriel"
-                  value={aptForm.title}
-                  onChange={e => setAptForm({...aptForm, title: e.target.value})}
-                />
-              </div>
+              <input 
+                type="text" required
+                className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-medium text-slate-800"
+                placeholder="Título do evento"
+                value={aptForm.title} onChange={e => setAptForm({...aptForm, title: e.target.value})}
+              />
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                   <label className="block text-sm font-bold text-slate-700 mb-1">Horário</label>
-                   <input 
-                    type="time" 
-                    required
-                    className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-blue/20"
-                    value={aptForm.time}
-                    onChange={e => setAptForm({...aptForm, time: e.target.value})}
-                  />
-                </div>
-                <div>
-                   <label className="block text-sm font-bold text-slate-700 mb-1">Tipo</label>
-                   <select 
-                    className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-blue/20 bg-white"
-                    value={aptForm.type}
-                    onChange={e => setAptForm({...aptForm, type: e.target.value as any})}
-                   >
-                     <option value="Consultation">Consulta</option>
-                     <option value="Meeting">Reunião</option>
-                     <option value="Review">Revisão</option>
-                   </select>
-                </div>
+                 <input 
+                  type="time" required
+                  className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-medium text-slate-800"
+                  value={aptForm.time} onChange={e => setAptForm({...aptForm, time: e.target.value})}
+                />
+                 <select 
+                  className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-medium text-slate-800"
+                  value={aptForm.type} onChange={e => setAptForm({...aptForm, type: e.target.value as any})}
+                 >
+                   <option value="Consultation">Consulta</option>
+                   <option value="Meeting">Reunião</option>
+                   <option value="Review">Revisão</option>
+                 </select>
               </div>
               <div className="flex gap-2 pt-4">
-                <button type="button" onClick={() => setIsAptModalOpen(false)} className="flex-1 py-3 border border-slate-200 rounded-xl font-bold text-slate-600 hover:bg-slate-50">
-                  Cancelar
-                </button>
-                <button type="submit" className="flex-1 py-3 bg-brand-blue text-white rounded-xl font-bold hover:bg-blue-600 shadow-lg shadow-blue-200">
-                  Agendar
-                </button>
+                <button type="button" onClick={() => setIsAptModalOpen(false)} className="flex-1 py-3.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50">Cancelar</button>
+                <button type="submit" className="flex-1 py-3.5 bg-brand-blue text-white rounded-2xl font-bold hover:bg-blue-600 shadow-lg shadow-blue-200">Salvar</button>
               </div>
             </form>
           </div>
