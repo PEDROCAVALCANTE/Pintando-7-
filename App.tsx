@@ -90,8 +90,8 @@ const LoginPage = () => {
     }
   };
 
-  // URL Direta do Google Drive (ID extraído do link fornecido: 173HZ_ihhJhhLAyG6PUCZm1_orpfvyWim)
-  const logoUrl = "https://drive.google.com/uc?export=view&id=173HZ_ihhJhhLAyG6PUCZm1_orpfvyWim";
+  // URL Direta da Imagem (Convertido de freeimage.host para link direto iili.io para renderização correta)
+  const logoUrl = "https://iili.io/fIinK9j.png";
 
   return (
     <div className="min-h-screen flex bg-white">

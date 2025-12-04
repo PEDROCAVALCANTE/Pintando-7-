@@ -117,7 +117,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
   const topCategory = Object.entries(expensesByCategory).sort((a, b) => (b[1] as number) - (a[1] as number))[0];
 
   // Data for Charts
-  const pieData = Object.entries(expensesByCategory).map(([name, value]) => ({ name, value }));
+  const pieData = Object.entries(expensesByCategory).map(([name, value]) => ({ name, value: value as number }));
   const COLORS = ['#009FE3', '#E6332A', '#3EB149', '#FFED00', '#E5007E', '#966036', '#8B5CF6', '#64748B'];
 
   // Monthly Trend Data (Last 6 months)
@@ -236,7 +236,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                   </defs>
                   <Tooltip 
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontSize: '12px', fontWeight: 'bold' }}
-                    formatter={(value: any) => formatCurrency(Number(value))}
+                    formatter={(value: any) => formatCurrency(Number(value as any))}
                   />
                   <Area type="monotone" dataKey="total" stroke="#E6332A" strokeWidth={3} fillOpacity={1} fill="url(#colorTotal)" />
                 </AreaChart>
@@ -332,7 +332,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                     ))}
                   </Pie>
                   <Tooltip 
-                    formatter={(value: any) => formatCurrency(Number(value))}
+                    formatter={(value: any) => formatCurrency(Number(value as any))}
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontWeight: 'bold' }}
                   />
                 </PieChart>
