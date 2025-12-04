@@ -49,16 +49,16 @@ const InputWithIcon = ({
   label, icon: Icon, value, onChange, type = "text", required = false, placeholder = "", step = undefined 
 }: any) => (
   <div className="w-full">
-    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">{label}</label>
+    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">{label}</label>
     <div className="relative group">
       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <Icon className="h-4 w-4 text-slate-300 group-focus-within:text-brand-blue transition-colors duration-300" />
+        <Icon className="h-4 w-4 text-stone-300 group-focus-within:text-brand-blue transition-colors duration-300" />
       </div>
       <input
         type={type}
         required={required}
         step={step}
-        className="block w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl text-slate-700 placeholder-slate-300 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all duration-300 font-semibold text-sm"
+        className="block w-full pl-11 pr-4 py-3 bg-stone-50 border-none rounded-xl text-stone-700 placeholder-stone-300 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all duration-300 font-semibold text-sm"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
@@ -164,15 +164,15 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-black text-slate-800 tracking-tight">Financeiro</h2>
-          <p className="text-slate-400 font-medium">Controle de Despesas</p>
+          <h2 className="text-3xl font-black text-stone-800 tracking-tight">Financeiro</h2>
+          <p className="text-stone-400 font-medium">Controle de Despesas</p>
         </div>
         <div className="flex gap-3">
           <input 
             type="month"
             value={filterMonth}
             onChange={(e) => setFilterMonth(e.target.value)}
-            className="bg-white border border-slate-100 rounded-xl px-4 py-2 text-sm font-bold text-slate-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/10"
+            className="bg-white border border-stone-100 rounded-xl px-4 py-2 text-sm font-bold text-stone-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/10"
           />
           <button 
             onClick={() => handleOpenModal()}
@@ -186,11 +186,11 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
 
       {/* KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 flex flex-col justify-between">
+        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-stone-100 flex flex-col justify-between">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Total no Mês</p>
-              <h3 className="text-3xl font-black text-slate-800 tracking-tight">{formatCurrency(totalMonth)}</h3>
+              <p className="text-stone-400 text-xs font-bold uppercase tracking-wider mb-2">Total no Mês</p>
+              <h3 className="text-3xl font-black text-stone-800 tracking-tight">{formatCurrency(totalMonth)}</h3>
             </div>
             <div className="w-12 h-12 rounded-2xl bg-red-50 text-brand-red flex items-center justify-center">
               <DollarSign size={24} />
@@ -206,14 +206,14 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                 <TrendingDown size={12} /> {percentageChange.toFixed(1)}%
               </span>
             )}
-            <span className="text-[10px] text-slate-400 font-bold">vs. mês anterior</span>
+            <span className="text-[10px] text-stone-400 font-bold">vs. mês anterior</span>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 flex flex-col justify-between">
+        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-stone-100 flex flex-col justify-between">
            <div>
-              <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Maior Categoria</p>
-              <h3 className="text-xl font-black text-slate-800 tracking-tight truncate">
+              <p className="text-stone-400 text-xs font-bold uppercase tracking-wider mb-2">Maior Categoria</p>
+              <h3 className="text-xl font-black text-stone-800 tracking-tight truncate">
                 {topCategory ? topCategory[0] : '---'}
               </h3>
               <p className="text-brand-red font-bold text-sm mt-1">{topCategory ? formatCurrency(topCategory[1]) : 'R$ 0,00'}</p>
@@ -223,8 +223,8 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
            </div>
         </div>
 
-        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 flex flex-col justify-between lg:col-span-2">
-           <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-4">Evolução Semestral</p>
+        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-stone-100 flex flex-col justify-between lg:col-span-2">
+           <p className="text-stone-400 text-xs font-bold uppercase tracking-wider mb-4">Evolução Semestral</p>
            <div className="h-24 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={trendData}>
@@ -236,7 +236,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                   </defs>
                   <Tooltip 
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontSize: '12px', fontWeight: 'bold' }}
-                    formatter={(value: number | string) => [formatCurrency(Number(value)), "Total"]}
+                    formatter={(value: any) => [formatCurrency(Number(value)), "Total"]}
                   />
                   <Area type="monotone" dataKey="total" stroke="#E6332A" strokeWidth={3} fillOpacity={1} fill="url(#colorTotal)" />
                 </AreaChart>
@@ -247,17 +247,17 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main List */}
-        <div className="lg:col-span-2 bg-white rounded-[2rem] shadow-sm border border-slate-100 p-8">
+        <div className="lg:col-span-2 bg-white rounded-[2rem] shadow-sm border border-stone-100 p-8">
            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-              <h3 className="text-lg font-black text-slate-800">Lançamentos</h3>
+              <h3 className="text-lg font-black text-stone-800">Lançamentos</h3>
               <div className="relative group w-full sm:w-auto">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 w-4 h-4 group-focus-within:text-brand-blue transition-colors" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-300 w-4 h-4 group-focus-within:text-brand-blue transition-colors" />
                 <input 
                   type="text"
                   placeholder="Buscar despesa..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-slate-50 rounded-xl border-none text-sm font-bold text-slate-700 focus:ring-2 focus:ring-brand-blue/10 outline-none"
+                  className="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-stone-50 rounded-xl border-none text-sm font-bold text-stone-700 focus:ring-2 focus:ring-brand-blue/10 outline-none"
                 />
               </div>
            </div>
@@ -265,7 +265,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
            <div className="overflow-x-auto">
              <table className="w-full text-left border-collapse">
                <thead>
-                 <tr className="text-slate-400 text-[10px] uppercase tracking-wider border-b border-slate-50">
+                 <tr className="text-stone-400 text-[10px] uppercase tracking-wider border-b border-stone-50">
                    <th className="pb-3 pl-4 font-bold">Data</th>
                    <th className="pb-3 font-bold">Descrição</th>
                    <th className="pb-3 font-bold">Categoria</th>
@@ -276,33 +276,33 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                <tbody className="text-sm">
                  {filteredExpenses.length === 0 ? (
                    <tr>
-                     <td colSpan={5} className="py-8 text-center text-slate-400 font-medium italic">Nenhuma despesa encontrada neste período.</td>
+                     <td colSpan={5} className="py-8 text-center text-stone-400 font-medium italic">Nenhuma despesa encontrada neste período.</td>
                    </tr>
                  ) : (
                    filteredExpenses.map((expense) => (
-                     <tr key={expense.id} className="group hover:bg-slate-50/50 transition-colors border-b border-slate-50 last:border-0">
-                       <td className="py-4 pl-4 font-bold text-slate-500 whitespace-nowrap">
+                     <tr key={expense.id} className="group hover:bg-stone-50/50 transition-colors border-b border-stone-50 last:border-0">
+                       <td className="py-4 pl-4 font-bold text-stone-500 whitespace-nowrap">
                          <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400">
+                            <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center text-stone-400">
                                <Calendar size={14} />
                             </div>
                             {new Date(expense.date).toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit'})}
                          </div>
                        </td>
-                       <td className="py-4 font-bold text-slate-700">
+                       <td className="py-4 font-bold text-stone-700">
                          {expense.description}
-                         <span className="block text-[10px] text-slate-400 uppercase font-bold mt-0.5">{expense.supplier}</span>
+                         <span className="block text-[10px] text-stone-400 uppercase font-bold mt-0.5">{expense.supplier}</span>
                        </td>
                        <td className="py-4">
-                         <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide whitespace-nowrap">
+                         <span className="bg-stone-100 text-stone-600 px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide whitespace-nowrap">
                            {expense.category}
                          </span>
                        </td>
-                       <td className="py-4 font-black text-slate-800">{formatCurrency(expense.amount)}</td>
+                       <td className="py-4 font-black text-stone-800">{formatCurrency(expense.amount)}</td>
                        <td className="py-4 pr-4 text-right">
                          <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onClick={() => handleOpenModal(expense)} className="p-2 text-slate-400 hover:text-brand-blue hover:bg-blue-50 rounded-lg transition-colors"><Edit2 size={16} /></button>
-                            <button onClick={() => onDeleteExpense(expense.id)} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"><Trash2 size={16} /></button>
+                            <button onClick={() => handleOpenModal(expense)} className="p-2 text-stone-400 hover:text-brand-blue hover:bg-blue-50 rounded-lg transition-colors"><Edit2 size={16} /></button>
+                            <button onClick={() => onDeleteExpense(expense.id)} className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"><Trash2 size={16} /></button>
                          </div>
                        </td>
                      </tr>
@@ -314,8 +314,8 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
         </div>
 
         {/* Charts Side */}
-        <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 p-8 flex flex-col">
-           <h3 className="text-lg font-black text-slate-800 mb-6">Por Categoria</h3>
+        <div className="bg-white rounded-[2rem] shadow-sm border border-stone-100 p-8 flex flex-col">
+           <h3 className="text-lg font-black text-stone-800 mb-6">Por Categoria</h3>
            <div className="flex-1 min-h-[300px] relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -332,7 +332,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                     ))}
                   </Pie>
                   <Tooltip 
-                    formatter={(value: number | string) => formatCurrency(Number(value))}
+                    formatter={(value: any) => formatCurrency(Number(value))}
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontWeight: 'bold' }}
                   />
                 </PieChart>
@@ -343,9 +343,9 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                     <div key={index} className="flex justify-between items-center text-xs">
                        <div className="flex items-center gap-2">
                           <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-                          <span className="font-bold text-slate-600">{entry.name}</span>
+                          <span className="font-bold text-stone-600">{entry.name}</span>
                        </div>
-                       <span className="font-bold text-slate-400">{((entry.value / (totalMonth || 1)) * 100).toFixed(0)}%</span>
+                       <span className="font-bold text-stone-400">{((entry.value / (totalMonth || 1)) * 100).toFixed(0)}%</span>
                     </div>
                  ))}
               </div>
@@ -355,13 +355,13 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white rounded-[2.5rem] w-full max-w-lg shadow-2xl animate-pop border border-slate-100 max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-8 py-6 border-b border-slate-50 flex justify-between items-center">
-              <h3 className="text-xl font-black text-slate-800">
+        <div className="fixed inset-0 bg-stone-900/20 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-[2.5rem] w-full max-w-lg shadow-2xl animate-pop border border-stone-100 max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-8 py-6 border-b border-stone-50 flex justify-between items-center">
+              <h3 className="text-xl font-black text-stone-800">
                 {editingExpense ? 'Editar Despesa' : 'Nova Despesa'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="bg-slate-50 p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all hover:rotate-90">
+              <button onClick={() => setIsModalOpen(false)} className="bg-stone-50 p-2 rounded-full text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-all hover:rotate-90">
                 <X size={20} />
               </button>
             </div>
@@ -398,10 +398,10 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
 
                <div className="grid grid-cols-2 gap-5">
                  <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Categoria</label>
+                    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Categoria</label>
                     <div className="relative">
                       <select 
-                        className="block w-full pl-4 pr-8 py-3 bg-slate-50 border-none rounded-xl text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-brand-blue/10 appearance-none text-sm transition-all"
+                        className="block w-full pl-4 pr-8 py-3 bg-stone-50 border-none rounded-xl text-stone-700 font-semibold focus:outline-none focus:ring-2 focus:ring-brand-blue/10 appearance-none text-sm transition-all"
                         value={formData.category} 
                         onChange={e => setFormData({...formData, category: e.target.value})}
                       >
@@ -409,14 +409,14 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                            <option key={cat} value={cat}>{cat}</option>
                         ))}
                       </select>
-                      <Tag size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                      <Tag size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
                     </div>
                  </div>
                  <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Pagamento</label>
+                    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Pagamento</label>
                     <div className="relative">
                       <select 
-                        className="block w-full pl-4 pr-8 py-3 bg-slate-50 border-none rounded-xl text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-brand-blue/10 appearance-none text-sm transition-all"
+                        className="block w-full pl-4 pr-8 py-3 bg-stone-50 border-none rounded-xl text-stone-700 font-semibold focus:outline-none focus:ring-2 focus:ring-brand-blue/10 appearance-none text-sm transition-all"
                         value={formData.paymentMethod} 
                         onChange={e => setFormData({...formData, paymentMethod: e.target.value as PaymentMethod})}
                       >
@@ -427,7 +427,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                         <option value="Boleto">Boleto</option>
                         <option value="Transferência">Transferência</option>
                       </select>
-                      <CreditCard size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                      <CreditCard size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
                     </div>
                  </div>
                </div>
@@ -441,17 +441,17 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                />
 
                <div>
-                 <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Observações</label>
+                 <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Observações</label>
                  <textarea 
-                   className="block w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-slate-700 placeholder-slate-300 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm resize-none h-24"
+                   className="block w-full px-4 py-3 bg-stone-50 border-none rounded-xl text-stone-700 placeholder-stone-300 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm resize-none h-24"
                    placeholder="Detalhes adicionais..."
                    value={formData.notes}
                    onChange={e => setFormData({...formData, notes: e.target.value})}
                  />
                </div>
 
-               <div className="mt-8 flex justify-end gap-3 pt-4 border-t border-slate-50">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-slate-400 font-bold hover:bg-slate-50 text-sm transition-colors">
+               <div className="mt-8 flex justify-end gap-3 pt-4 border-t border-stone-50">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-stone-400 font-bold hover:bg-stone-50 text-sm transition-colors">
                   Cancelar
                 </button>
                 <button type="submit" className="px-6 py-2.5 rounded-xl bg-brand-green hover:bg-green-600 text-white font-bold shadow-md shadow-green-100 flex items-center gap-2 text-sm transition-all hover:-translate-y-0.5 hover:shadow-lg active:scale-95">

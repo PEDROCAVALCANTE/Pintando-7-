@@ -71,18 +71,18 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
 
   // Skeleton Loader Component
   const ReportSkeleton = () => (
-    <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 animate-pulse relative overflow-hidden">
+    <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 animate-pulse relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer" style={{ backgroundSize: '1000px 100%' }}></div>
       <div className="flex items-center gap-4 mb-6">
-         <div className="w-10 h-10 bg-slate-200 rounded-full"></div>
-         <div className="h-6 w-48 bg-slate-200 rounded-lg"></div>
+         <div className="w-10 h-10 bg-stone-200 rounded-full"></div>
+         <div className="h-6 w-48 bg-stone-200 rounded-lg"></div>
       </div>
       <div className="space-y-3 mb-8">
-         <div className="h-4 w-full bg-slate-100 rounded"></div>
-         <div className="h-4 w-full bg-slate-100 rounded"></div>
-         <div className="h-4 w-2/3 bg-slate-100 rounded"></div>
+         <div className="h-4 w-full bg-stone-100 rounded"></div>
+         <div className="h-4 w-full bg-stone-100 rounded"></div>
+         <div className="h-4 w-2/3 bg-stone-100 rounded"></div>
       </div>
-      <div className="h-32 bg-slate-50 rounded-2xl"></div>
+      <div className="h-32 bg-stone-50 rounded-2xl"></div>
     </div>
   );
 
@@ -90,7 +90,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
     <div className="space-y-8 animate-fade-in pb-10">
       {/* Top Nav */}
       <div className="flex items-center justify-between">
-         <button onClick={onBack} className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors font-bold text-sm bg-white px-4 py-2 rounded-2xl shadow-sm hover:shadow-md active:scale-95">
+         <button onClick={onBack} className="flex items-center gap-2 text-stone-500 hover:text-stone-800 transition-colors font-bold text-sm bg-white px-4 py-2 rounded-2xl shadow-sm hover:shadow-md active:scale-95">
             <ArrowLeft size={18} />
             Voltar
          </button>
@@ -106,14 +106,14 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
          )}
          
          <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-            <div className="w-24 h-24 rounded-3xl bg-slate-50 flex items-center justify-center text-4xl font-black text-slate-300 shadow-inner">
+            <div className="w-24 h-24 rounded-3xl bg-stone-50 flex items-center justify-center text-4xl font-black text-stone-300 shadow-inner">
                {student.fullName.charAt(0)}
             </div>
             
             <div className="flex-1 text-center md:text-left">
-               <h1 className="text-3xl font-black text-slate-800 mb-2">{student.fullName}</h1>
+               <h1 className="text-3xl font-black text-stone-800 mb-2">{student.fullName}</h1>
                <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-6">
-                  <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wide">{student.schoolClass}</span>
+                  <span className="bg-stone-100 text-stone-600 px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wide">{student.schoolClass}</span>
                   {student.medical.hasRestriction && (
                      <span className="bg-red-50 text-red-600 px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wide border border-transparent animate-pulse">
                         Restrições
@@ -121,13 +121,13 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
                   )}
                </div>
                
-               <div className="flex flex-wrap justify-center md:justify-start gap-8 text-slate-600">
+               <div className="flex flex-wrap justify-center md:justify-start gap-8 text-stone-600">
                   <div className="text-center md:text-left">
-                     <p className="text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-1">Responsável</p>
+                     <p className="text-stone-400 text-[10px] uppercase font-bold tracking-widest mb-1">Responsável</p>
                      <p className="font-bold text-sm">{student.guardianName}</p>
                   </div>
                   <div className="text-center md:text-left">
-                     <p className="text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-1">Contato</p>
+                     <p className="text-stone-400 text-[10px] uppercase font-bold tracking-widest mb-1">Contato</p>
                      <p className="font-bold text-sm">{student.contactPhone}</p>
                   </div>
                </div>
@@ -155,27 +155,27 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
 
       {/* Log Meal Form (Inline with Slide Animation) */}
       {isLogOpen && (
-        <div className="bg-white rounded-[2rem] p-8 shadow-xl animate-fade-in-down border border-slate-50 relative z-20">
+        <div className="bg-white rounded-[2rem] p-8 shadow-xl animate-fade-in-down border border-stone-50 relative z-20">
           <div className="flex justify-between items-center mb-6">
-             <h3 className="font-black text-slate-800 text-lg">Nova Refeição</h3>
-             <button onClick={() => setIsLogOpen(false)} className="text-slate-400 hover:text-slate-600 font-bold text-sm bg-slate-50 px-3 py-1 rounded-lg transition-colors">Cancelar</button>
+             <h3 className="font-black text-stone-800 text-lg">Nova Refeição</h3>
+             <button onClick={() => setIsLogOpen(false)} className="text-stone-400 hover:text-stone-600 font-bold text-sm bg-stone-50 px-3 py-1 rounded-lg transition-colors">Cancelar</button>
           </div>
           <form onSubmit={handleAddLog} className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Tipo</label>
-              <select className="w-full p-3 bg-slate-50 rounded-2xl outline-none font-bold text-slate-700 focus:ring-2 focus:ring-brand-blue/10 transition-all"
+              <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Tipo</label>
+              <select className="w-full p-3 bg-stone-50 rounded-2xl outline-none font-bold text-stone-700 focus:ring-2 focus:ring-brand-blue/10 transition-all"
                 value={logMealType} onChange={e => setLogMealType(e.target.value as MealType)}>
                 {Object.values(MealType).map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Aceitação ({logPercentage}%)</label>
-              <input type="range" min="0" max="100" step="10" className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-green"
+              <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Aceitação ({logPercentage}%)</label>
+              <input type="range" min="0" max="100" step="10" className="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-brand-green"
                 value={logPercentage} onChange={e => setLogPercentage(Number(e.target.value))} />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Reação</label>
-               <select className="w-full p-3 bg-slate-50 rounded-2xl outline-none font-bold text-slate-700 focus:ring-2 focus:ring-brand-blue/10 transition-all"
+              <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Reação</label>
+               <select className="w-full p-3 bg-stone-50 rounded-2xl outline-none font-bold text-stone-700 focus:ring-2 focus:ring-brand-blue/10 transition-all"
                 value={logMood} onChange={e => setLogMood(e.target.value as any)}>
                 <option value="Happy">Comeu bem</option>
                 <option value="Neutral">Normal</option>
@@ -228,7 +228,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
 
           {/* Medical */}
           <div className="bg-white p-8 rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow">
-             <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-2">
+             <h3 className="text-lg font-black text-stone-800 mb-6 flex items-center gap-2">
                 <Activity className="text-red-500" /> Histórico de Saúde
              </h3>
              <div className="space-y-6">
@@ -241,13 +241,13 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
                       ))}
                    </div>
                 ) : (
-                   <p className="text-slate-400 font-medium">Nenhuma alergia registrada.</p>
+                   <p className="text-stone-400 font-medium">Nenhuma alergia registrada.</p>
                 )}
                 
                 {student.medical.medicalNotes && (
-                   <div className="bg-slate-50 p-6 rounded-2xl">
-                      <p className="text-xs font-bold text-slate-400 uppercase mb-2 tracking-wide">Notas Clínicas</p>
-                      <p className="text-slate-700 font-medium leading-relaxed">{student.medical.medicalNotes}</p>
+                   <div className="bg-stone-50 p-6 rounded-2xl">
+                      <p className="text-xs font-bold text-stone-400 uppercase mb-2 tracking-wide">Notas Clínicas</p>
+                      <p className="text-stone-700 font-medium leading-relaxed">{student.medical.medicalNotes}</p>
                    </div>
                 )}
              </div>
@@ -258,12 +258,12 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
         <div className="space-y-8">
            {/* Chart */}
            <div className="bg-white p-8 rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow">
-              <h3 className="text-lg font-black text-slate-800 mb-6">Consumo Semanal</h3>
+              <h3 className="text-lg font-black text-stone-800 mb-6">Consumo Semanal</h3>
               <div className="h-40">
                  <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={chartData}>
-                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fill: '#94a3b8', fontWeight: 700}} />
-                       <Tooltip cursor={{fill: '#f1f5f9', radius: 8}} contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'}} />
+                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fill: '#a8a29e', fontWeight: 700}} />
+                       <Tooltip cursor={{fill: '#f5f5f4', radius: 8}} contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'}} />
                        <Bar dataKey="consumption" fill="#10B981" radius={[6, 6, 6, 6]} barSize={32} animationDuration={1500} />
                     </BarChart>
                  </ResponsiveContainer>
@@ -272,13 +272,13 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
 
            {/* History */}
            <div className="bg-white p-8 rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow">
-              <h3 className="text-lg font-black text-slate-800 mb-6">Histórico</h3>
+              <h3 className="text-lg font-black text-stone-800 mb-6">Histórico</h3>
               <div className="space-y-0 relative">
                  {/* Timeline Line */}
-                 <div className="absolute left-[19px] top-4 bottom-4 w-0.5 bg-slate-100"></div>
+                 <div className="absolute left-[19px] top-4 bottom-4 w-0.5 bg-stone-100"></div>
 
                  {studentLogs.length === 0 ? (
-                    <p className="text-slate-400 font-medium text-center py-4">Sem registros.</p>
+                    <p className="text-stone-400 font-medium text-center py-4">Sem registros.</p>
                  ) : (
                     studentLogs.slice().reverse().map((log, i) => (
                        <div key={log.id} className="flex items-start gap-4 pb-6 last:pb-0 relative animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
@@ -288,12 +288,12 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
                           }`}>
                              <span className="text-[10px] font-black">{log.consumptionPercentage}%</span>
                           </div>
-                          <div className="bg-slate-50 p-3 rounded-2xl flex-1 hover:bg-slate-100 transition-colors cursor-default">
+                          <div className="bg-stone-50 p-3 rounded-2xl flex-1 hover:bg-stone-100 transition-colors cursor-default">
                              <div className="flex justify-between items-start">
-                                <p className="font-bold text-slate-800 text-sm">{log.mealType}</p>
-                                <span className="text-[10px] text-slate-400 font-bold uppercase">{new Date(log.date).toLocaleDateString()}</span>
+                                <p className="font-bold text-stone-800 text-sm">{log.mealType}</p>
+                                <span className="text-[10px] text-stone-400 font-bold uppercase">{new Date(log.date).toLocaleDateString()}</span>
                              </div>
-                             <p className="text-xs text-slate-500 font-medium mt-1">
+                             <p className="text-xs text-stone-500 font-medium mt-1">
                                 {log.mood === 'Happy' ? 'Comeu bem' : log.mood === 'Neutral' ? 'Normal' : log.mood === 'Fussy' ? 'Agitado' : 'Recusou'}
                              </p>
                           </div>

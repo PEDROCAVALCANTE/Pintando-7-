@@ -62,15 +62,15 @@ const DataContext = createContext<DataContextType>({} as DataContextType);
 
 // --- Toast Notification ---
 const NotificationToast = ({ message, onClose }: { message: string; onClose: () => void }) => (
-  <div className="fixed top-6 right-6 z-50 bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] rounded-2xl p-4 animate-fade-in flex items-start gap-4 max-w-sm border border-slate-50">
+  <div className="fixed top-6 right-6 z-50 bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] rounded-2xl p-4 animate-fade-in flex items-start gap-4 max-w-sm border border-stone-50">
     <div className="bg-brand-blue/10 p-2.5 rounded-xl text-brand-blue shrink-0">
       <Bell size={20} />
     </div>
     <div className="flex-1 pt-0.5">
-      <h4 className="font-bold text-slate-800 text-sm mb-1">Nova Notificação</h4>
-      <p className="text-slate-500 text-xs leading-relaxed">{message}</p>
+      <h4 className="font-bold text-stone-800 text-sm mb-1">Nova Notificação</h4>
+      <p className="text-stone-500 text-xs leading-relaxed">{message}</p>
     </div>
-    <button onClick={onClose} className="text-slate-300 hover:text-slate-500 transition-colors text-xl leading-none">×</button>
+    <button onClick={onClose} className="text-stone-300 hover:text-stone-500 transition-colors text-xl leading-none">×</button>
   </div>
 );
 
@@ -94,10 +94,10 @@ const LoginPage = () => {
   const logoUrl = "https://iili.io/fIiTt9e.png";
 
   return (
-    <div className="min-h-screen flex bg-white">
+    <div className="min-h-screen flex bg-brand-cream">
       {/* Left Side - Visual Cover */}
       {/* Fundo branco para combinar com a logo enviada */}
-      <div className="hidden lg:flex w-1/2 bg-white relative items-center justify-center p-8 overflow-hidden border-r border-slate-50">
+      <div className="hidden lg:flex w-1/2 bg-white relative items-center justify-center p-8 overflow-hidden border-r border-stone-100">
          
          <div className="relative z-10 text-center w-full flex flex-col items-center justify-center h-full">
             {/* Imagem da Capa */}
@@ -114,11 +114,11 @@ const LoginPage = () => {
                
                {/* Fallback apenas se a imagem não for encontrada */}
                <div className="hidden show-fallback flex-col items-center justify-center py-20 w-full">
-                  <div className="bg-slate-50 p-8 rounded-[3rem] shadow-sm mb-6">
+                  <div className="bg-stone-50 p-8 rounded-[3rem] shadow-sm mb-6">
                     <Palette size={80} className="text-brand-red" />
                   </div>
-                  <h1 className="font-display text-5xl font-black text-slate-800 tracking-tight mb-2">Pintando 7</h1>
-                  <p className="text-slate-400 font-bold text-sm bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
+                  <h1 className="font-display text-5xl font-black text-stone-800 tracking-tight mb-2">Pintando 7</h1>
+                  <p className="text-stone-400 font-bold text-sm bg-stone-50 px-4 py-2 rounded-full border border-stone-100">
                     Sistema de Gestão
                   </p>
                </div>
@@ -126,14 +126,14 @@ const LoginPage = () => {
             
             {/* Texto de apoio sutil */}
             <div className="mt-8 animate-fade-in delay-200 opacity-80">
-               <p className="text-slate-400 font-bold text-xs tracking-[0.3em] uppercase mb-1">Sistema de Gestão Escolar</p>
+               <p className="text-stone-400 font-bold text-xs tracking-[0.3em] uppercase mb-1">Sistema de Gestão Escolar</p>
             </div>
          </div>
       </div>
 
       {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
-        <div className="w-full max-w-[380px] animate-fade-in">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-brand-cream/50">
+        <div className="w-full max-w-[380px] animate-fade-in bg-white p-8 rounded-[2.5rem] shadow-xl shadow-stone-200/50 border border-stone-100">
           
           <div className="mb-10 text-center lg:text-left">
              <div className="flex items-center justify-center lg:justify-start mb-6">
@@ -143,20 +143,20 @@ const LoginPage = () => {
                 </div>
              </div>
              
-             <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">
+             <h1 className="text-3xl font-black text-stone-800 mb-2 tracking-tight">
                {isRegistering ? 'Criar Conta' : 'Bem-vindo(a)'}
              </h1>
-             <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">
+             <p className="text-stone-400 font-bold text-xs uppercase tracking-widest">
                {isRegistering ? 'Preencha os dados da escola' : 'Faça login para continuar'}
              </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider ml-1">Email ou Usuário</label>
+              <label className="text-[10px] font-black text-stone-400 uppercase tracking-wider ml-1">Email ou Usuário</label>
               <input 
                 type="text" 
-                className="w-full px-5 py-4 bg-slate-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-slate-800 placeholder-slate-300 border-2"
+                className="w-full px-5 py-4 bg-stone-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-stone-800 placeholder-stone-300 border-2"
                 placeholder="ex: diretoria@pintando7.com"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
@@ -164,10 +164,10 @@ const LoginPage = () => {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider ml-1">Senha de Acesso</label>
+              <label className="text-[10px] font-black text-stone-400 uppercase tracking-wider ml-1">Senha de Acesso</label>
               <input 
                 type="password" 
-                className="w-full px-5 py-4 bg-slate-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-slate-800 placeholder-slate-300 border-2"
+                className="w-full px-5 py-4 bg-stone-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-stone-800 placeholder-stone-300 border-2"
                 placeholder="••••••••"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
@@ -185,7 +185,7 @@ const LoginPage = () => {
             <button 
               type="submit" 
               disabled={loading}
-              className="w-full bg-slate-900 hover:bg-brand-blue text-white font-bold py-4 rounded-2xl shadow-xl shadow-slate-200 hover:shadow-blue-200 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
+              className="w-full bg-brand-red hover:bg-red-600 text-white font-bold py-4 rounded-2xl shadow-xl shadow-red-100 hover:shadow-red-200 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
             >
               {loading ? <Loader2 className="animate-spin" size={20} /> : (
                 <>
@@ -196,10 +196,10 @@ const LoginPage = () => {
             </button>
           </form>
 
-          <div className="mt-10 text-center border-t border-slate-50 pt-6">
+          <div className="mt-10 text-center border-t border-stone-50 pt-6">
             <button 
               onClick={() => { setIsRegistering(!isRegistering); setError(''); }}
-              className="text-xs text-slate-400 font-bold hover:text-brand-blue uppercase tracking-widest transition-colors"
+              className="text-xs text-stone-400 font-bold hover:text-brand-blue uppercase tracking-widest transition-colors"
             >
               {isRegistering ? 'Já possui conta? Fazer Login' : 'Primeiro acesso? Criar Conta'}
             </button>
@@ -470,8 +470,8 @@ export default function App() {
 
   if (loading) {
      return (
-        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center text-slate-800">
-           <Loader2 size={48} className="animate-spin mb-6 text-brand-blue" />
+        <div className="min-h-screen bg-stone-50 flex flex-col items-center justify-center text-stone-800">
+           <Loader2 size={48} className="animate-spin mb-6 text-brand-red" />
         </div>
      );
   }

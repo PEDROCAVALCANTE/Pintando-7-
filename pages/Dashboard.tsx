@@ -29,14 +29,14 @@ const Dashboard: React.FC<DashboardProps> = ({ students }) => {
   // Minimalist Stat Card with Staggered Animation
   const StatCard = ({ title, value, icon: Icon, color, subText, delay }: any) => (
     <div 
-      className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 group flex items-start justify-between opacity-0 animate-fade-in-up"
+      className="bg-white p-6 rounded-[2rem] shadow-sm border border-stone-100 hover:shadow-md transition-all duration-300 group flex items-start justify-between opacity-0 animate-fade-in-up"
       style={{ animationDelay: `${delay}ms` }}
     >
       <div>
-        <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">{title}</p>
-        <h3 className="text-4xl font-black text-slate-800 tracking-tight">{value}</h3>
+        <p className="text-stone-400 text-xs font-bold uppercase tracking-wider mb-2">{title}</p>
+        <h3 className="text-4xl font-black text-stone-800 tracking-tight">{value}</h3>
         {subText && (
-          <span className="inline-block mt-2 text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-lg">
+          <span className="inline-block mt-2 text-[10px] font-bold text-stone-400 bg-stone-50 px-2 py-1 rounded-lg">
             {subText}
           </span>
         )}
@@ -51,10 +51,10 @@ const Dashboard: React.FC<DashboardProps> = ({ students }) => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 animate-fade-in">
         <div>
-          <h2 className="text-3xl font-black text-slate-800 tracking-tight">Visão Geral</h2>
-          <p className="text-slate-400 font-medium mt-1">Acompanhamento em tempo real</p>
+          <h2 className="text-3xl font-black text-stone-800 tracking-tight">Visão Geral</h2>
+          <p className="text-stone-400 font-medium mt-1">Acompanhamento em tempo real</p>
         </div>
-        <button className="bg-white hover:bg-slate-50 text-slate-600 px-5 py-2.5 rounded-xl text-xs font-bold shadow-sm border border-slate-100 transition-all flex items-center gap-2 hover:scale-105 active:scale-95">
+        <button className="bg-white hover:bg-stone-50 text-stone-600 px-5 py-2.5 rounded-xl text-xs font-bold shadow-sm border border-stone-100 transition-all flex items-center gap-2 hover:scale-105 active:scale-95">
             <Download size={16} />
             <span>Relatório PDF</span>
         </button>
@@ -97,11 +97,11 @@ const Dashboard: React.FC<DashboardProps> = ({ students }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div 
-          className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col opacity-0 animate-fade-in-up"
+          className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-stone-100 flex flex-col opacity-0 animate-fade-in-up"
           style={{ animationDelay: '500ms' }}
         >
           <div className="flex justify-between items-center mb-6">
-             <h3 className="text-lg font-bold text-slate-800">Restrições Alimentares</h3>
+             <h3 className="text-lg font-bold text-stone-800">Restrições Alimentares</h3>
           </div>
           <div className="flex-1 min-h-[250px] relative">
             <ResponsiveContainer width="100%" height="100%">
@@ -119,7 +119,7 @@ const Dashboard: React.FC<DashboardProps> = ({ students }) => {
                   animationDuration={1500}
                 >
                   {allergiesData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === 1 ? '#F59E0B' : '#E2E8F0'} strokeWidth={0} />
+                    <Cell key={`cell-${index}`} fill={index === 1 ? '#F59E0B' : '#E7E5E4'} strokeWidth={0} />
                   ))}
                 </Pie>
                 <Tooltip 
@@ -128,43 +128,43 @@ const Dashboard: React.FC<DashboardProps> = ({ students }) => {
               </PieChart>
             </ResponsiveContainer>
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span className="text-3xl font-black text-slate-800 animate-pop" style={{ animationDelay: '1s' }}>{studentsWithAllergies}</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase">Alunos</span>
+                <span className="text-3xl font-black text-stone-800 animate-pop" style={{ animationDelay: '1s' }}>{studentsWithAllergies}</span>
+                <span className="text-[10px] font-bold text-stone-400 uppercase">Alunos</span>
             </div>
           </div>
           <div className="flex justify-center gap-6">
              <div className="flex items-center gap-2">
-                 <div className="w-2 h-2 rounded-full bg-slate-200"></div>
-                 <span className="text-xs font-bold text-slate-500">Sem Restrição</span>
+                 <div className="w-2 h-2 rounded-full bg-stone-200"></div>
+                 <span className="text-xs font-bold text-stone-500">Sem Restrição</span>
              </div>
              <div className="flex items-center gap-2">
                  <div className="w-2 h-2 rounded-full bg-orange-400"></div>
-                 <span className="text-xs font-bold text-slate-500">Com Restrição</span>
+                 <span className="text-xs font-bold text-stone-500">Com Restrição</span>
              </div>
           </div>
         </div>
 
         <div 
-          className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col opacity-0 animate-fade-in-up"
+          className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-stone-100 flex flex-col opacity-0 animate-fade-in-up"
           style={{ animationDelay: '600ms' }}
         >
           <div className="flex justify-between items-center mb-6">
-             <h3 className="text-lg font-bold text-slate-800">Distribuição IMC</h3>
+             <h3 className="text-lg font-bold text-stone-800">Distribuição IMC</h3>
           </div>
           <div className="flex-1 min-h-[250px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={bmiData} barSize={32}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4" />
                 <XAxis 
                   dataKey="name" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{fill: '#94a3b8', fontSize: 10, fontWeight: 600}} 
+                  tick={{fill: '#a8a29e', fontSize: 10, fontWeight: 600}} 
                   dy={10} 
                 />
                 <YAxis hide />
                 <Tooltip 
-                    cursor={{fill: '#f8fafc', radius: 8}}
+                    cursor={{fill: '#fafaf9', radius: 8}}
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
                 />
                 <Bar 

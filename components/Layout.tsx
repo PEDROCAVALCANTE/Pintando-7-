@@ -62,9 +62,9 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
   );
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex font-sans text-slate-600 selection:bg-brand-blue/20">
+    <div className="min-h-screen bg-brand-cream flex font-sans text-stone-600 selection:bg-brand-red/20">
       {/* Sidebar - Desktop (Minimalist) */}
-      <aside className="hidden md:flex flex-col w-20 lg:w-64 bg-white fixed h-full z-20 border-r border-slate-100/50 transition-all duration-300">
+      <aside className="hidden md:flex flex-col w-20 lg:w-64 bg-white fixed h-full z-20 border-r border-stone-100/80 transition-all duration-300 shadow-[2px_0_24px_-12px_rgba(0,0,0,0.05)]">
         <div className="h-32 flex items-center justify-center pt-4">
           <div className="hidden lg:block">
             <BrandLogo />
@@ -82,10 +82,10 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className={`w-full flex items-center space-x-3 px-3 py-3.5 rounded-2xl transition-all duration-300 group font-medium relative ${
+                className={`w-full flex items-center space-x-3 px-3 py-3.5 rounded-2xl transition-all duration-300 group font-bold relative ${
                   isActive
-                    ? `${item.activeBg} ${item.color} font-bold`
-                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
+                    ? `${item.activeBg} ${item.color} shadow-sm`
+                    : 'text-stone-400 hover:bg-stone-50 hover:text-stone-700'
                 }`}
               >
                 <div className="flex items-center justify-center w-6 lg:w-auto">
@@ -100,15 +100,15 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
 
         <div className="p-4 mt-auto">
           {/* User Profile Card Minimal */}
-          <div className="bg-slate-50 p-3 rounded-2xl flex items-center gap-3 transition-all hover:bg-slate-100 cursor-pointer group">
-            <div className="w-9 h-9 rounded-full bg-white text-brand-blue flex items-center justify-center font-black shadow-sm text-sm border border-slate-100">
+          <div className="bg-stone-50 p-3 rounded-2xl flex items-center gap-3 transition-all hover:bg-stone-100 cursor-pointer group border border-stone-100">
+            <div className="w-9 h-9 rounded-full bg-white text-brand-red flex items-center justify-center font-black shadow-sm text-sm border border-stone-100">
               {user?.name.charAt(0).toUpperCase()}
             </div>
             <div className="overflow-hidden flex-1 hidden lg:block">
-              <p className="text-xs font-bold text-slate-800 truncate">{user?.name}</p>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Admin</p>
+              <p className="text-xs font-bold text-stone-700 truncate">{user?.name}</p>
+              <p className="text-[10px] text-stone-400 font-bold uppercase tracking-wide">Admin</p>
             </div>
-            <button onClick={logout} className="hidden lg:block text-slate-300 hover:text-brand-red transition-colors p-1">
+            <button onClick={logout} className="hidden lg:block text-stone-300 hover:text-brand-red transition-colors p-1">
                 <LogOut size={16} />
             </button>
           </div>
@@ -116,11 +116,11 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
       </aside>
 
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 w-full bg-white/80 backdrop-blur-md z-30 px-6 py-4 flex items-center justify-between border-b border-slate-100">
+      <div className="md:hidden fixed top-0 w-full bg-white/80 backdrop-blur-md z-30 px-6 py-4 flex items-center justify-between border-b border-stone-100">
          <div className="scale-75 origin-left -ml-4">
             <BrandLogo size="small" />
          </div>
-         <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-slate-600 p-2 rounded-xl hover:bg-slate-50">
+         <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-stone-600 p-2 rounded-xl hover:bg-stone-50">
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
          </button>
       </div>
@@ -139,7 +139,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
                     className={`flex items-center space-x-4 p-4 rounded-2xl text-base font-bold transition-all ${
                        activePage === item.id 
                        ? `${item.activeBg} ${item.color}` 
-                       : 'text-slate-600 hover:bg-slate-50'
+                       : 'text-stone-600 hover:bg-stone-50'
                     }`}
                  >
                     <item.icon size={24} />
@@ -160,9 +160,9 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
       {/* Main Content Area */}
       <main className="flex-1 md:ml-20 lg:ml-64 p-6 lg:p-10 pt-28 md:pt-10 overflow-x-hidden relative">
         {/* Subtle Background Blobs (Optional - very transparent) */}
-        <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden opacity-[0.2]">
-           <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-brand-yellow/10 rounded-full blur-[100px]" />
-           <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-brand-blue/5 rounded-full blur-[100px]" />
+        <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden opacity-[0.15]">
+           <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-brand-yellow/20 rounded-full blur-[100px]" />
+           <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-brand-blue/10 rounded-full blur-[100px]" />
         </div>
 
         <div className="max-w-6xl mx-auto relative z-10">

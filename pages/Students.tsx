@@ -18,22 +18,22 @@ const InputWithIcon = ({
   label, icon: Icon, value, onChange, type = "text", required = false, placeholder = "", suffix = "" 
 }: any) => (
   <div className="w-full">
-    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">{label}</label>
+    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">{label}</label>
     <div className="relative group">
       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <Icon className="h-4 w-4 text-slate-300 group-focus-within:text-brand-blue transition-colors duration-300" />
+        <Icon className="h-4 w-4 text-stone-300 group-focus-within:text-brand-blue transition-colors duration-300" />
       </div>
       <input
         type={type}
         required={required}
-        className="block w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl text-slate-700 placeholder-slate-300 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all duration-300 font-semibold text-sm"
+        className="block w-full pl-11 pr-4 py-3 bg-stone-50 border-none rounded-xl text-stone-700 placeholder-stone-300 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all duration-300 font-semibold text-sm"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
       />
       {suffix && (
         <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-          <span className="text-slate-400 font-bold text-xs">{suffix}</span>
+          <span className="text-stone-400 font-bold text-xs">{suffix}</span>
         </div>
       )}
     </div>
@@ -123,8 +123,8 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-fade-in">
         <div>
-          <h2 className="text-3xl font-black text-slate-800 tracking-tight">Alunos</h2>
-          <p className="text-slate-400 font-medium">Gestão de matrículas</p>
+          <h2 className="text-3xl font-black text-stone-800 tracking-tight">Alunos</h2>
+          <p className="text-stone-400 font-medium">Gestão de matrículas</p>
         </div>
         <button 
           onClick={() => handleOpenModal()}
@@ -137,13 +137,13 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
 
       <div className="flex gap-4 items-center animate-fade-in" style={{ animationDelay: '100ms' }}>
         <div className="flex-1 relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 w-4 h-4 group-focus-within:text-brand-blue transition-colors duration-300" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-300 w-4 h-4 group-focus-within:text-brand-blue transition-colors duration-300" />
           <input 
             type="text"
             placeholder="Buscar aluno..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-white rounded-2xl border border-slate-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/10 text-slate-700 placeholder-slate-300 font-medium text-sm transition-all duration-300"
+            className="w-full pl-10 pr-4 py-3 bg-white rounded-2xl border border-stone-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/10 text-stone-700 placeholder-stone-300 font-medium text-sm transition-all duration-300"
           />
         </div>
       </div>
@@ -152,19 +152,19 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
         {filteredStudents.map((student, index) => (
           <div 
             key={student.id} 
-            className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:shadow-slate-100 hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden opacity-0 animate-fade-in-up"
+            className="bg-white rounded-[2rem] p-6 border border-stone-100 shadow-sm hover:shadow-lg hover:shadow-stone-100 hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden opacity-0 animate-fade-in-up"
             style={{ animationDelay: `${index * 50}ms` }}
             onClick={() => onViewStudent(student)}
           >
             <div className="flex flex-col items-center text-center">
-               <div className="w-20 h-20 rounded-full bg-slate-50 flex items-center justify-center text-brand-blue font-black text-2xl mb-4 border-2 border-white shadow-sm group-hover:scale-110 transition-transform duration-500 ease-out">
+               <div className="w-20 h-20 rounded-full bg-stone-50 flex items-center justify-center text-brand-blue font-black text-2xl mb-4 border-2 border-white shadow-sm group-hover:scale-110 transition-transform duration-500 ease-out">
                  {student.fullName.charAt(0)}
                </div>
-               <h3 className="font-bold text-base text-slate-800 leading-tight mb-1">{student.fullName}</h3>
-               <p className="text-xs text-slate-400 font-bold uppercase tracking-wide bg-slate-50 px-3 py-1 rounded-full">{student.schoolClass}</p>
+               <h3 className="font-bold text-base text-stone-800 leading-tight mb-1">{student.fullName}</h3>
+               <p className="text-xs text-stone-400 font-bold uppercase tracking-wide bg-stone-50 px-3 py-1 rounded-full">{student.schoolClass}</p>
             </div>
             
-            <div className="mt-6 flex justify-between items-center border-t border-slate-50 pt-4">
+            <div className="mt-6 flex justify-between items-center border-t border-stone-50 pt-4">
                {student.medical.hasRestriction ? (
                   <div className="flex items-center gap-1.5 text-red-500 text-[10px] font-bold uppercase bg-red-50 px-2 py-1 rounded-lg">
                     <AlertCircle size={12} />
@@ -177,10 +177,10 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
                )}
                
                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
-                  <button onClick={(e) => {e.stopPropagation(); handleOpenModal(student);}} className="p-1.5 text-slate-400 hover:text-brand-blue hover:bg-blue-50 rounded-lg transition-colors">
+                  <button onClick={(e) => {e.stopPropagation(); handleOpenModal(student);}} className="p-1.5 text-stone-400 hover:text-brand-blue hover:bg-blue-50 rounded-lg transition-colors">
                     <Edit2 size={16} />
                   </button>
-                  <button onClick={(e) => {e.stopPropagation(); onDeleteStudent(student.id);}} className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                  <button onClick={(e) => {e.stopPropagation(); onDeleteStudent(student.id);}} className="p-1.5 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
                     <Trash2 size={16} />
                   </button>
                </div>
@@ -190,21 +190,21 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white rounded-[2.5rem] w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl animate-pop border border-slate-100">
-            <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-8 py-6 border-b border-slate-50 flex justify-between items-center">
+        <div className="fixed inset-0 bg-stone-900/10 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-[2.5rem] w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl animate-pop border border-stone-100">
+            <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-8 py-6 border-b border-stone-50 flex justify-between items-center">
               <div>
-                 <h3 className="text-lg font-black text-slate-800">
+                 <h3 className="text-lg font-black text-stone-800">
                    {editingStudent ? 'Editar Aluno' : 'Novo Aluno'}
                  </h3>
               </div>
-              <button onClick={() => setIsModalOpen(false)} className="bg-slate-50 p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all hover:rotate-90">
+              <button onClick={() => setIsModalOpen(false)} className="bg-stone-50 p-2 rounded-full text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-all hover:rotate-90">
                 <X size={20} />
               </button>
             </div>
 
             <form onSubmit={handleSave} className="p-8">
-              <div className="flex p-1 bg-slate-50 rounded-xl mb-8 w-fit mx-auto">
+              <div className="flex p-1 bg-stone-50 rounded-xl mb-8 w-fit mx-auto">
                 {['general', 'health', 'school'].map((tab) => (
                   <button
                     key={tab}
@@ -212,8 +212,8 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
                     onClick={() => setCurrentTab(tab as any)}
                     className={`px-6 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
                       currentTab === tab 
-                      ? 'bg-white text-slate-800 shadow-sm scale-105' 
-                      : 'text-slate-400 hover:text-slate-600'
+                      ? 'bg-white text-stone-800 shadow-sm scale-105' 
+                      : 'text-stone-400 hover:text-stone-600'
                     }`}
                   >
                     {tab === 'general' ? 'Geral' : tab === 'health' ? 'Saúde' : 'Escola'}
@@ -242,17 +242,17 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
                         onChange={(e: any) => setFormData({...formData, dateOfBirth: e.target.value})}
                       />
                       <div className="w-full">
-                        <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Sexo</label>
+                        <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Sexo</label>
                         <div className="relative">
                           <select 
-                            className="block w-full pl-4 pr-8 py-3 bg-slate-50 border-none rounded-xl text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-brand-blue/10 appearance-none text-sm transition-all"
+                            className="block w-full pl-4 pr-8 py-3 bg-stone-50 border-none rounded-xl text-stone-700 font-semibold focus:outline-none focus:ring-2 focus:ring-brand-blue/10 appearance-none text-sm transition-all"
                             value={formData.gender} 
                             onChange={e => setFormData({...formData, gender: e.target.value as 'M'|'F'})}
                           >
                             <option value="M">Masculino</option>
                             <option value="F">Feminino</option>
                           </select>
-                          <ChevronRight size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 rotate-90 pointer-events-none" />
+                          <ChevronRight size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 rotate-90 pointer-events-none" />
                         </div>
                       </div>
                     </div>
@@ -262,7 +262,7 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
                       <InputWithIcon label="Altura (cm)" icon={Ruler} type="number" value={formData.heightCm} onChange={(e: any) => setFormData({...formData, heightCm: Number(e.target.value)})} />
                     </div>
 
-                    <div className="border-t border-slate-50 pt-4">
+                    <div className="border-t border-stone-50 pt-4">
                       <InputWithIcon label="Responsável" icon={User} required value={formData.guardianName} onChange={(e: any) => setFormData({...formData, guardianName: e.target.value})} />
                     </div>
                   </div>
@@ -278,12 +278,12 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
                         <input 
                           type="text" 
                           placeholder="Nova alergia..." 
-                          className="flex-1 px-4 py-2 bg-white border-none rounded-xl text-sm outline-none text-slate-700 placeholder-slate-300 focus:ring-2 focus:ring-red-100 transition-all"
+                          className="flex-1 px-4 py-2 bg-white border-none rounded-xl text-sm outline-none text-stone-700 placeholder-stone-300 focus:ring-2 focus:ring-red-100 transition-all"
                           value={newAllergyName}
                           onChange={(e) => setNewAllergyName(e.target.value)}
                         />
                          <select 
-                          className="px-4 py-2 bg-white border-none rounded-xl text-xs outline-none font-bold text-slate-600 focus:ring-2 focus:ring-red-100 transition-all"
+                          className="px-4 py-2 bg-white border-none rounded-xl text-xs outline-none font-bold text-stone-600 focus:ring-2 focus:ring-red-100 transition-all"
                           value={newAllergySeverity}
                           onChange={(e) => setNewAllergySeverity(e.target.value as AllergySeverity)}
                         >
@@ -315,8 +315,8 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
                 {currentTab === 'school' && (
                   <div className="space-y-5 animate-fade-in">
                      <div className="w-full">
-                        <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Turma</label>
-                         <select className="block w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-brand-blue/10 transition-all text-sm"
+                        <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Turma</label>
+                         <select className="block w-full px-4 py-3 bg-stone-50 border-none rounded-xl text-stone-700 font-semibold focus:outline-none focus:ring-2 focus:ring-brand-blue/10 transition-all text-sm"
                             value={formData.schoolClass} onChange={e => setFormData({...formData, schoolClass: e.target.value})}>
                             <option value="Berçário 1">Berçário 1</option>
                             <option value="Berçário 2">Berçário 2</option>
@@ -329,8 +329,8 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
                 )}
               </div>
 
-              <div className="mt-8 flex justify-end gap-3 pt-6 border-t border-slate-50">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-slate-400 font-bold hover:bg-slate-50 text-sm transition-colors">
+              <div className="mt-8 flex justify-end gap-3 pt-6 border-t border-stone-50">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-stone-400 font-bold hover:bg-stone-50 text-sm transition-colors">
                   Cancelar
                 </button>
                 <button type="submit" className="px-6 py-2.5 rounded-xl bg-brand-green hover:bg-green-600 text-white font-bold shadow-md shadow-green-100 flex items-center gap-2 text-sm transition-all hover:-translate-y-0.5 hover:shadow-lg active:scale-95">

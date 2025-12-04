@@ -78,8 +78,8 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
     <div className="space-y-8 animate-fade-in pb-10">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-black text-slate-800 tracking-tight">Agenda & Metas</h2>
-          <p className="text-slate-500 font-medium">Planejamento Nutricional</p>
+          <h2 className="text-3xl font-black text-stone-800 tracking-tight">Agenda & Metas</h2>
+          <p className="text-stone-500 font-medium">Planejamento Nutricional</p>
         </div>
       </div>
 
@@ -87,18 +87,18 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
         {/* Calendar Card */}
         <div className="lg:col-span-2 bg-white rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-8">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
-              {monthNames[currentDate.getMonth()]} <span className="text-slate-300">{currentDate.getFullYear()}</span>
+            <h3 className="text-xl font-black text-stone-800 flex items-center gap-2">
+              {monthNames[currentDate.getMonth()]} <span className="text-stone-300">{currentDate.getFullYear()}</span>
             </h3>
-            <div className="flex gap-2 bg-slate-50 rounded-2xl p-1">
-              <button onClick={handlePrevMonth} className="p-2 hover:bg-white rounded-xl text-slate-600 shadow-sm transition-all"><ChevronLeft size={18} /></button>
-              <button onClick={handleNextMonth} className="p-2 hover:bg-white rounded-xl text-slate-600 shadow-sm transition-all"><ChevronRight size={18} /></button>
+            <div className="flex gap-2 bg-stone-50 rounded-2xl p-1">
+              <button onClick={handlePrevMonth} className="p-2 hover:bg-white rounded-xl text-stone-600 shadow-sm transition-all"><ChevronLeft size={18} /></button>
+              <button onClick={handleNextMonth} className="p-2 hover:bg-white rounded-xl text-stone-600 shadow-sm transition-all"><ChevronRight size={18} /></button>
             </div>
           </div>
 
           <div className="grid grid-cols-7 gap-2 mb-4">
             {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map(day => (
-              <div key={day} className="text-center text-xs font-bold text-slate-300 uppercase py-2">{day}</div>
+              <div key={day} className="text-center text-xs font-bold text-stone-300 uppercase py-2">{day}</div>
             ))}
           </div>
           <div className="grid grid-cols-7 gap-3">
@@ -116,7 +116,7 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
                   onClick={() => setSelectedDate(date)}
                   className={`h-24 rounded-2xl p-3 text-left relative transition-all flex flex-col justify-between group ${
                     isSelected ? 'bg-brand-blue text-white shadow-lg shadow-blue-200 scale-105' : 
-                    isToday ? 'bg-brand-yellow/10 text-brand-brown' : 'bg-slate-50 hover:bg-slate-100 text-slate-600'
+                    isToday ? 'bg-brand-yellow/10 text-brand-brown' : 'bg-stone-50 hover:bg-stone-100 text-stone-600'
                   }`}
                 >
                   <span className={`text-sm font-bold`}>{day}</span>
@@ -138,8 +138,8 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
           <div className="bg-white rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-8">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <h3 className="font-bold text-slate-800 text-lg">Eventos</h3>
-                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">{selectedDate.getDate()} de {monthNames[selectedDate.getMonth()]}</p>
+                <h3 className="font-bold text-stone-800 text-lg">Eventos</h3>
+                <p className="text-stone-400 text-xs font-bold uppercase tracking-wider">{selectedDate.getDate()} de {monthNames[selectedDate.getMonth()]}</p>
               </div>
               <button onClick={() => setIsAptModalOpen(true)} className="bg-brand-blue text-white w-10 h-10 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200">
                 <Plus size={20} />
@@ -148,21 +148,21 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
 
             <div className="space-y-3">
               {getAppointmentsForDay(selectedDate).length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-8 text-slate-300">
+                <div className="flex flex-col items-center justify-center py-8 text-stone-300">
                   <CalendarIcon size={32} className="mb-2 opacity-50" />
                   <p className="text-xs font-bold uppercase tracking-widest">Vazio</p>
                 </div>
               ) : (
                 getAppointmentsForDay(selectedDate).map(apt => (
-                  <div key={apt.id} className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 group hover:bg-white hover:shadow-md transition-all">
+                  <div key={apt.id} className="flex items-center gap-4 p-4 rounded-2xl bg-stone-50 group hover:bg-white hover:shadow-md transition-all">
                     <div className="text-brand-blue font-bold text-xs bg-blue-50 px-2 py-1 rounded-lg">
                       {new Date(apt.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-bold text-slate-800 text-sm">{apt.title}</h4>
-                      <p className="text-[10px] text-slate-400 uppercase font-bold">{apt.type}</p>
+                      <h4 className="font-bold text-stone-800 text-sm">{apt.title}</h4>
+                      <p className="text-[10px] text-stone-400 uppercase font-bold">{apt.type}</p>
                     </div>
-                    <button onClick={() => onDeleteAppointment(apt.id)} className="text-slate-300 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button onClick={() => onDeleteAppointment(apt.id)} className="text-stone-300 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -214,24 +214,24 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
 
       {/* Modal */}
       {isAptModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-stone-900/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl w-full max-w-sm shadow-2xl p-8 animate-fade-in-up">
-            <h3 className="text-xl font-black text-slate-800 mb-6">Novo Evento</h3>
+            <h3 className="text-xl font-black text-stone-800 mb-6">Novo Evento</h3>
             <form onSubmit={handleSaveAppointment} className="space-y-4">
               <input 
                 type="text" required
-                className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-medium text-slate-800"
+                className="w-full p-4 bg-stone-50 rounded-2xl outline-none font-medium text-stone-800"
                 placeholder="Título do evento"
                 value={aptForm.title} onChange={e => setAptForm({...aptForm, title: e.target.value})}
               />
               <div className="grid grid-cols-2 gap-4">
                  <input 
                   type="time" required
-                  className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-medium text-slate-800"
+                  className="w-full p-4 bg-stone-50 rounded-2xl outline-none font-medium text-stone-800"
                   value={aptForm.time} onChange={e => setAptForm({...aptForm, time: e.target.value})}
                 />
                  <select 
-                  className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-medium text-slate-800"
+                  className="w-full p-4 bg-stone-50 rounded-2xl outline-none font-medium text-stone-800"
                   value={aptForm.type} onChange={e => setAptForm({...aptForm, type: e.target.value as any})}
                  >
                    <option value="Consultation">Consulta</option>
@@ -240,7 +240,7 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
                  </select>
               </div>
               <div className="flex gap-2 pt-4">
-                <button type="button" onClick={() => setIsAptModalOpen(false)} className="flex-1 py-3.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50">Cancelar</button>
+                <button type="button" onClick={() => setIsAptModalOpen(false)} className="flex-1 py-3.5 rounded-2xl font-bold text-stone-500 hover:bg-stone-50">Cancelar</button>
                 <button type="submit" className="flex-1 py-3.5 bg-brand-blue text-white rounded-2xl font-bold hover:bg-blue-600 shadow-lg shadow-blue-200">Salvar</button>
               </div>
             </form>
