@@ -9,186 +9,169 @@ interface DashboardProps {
   students: Student[];
 }
 
-const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
-
 const Dashboard: React.FC<DashboardProps> = ({ students }) => {
-  // Calculations for KPIs
   const totalStudents = students.length;
   const studentsWithAllergies = students.filter(s => s.medical.hasRestriction || s.medical.allergies.length > 0).length;
   const severeAllergies = students.filter(s => s.medical.allergies.some(a => a.severity === AllergySeverity.SEVERE)).length;
   
-  // Data for Charts
   const allergiesData = [
     { name: 'Sem Restrições', value: totalStudents - studentsWithAllergies },
     { name: 'Com Restrições', value: studentsWithAllergies },
   ];
 
   const bmiData = [
-    { name: 'Baixo Peso', count: Math.floor(totalStudents * 0.1) },
+    { name: 'Baixo', count: Math.floor(totalStudents * 0.1) },
     { name: 'Adequado', count: Math.floor(totalStudents * 0.7) },
     { name: 'Sobrepeso', count: Math.floor(totalStudents * 0.15) },
     { name: 'Obesidade', count: Math.floor(totalStudents * 0.05) },
   ];
 
-  const StatCard = ({ title, value, icon: Icon, color, subText, gradient }: any) => (
-    <div className={`relative overflow-hidden p-6 rounded-[2rem] shadow-[0_8px_30px_-6px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all duration-300 group bg-gradient-to-br ${gradient} border border-white`}>
-      {/* Decorative Circles */}
-      <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-10 ${color.bg.replace('bg-', 'bg-')}`} />
-      <div className={`absolute -right-10 top-10 w-16 h-16 rounded-full opacity-10 ${color.bg.replace('bg-', 'bg-')}`} />
-
-      <div className="relative z-10 flex justify-between items-start">
-        <div>
-          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-sm transition-transform group-hover:scale-110 duration-300 bg-white`}>
-            <Icon className={`w-7 h-7 ${color.text}`} />
-          </div>
-          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">{title}</p>
-          <h3 className="text-4xl font-black text-slate-800 tracking-tight">{value}</h3>
-        </div>
-        
+  // Minimalist Stat Card with Staggered Animation
+  const StatCard = ({ title, value, icon: Icon, color, subText, delay }: any) => (
+    <div 
+      className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 group flex items-start justify-between opacity-0 animate-fade-in-up"
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      <div>
+        <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">{title}</p>
+        <h3 className="text-4xl font-black text-slate-800 tracking-tight">{value}</h3>
         {subText && (
-          <div className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wide ${color.bg} ${color.text}`}>
-             {subText}
-          </div>
+          <span className="inline-block mt-2 text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-lg">
+            {subText}
+          </span>
         )}
+      </div>
+      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${color.bg} transition-transform duration-500 ease-out group-hover:rotate-12 group-hover:scale-110`}>
+        <Icon className={`w-6 h-6 ${color.text}`} />
       </div>
     </div>
   );
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2 border-b border-slate-100">
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 animate-fade-in">
         <div>
-          <h2 className="text-4xl font-black text-slate-800 tracking-tight mb-1">Dashboard</h2>
-          <p className="text-slate-500 font-medium text-lg">Resumo diário do berçário</p>
+          <h2 className="text-3xl font-black text-slate-800 tracking-tight">Visão Geral</h2>
+          <p className="text-slate-400 font-medium mt-1">Acompanhamento em tempo real</p>
         </div>
-        <div>
-            <button className="bg-white hover:bg-slate-50 text-slate-600 px-6 py-3.5 rounded-2xl text-sm font-bold shadow-[0_2px_10px_-2px_rgba(0,0,0,0.05)] transition-all flex items-center gap-2 border border-slate-100 group">
-                <Download size={18} className="group-hover:translate-y-0.5 transition-transform" />
-                <span>Exportar Relatório</span>
-            </button>
-        </div>
+        <button className="bg-white hover:bg-slate-50 text-slate-600 px-5 py-2.5 rounded-xl text-xs font-bold shadow-sm border border-slate-100 transition-all flex items-center gap-2 hover:scale-105 active:scale-95">
+            <Download size={16} />
+            <span>Relatório PDF</span>
+        </button>
       </div>
 
-      {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
-          title="Total de Alunos" 
+          title="Alunos" 
           value={totalStudents} 
           icon={Users} 
-          color={{ bg: 'bg-blue-100', text: 'text-brand-blue' }}
-          gradient="from-white to-blue-50"
+          color={{ bg: 'bg-blue-50', text: 'text-brand-blue' }}
           subText="Ativos"
+          delay={100}
         />
         <StatCard 
           title="Restrições" 
           value={studentsWithAllergies} 
           icon={AlertTriangle} 
-          color={{ bg: 'bg-orange-100', text: 'text-orange-500' }}
-          gradient="from-white to-orange-50"
+          color={{ bg: 'bg-orange-50', text: 'text-orange-500' }}
           subText="Atenção"
+          delay={200}
         />
         <StatCard 
           title="Casos Graves" 
           value={severeAllergies} 
           icon={Activity} 
-          color={{ bg: 'bg-red-100', text: 'text-brand-red' }}
-          gradient="from-white to-red-50"
-          subText="Prioridade"
+          color={{ bg: 'bg-red-50', text: 'text-brand-red' }}
+          subText="Prioritário"
+          delay={300}
         />
         <StatCard 
-          title="Consumo Médio" 
+          title="Consumo" 
           value="87%" 
           icon={TrendingUp} 
-          color={{ bg: 'bg-green-100', text: 'text-brand-green' }}
-          gradient="from-white to-green-50"
-          subText="Hoje"
+          color={{ bg: 'bg-green-50', text: 'text-brand-green' }}
+          subText="Média Dia"
+          delay={400}
         />
       </div>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Allergy Distribution */}
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] border border-slate-50 flex flex-col">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div 
+          className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col opacity-0 animate-fade-in-up"
+          style={{ animationDelay: '500ms' }}
+        >
           <div className="flex justify-between items-center mb-6">
-             <h3 className="text-xl font-black text-slate-800">Restrições Alimentares</h3>
-             <button className="text-slate-300 hover:text-brand-blue transition-colors">
-               <ArrowUpRight size={20} />
-             </button>
+             <h3 className="text-lg font-bold text-slate-800">Restrições Alimentares</h3>
           </div>
-          
-          <div className="flex-1 min-h-[300px] flex items-center justify-center relative">
+          <div className="flex-1 min-h-[250px] relative">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={allergiesData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={80}
-                  outerRadius={100}
-                  paddingAngle={8}
+                  innerRadius={70}
+                  outerRadius={90}
+                  paddingAngle={5}
                   dataKey="value"
-                  cornerRadius={8}
+                  cornerRadius={6}
+                  isAnimationActive={true}
+                  animationDuration={1500}
                 >
                   {allergiesData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === 1 ? '#F59E0B' : '#F1F5F9'} strokeWidth={0} />
+                    <Cell key={`cell-${index}`} fill={index === 1 ? '#F59E0B' : '#E2E8F0'} strokeWidth={0} />
                   ))}
                 </Pie>
                 <Tooltip 
-                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px -5px rgba(0,0,0,0.1)', fontWeight: 'bold', padding: '12px 20px' }}
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontWeight: 'bold' }}
                 />
               </PieChart>
             </ResponsiveContainer>
-            
-            {/* Center Text */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span className="text-4xl font-black text-slate-800">{studentsWithAllergies}</span>
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Restrições</span>
+                <span className="text-3xl font-black text-slate-800 animate-pop" style={{ animationDelay: '1s' }}>{studentsWithAllergies}</span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase">Alunos</span>
             </div>
           </div>
-
-          <div className="flex justify-center gap-6 mt-2">
-             {allergiesData.map((d, i) => (
-                 <div key={i} className="flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-xl">
-                     <div className={`w-3 h-3 rounded-full ${i === 1 ? 'bg-orange-400' : 'bg-slate-300'}`}></div>
-                     <span className="text-sm text-slate-600 font-bold">{d.name} <span className="text-slate-900 ml-1">{d.value}</span></span>
-                 </div>
-             ))}
+          <div className="flex justify-center gap-6">
+             <div className="flex items-center gap-2">
+                 <div className="w-2 h-2 rounded-full bg-slate-200"></div>
+                 <span className="text-xs font-bold text-slate-500">Sem Restrição</span>
+             </div>
+             <div className="flex items-center gap-2">
+                 <div className="w-2 h-2 rounded-full bg-orange-400"></div>
+                 <span className="text-xs font-bold text-slate-500">Com Restrição</span>
+             </div>
           </div>
         </div>
 
-        {/* Nutritional Status */}
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] border border-slate-50 flex flex-col">
+        <div 
+          className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col opacity-0 animate-fade-in-up"
+          style={{ animationDelay: '600ms' }}
+        >
           <div className="flex justify-between items-center mb-6">
-             <h3 className="text-xl font-black text-slate-800">Indicadores de IMC</h3>
-             <button className="text-slate-300 hover:text-brand-green transition-colors">
-               <ArrowUpRight size={20} />
-             </button>
+             <h3 className="text-lg font-bold text-slate-800">Distribuição IMC</h3>
           </div>
-          <div className="flex-1 min-h-[300px]">
+          <div className="flex-1 min-h-[250px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={bmiData} barSize={40}>
+              <BarChart data={bmiData} barSize={32}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis 
                   dataKey="name" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{fill: '#94a3b8', fontSize: 11, fontWeight: 700}} 
-                  dy={15} 
+                  tick={{fill: '#94a3b8', fontSize: 10, fontWeight: 600}} 
+                  dy={10} 
                 />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{fill: '#94a3b8', fontSize: 11, fontWeight: 700}} 
-                />
+                <YAxis hide />
                 <Tooltip 
-                    cursor={{fill: '#f8fafc', radius: 12}}
-                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px -5px rgba(0,0,0,0.1)', fontWeight: 'bold', padding: '12px 20px' }}
+                    cursor={{fill: '#f8fafc', radius: 8}}
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
                 />
                 <Bar 
                   dataKey="count" 
                   fill="#10B981" 
-                  radius={[12, 12, 12, 12]} 
-                  animationDuration={1500}
+                  radius={[8, 8, 8, 8]}
+                  animationDuration={2000}
                 />
               </BarChart>
             </ResponsiveContainer>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Student, AllergySeverity, Allergy } from '../types';
 import { 
   Plus, Search, Filter, Edit2, Trash2, Eye, X, Save, AlertCircle, 
-  User, Calendar, Weight, Ruler, Phone, Mail, MapPin, ChevronRight
+  User, Calendar, Weight, Ruler, Phone, Mail, ChevronRight
 } from 'lucide-react';
 
 interface StudentsPageProps {
@@ -13,20 +13,20 @@ interface StudentsPageProps {
   onViewStudent: (s: Student) => void;
 }
 
-// --- Componente Auxiliar Minimalista ---
+// Minimalist Input Component
 const InputWithIcon = ({ 
   label, icon: Icon, value, onChange, type = "text", required = false, placeholder = "", suffix = "" 
 }: any) => (
   <div className="w-full">
-    <label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-2 ml-1">{label}</label>
+    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">{label}</label>
     <div className="relative group">
       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <Icon className="h-5 w-5 text-slate-300 group-focus-within:text-brand-blue transition-colors" />
+        <Icon className="h-4 w-4 text-slate-300 group-focus-within:text-brand-blue transition-colors duration-300" />
       </div>
       <input
         type={type}
         required={required}
-        className="block w-full pl-12 pr-4 py-3.5 bg-slate-50 border-transparent rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 focus:border-transparent transition-all font-medium text-sm"
+        className="block w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl text-slate-700 placeholder-slate-300 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all duration-300 font-semibold text-sm"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
@@ -45,7 +45,6 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
   const [searchTerm, setSearchTerm] = useState('');
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
 
-  // Form State
   const initialFormState: Partial<Student> = {
     fullName: '',
     dateOfBirth: '',
@@ -78,7 +77,7 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
   const handleOpenModal = (student?: Student) => {
     if (student) {
       setEditingStudent(student);
-      setFormData(JSON.parse(JSON.stringify(student))); // Deep copy
+      setFormData(JSON.parse(JSON.stringify(student)));
     } else {
       setEditingStudent(null);
       setFormData(initialFormState);
@@ -122,118 +121,98 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-fade-in">
         <div>
           <h2 className="text-3xl font-black text-slate-800 tracking-tight">Alunos</h2>
-          <p className="text-slate-500 font-medium">Gestão de matrículas</p>
+          <p className="text-slate-400 font-medium">Gestão de matrículas</p>
         </div>
         <button 
           onClick={() => handleOpenModal()}
-          className="bg-brand-blue hover:bg-blue-600 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-blue-200 transform hover:-translate-y-0.5"
+          className="bg-brand-blue hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all duration-300 shadow-md shadow-blue-100 text-sm hover:shadow-lg hover:scale-105 active:scale-95"
         >
-          <Plus size={20} />
-          <span>Cadastrar Aluno</span>
+          <Plus size={18} />
+          <span>Novo Aluno</span>
         </button>
       </div>
 
-      {/* Filter Bar Minimalist */}
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 items-center animate-fade-in" style={{ animationDelay: '100ms' }}>
         <div className="flex-1 relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-brand-blue transition-colors" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 w-4 h-4 group-focus-within:text-brand-blue transition-colors duration-300" />
           <input 
             type="text"
-            placeholder="Buscar por nome ou turma..."
+            placeholder="Buscar aluno..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-3.5 bg-white rounded-2xl border-none shadow-[0_2px_15px_-3px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-brand-blue/10 text-slate-800 placeholder-slate-400 font-medium"
+            className="w-full pl-10 pr-4 py-3 bg-white rounded-2xl border border-slate-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/10 text-slate-700 placeholder-slate-300 font-medium text-sm transition-all duration-300"
           />
         </div>
-        <button className="px-5 py-3.5 bg-white rounded-2xl text-slate-600 hover:text-brand-blue shadow-[0_2px_15px_-3px_rgba(0,0,0,0.05)] flex items-center gap-2 font-bold transition-colors">
-          <Filter size={18} />
-          <span className="hidden md:inline">Filtros</span>
-        </button>
       </div>
 
-      {/* Student List Minimalist */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredStudents.map(student => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {filteredStudents.map((student, index) => (
           <div 
             key={student.id} 
-            className="bg-white rounded-3xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group border border-transparent hover:border-blue-50 relative overflow-hidden"
+            className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:shadow-slate-100 hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden opacity-0 animate-fade-in-up"
+            style={{ animationDelay: `${index * 50}ms` }}
             onClick={() => onViewStudent(student)}
           >
-            {/* Hover Accent */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-blue to-brand-green opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-            <div className="flex items-center gap-4 mb-6">
-               <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center text-brand-blue font-black text-xl shadow-inner">
+            <div className="flex flex-col items-center text-center">
+               <div className="w-20 h-20 rounded-full bg-slate-50 flex items-center justify-center text-brand-blue font-black text-2xl mb-4 border-2 border-white shadow-sm group-hover:scale-110 transition-transform duration-500 ease-out">
                  {student.fullName.charAt(0)}
                </div>
-               <div>
-                 <h3 className="font-bold text-lg text-slate-800 leading-tight">{student.fullName}</h3>
-                 <p className="text-sm text-slate-500 font-medium mt-0.5">{student.schoolClass}</p>
-               </div>
+               <h3 className="font-bold text-base text-slate-800 leading-tight mb-1">{student.fullName}</h3>
+               <p className="text-xs text-slate-400 font-bold uppercase tracking-wide bg-slate-50 px-3 py-1 rounded-full">{student.schoolClass}</p>
             </div>
             
-            <div className="space-y-3 mb-6">
-               <div className="flex justify-between items-center text-sm">
-                  <span className="text-slate-400 font-medium">Turno</span>
-                  <span className="font-bold text-slate-700 bg-slate-50 px-2 py-1 rounded-lg">{student.shift}</span>
+            <div className="mt-6 flex justify-between items-center border-t border-slate-50 pt-4">
+               {student.medical.hasRestriction ? (
+                  <div className="flex items-center gap-1.5 text-red-500 text-[10px] font-bold uppercase bg-red-50 px-2 py-1 rounded-lg">
+                    <AlertCircle size={12} />
+                    <span>Restrição</span>
+                  </div>
+               ) : (
+                  <div className="flex items-center gap-1.5 text-green-500 text-[10px] font-bold uppercase bg-green-50 px-2 py-1 rounded-lg">
+                    <span>Regular</span>
+                  </div>
+               )}
+               
+               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                  <button onClick={(e) => {e.stopPropagation(); handleOpenModal(student);}} className="p-1.5 text-slate-400 hover:text-brand-blue hover:bg-blue-50 rounded-lg transition-colors">
+                    <Edit2 size={16} />
+                  </button>
+                  <button onClick={(e) => {e.stopPropagation(); onDeleteStudent(student.id);}} className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                    <Trash2 size={16} />
+                  </button>
                </div>
-               <div className="flex justify-between items-center text-sm">
-                  <span className="text-slate-400 font-medium">Status</span>
-                  {student.medical.hasRestriction ? (
-                     <span className="text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg flex items-center gap-1">
-                        <AlertCircle size={12} /> Restrição
-                     </span>
-                  ) : (
-                     <span className="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-lg">Regular</span>
-                  )}
-               </div>
-            </div>
-
-            <div className="flex justify-end gap-2 pt-4 border-t border-slate-50 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity" onClick={(e) => e.stopPropagation()}>
-              <button onClick={() => onViewStudent(student)} className="p-2 text-slate-400 hover:text-brand-blue hover:bg-blue-50 rounded-xl transition-colors">
-                <Eye size={18} />
-              </button>
-              <button onClick={() => handleOpenModal(student)} className="p-2 text-slate-400 hover:text-brand-yellow hover:bg-yellow-50 rounded-xl transition-colors">
-                <Edit2 size={18} />
-              </button>
-              <button onClick={() => onDeleteStudent(student.id)} className="p-2 text-slate-400 hover:text-brand-red hover:bg-red-50 rounded-xl transition-colors">
-                <Trash2 size={18} />
-              </button>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Modal Moderno */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl animate-fade-in-up">
-            <div className="sticky top-0 bg-white/90 backdrop-blur-md border-b border-slate-50 p-6 flex justify-between items-center z-10">
+        <div className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-[2.5rem] w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl animate-pop border border-slate-100">
+            <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-8 py-6 border-b border-slate-50 flex justify-between items-center">
               <div>
-                 <h3 className="text-xl font-black text-slate-800">
-                   {editingStudent ? 'Editar Perfil' : 'Novo Aluno'}
+                 <h3 className="text-lg font-black text-slate-800">
+                   {editingStudent ? 'Editar Aluno' : 'Novo Aluno'}
                  </h3>
-                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wide">Preencha os dados abaixo</p>
               </div>
-              <button onClick={() => setIsModalOpen(false)} className="bg-slate-50 p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all">
+              <button onClick={() => setIsModalOpen(false)} className="bg-slate-50 p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all hover:rotate-90">
                 <X size={20} />
               </button>
             </div>
 
             <form onSubmit={handleSave} className="p-8">
-              {/* Tabs Minimal */}
-              <div className="flex p-1 bg-slate-50 rounded-2xl mb-8">
+              <div className="flex p-1 bg-slate-50 rounded-xl mb-8 w-fit mx-auto">
                 {['general', 'health', 'school'].map((tab) => (
                   <button
                     key={tab}
                     type="button"
                     onClick={() => setCurrentTab(tab as any)}
-                    className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all ${
+                    className={`px-6 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
                       currentTab === tab 
-                      ? 'bg-white text-brand-blue shadow-sm' 
+                      ? 'bg-white text-slate-800 shadow-sm scale-105' 
                       : 'text-slate-400 hover:text-slate-600'
                     }`}
                   >
@@ -242,118 +221,69 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
                 ))}
               </div>
 
-              {/* Form Content */}
               <div className="space-y-6">
                 {currentTab === 'general' && (
-                  <div className="space-y-6 animate-fade-in">
+                  <div className="space-y-5 animate-fade-in">
                     <InputWithIcon 
-                      label="Nome da Criança"
+                      label="Nome Completo"
                       icon={User}
-                      placeholder="Nome completo"
                       required
                       value={formData.fullName}
                       onChange={(e: any) => setFormData({...formData, fullName: e.target.value})}
                     />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-2 gap-5">
                       <InputWithIcon 
-                        label="Data de Nascimento"
+                        label="Nascimento"
                         icon={Calendar}
                         type="date"
                         required
                         value={formData.dateOfBirth}
                         onChange={(e: any) => setFormData({...formData, dateOfBirth: e.target.value})}
                       />
-                      
                       <div className="w-full">
-                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-2 ml-1">Sexo</label>
+                        <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Sexo</label>
                         <div className="relative">
                           <select 
-                            className="block w-full pl-4 pr-10 py-3.5 bg-slate-50 border-transparent rounded-2xl text-slate-800 font-medium focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 appearance-none"
+                            className="block w-full pl-4 pr-8 py-3 bg-slate-50 border-none rounded-xl text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-brand-blue/10 appearance-none text-sm transition-all"
                             value={formData.gender} 
                             onChange={e => setFormData({...formData, gender: e.target.value as 'M'|'F'})}
                           >
                             <option value="M">Masculino</option>
                             <option value="F">Feminino</option>
                           </select>
-                          <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400">
-                             <ChevronRight size={16} className="rotate-90" />
-                          </div>
+                          <ChevronRight size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 rotate-90 pointer-events-none" />
                         </div>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-6">
-                      <InputWithIcon 
-                        label="Peso (kg)"
-                        icon={Weight}
-                        type="number"
-                        placeholder="0.0"
-                        value={formData.weightKg}
-                        onChange={(e: any) => setFormData({...formData, weightKg: Number(e.target.value)})}
-                      />
-                      <InputWithIcon 
-                        label="Altura (cm)"
-                        icon={Ruler}
-                        type="number"
-                        placeholder="0"
-                        value={formData.heightCm}
-                        onChange={(e: any) => setFormData({...formData, heightCm: Number(e.target.value)})}
-                      />
+                    <div className="grid grid-cols-2 gap-5">
+                      <InputWithIcon label="Peso (kg)" icon={Weight} type="number" value={formData.weightKg} onChange={(e: any) => setFormData({...formData, weightKg: Number(e.target.value)})} />
+                      <InputWithIcon label="Altura (cm)" icon={Ruler} type="number" value={formData.heightCm} onChange={(e: any) => setFormData({...formData, heightCm: Number(e.target.value)})} />
                     </div>
 
-                    <div className="pt-6">
-                      <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">
-                         Responsável
-                      </h4>
-                      <div className="space-y-4">
-                        <InputWithIcon 
-                          label="Nome"
-                          icon={User}
-                          required
-                          placeholder="Pai, mãe ou responsável"
-                          value={formData.guardianName}
-                          onChange={(e: any) => setFormData({...formData, guardianName: e.target.value})}
-                        />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                           <InputWithIcon 
-                            label="Telefone"
-                            icon={Phone}
-                            required
-                            placeholder="(00) 00000-0000"
-                            value={formData.contactPhone}
-                            onChange={(e: any) => setFormData({...formData, contactPhone: e.target.value})}
-                          />
-                          <InputWithIcon 
-                            label="Email"
-                            icon={Mail}
-                            type="email"
-                            placeholder="exemplo@email.com"
-                            value={formData.contactEmail}
-                            onChange={(e: any) => setFormData({...formData, contactEmail: e.target.value})}
-                          />
-                        </div>
-                      </div>
+                    <div className="border-t border-slate-50 pt-4">
+                      <InputWithIcon label="Responsável" icon={User} required value={formData.guardianName} onChange={(e: any) => setFormData({...formData, guardianName: e.target.value})} />
                     </div>
                   </div>
                 )}
 
                 {currentTab === 'health' && (
                   <div className="space-y-6 animate-fade-in">
-                    <div className="bg-red-50 p-6 rounded-3xl">
-                      <h4 className="font-bold text-red-800 mb-4 flex items-center gap-2">
-                        <AlertCircle size={20}/> Restrições Alimentares
+                    <div className="bg-red-50/50 p-6 rounded-2xl border border-red-50">
+                      <h4 className="font-bold text-red-800 mb-4 flex items-center gap-2 text-sm">
+                        <AlertCircle size={18}/> Restrições
                       </h4>
                       <div className="flex gap-2 mb-4">
                         <input 
                           type="text" 
-                          placeholder="Adicionar alergia..." 
-                          className="flex-1 p-3.5 bg-white border-none rounded-2xl text-sm outline-none focus:ring-2 focus:ring-red-200 placeholder-red-300 text-red-900"
+                          placeholder="Nova alergia..." 
+                          className="flex-1 px-4 py-2 bg-white border-none rounded-xl text-sm outline-none text-slate-700 placeholder-slate-300 focus:ring-2 focus:ring-red-100 transition-all"
                           value={newAllergyName}
                           onChange={(e) => setNewAllergyName(e.target.value)}
                         />
-                        <select 
-                          className="p-3.5 bg-white border-none rounded-2xl text-sm outline-none focus:ring-2 focus:ring-red-200 text-red-900 font-bold"
+                         <select 
+                          className="px-4 py-2 bg-white border-none rounded-xl text-xs outline-none font-bold text-slate-600 focus:ring-2 focus:ring-red-100 transition-all"
                           value={newAllergySeverity}
                           onChange={(e) => setNewAllergySeverity(e.target.value as AllergySeverity)}
                         >
@@ -361,92 +291,50 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
                           <option value={AllergySeverity.MODERATE}>Moderada</option>
                           <option value={AllergySeverity.SEVERE}>Grave</option>
                         </select>
-                        <button type="button" onClick={addAllergy} className="bg-red-500 text-white w-12 rounded-2xl flex items-center justify-center hover:bg-red-600 transition-colors shadow-lg shadow-red-200">
-                          <Plus size={20} />
+                        <button type="button" onClick={addAllergy} className="bg-red-500 text-white w-10 rounded-xl flex items-center justify-center hover:bg-red-600 shadow-sm hover:scale-105 active:scale-95 transition-all">
+                          <Plus size={18} />
                         </button>
                       </div>
-                      
                       <div className="flex flex-wrap gap-2">
                         {formData.medical?.allergies.map((allergy, idx) => (
-                          <span key={idx} className="bg-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-2 text-red-700">
-                             {allergy.name} <span className="opacity-50">•</span> {allergy.severity}
+                          <span key={idx} className="bg-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm flex items-center gap-2 text-red-600 border border-red-100 animate-pop">
+                             {allergy.name}
                              <button type="button" onClick={() => {
                                const newAllergies = formData.medical!.allergies.filter((_, i) => i !== idx);
                                setFormData(prev => ({...prev, medical: {...prev.medical!, allergies: newAllergies, hasRestriction: newAllergies.length > 0}}));
-                             }} className="hover:bg-red-50 rounded-full p-1 transition-colors">
+                             }} className="hover:bg-red-50 rounded-full p-0.5 transition-colors">
                                 <X size={12} />
                              </button>
                           </span>
                         ))}
-                        {formData.medical?.allergies.length === 0 && <span className="text-sm text-red-400 font-medium opacity-60">Nenhuma restrição registrada.</span>}
                       </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-2 ml-1">Observações Gerais</label>
-                      <textarea className="w-full p-4 bg-slate-50 border-transparent rounded-2xl outline-none h-32 resize-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 transition-all text-sm font-medium text-slate-700" 
-                        placeholder="Detalhes médicos ou nutricionais..."
-                        value={formData.medical?.medicalNotes}
-                        onChange={(e) => setFormData({
-                          ...formData, 
-                          medical: {...formData.medical!, medicalNotes: e.target.value}
-                        })}
-                      />
                     </div>
                   </div>
                 )}
 
                 {currentTab === 'school' && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-2 ml-1">Turma</label>
-                      <div className="relative">
-                         <select className="w-full p-3.5 pl-4 bg-slate-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 appearance-none font-medium text-slate-800"
+                  <div className="space-y-5 animate-fade-in">
+                     <div className="w-full">
+                        <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Turma</label>
+                         <select className="block w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-brand-blue/10 transition-all text-sm"
                             value={formData.schoolClass} onChange={e => setFormData({...formData, schoolClass: e.target.value})}>
                             <option value="Berçário 1">Berçário 1</option>
                             <option value="Berçário 2">Berçário 2</option>
                             <option value="Maternal 1">Maternal 1</option>
                             <option value="Maternal 2">Maternal 2</option>
                          </select>
-                         <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400">
-                            <ChevronRight size={16} className="rotate-90" />
-                         </div>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-2 ml-1">Turno</label>
-                      <div className="relative">
-                        <select className="w-full p-3.5 bg-slate-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-2 focus:ring-brand-blue/10 appearance-none font-medium text-slate-800"
-                           value={formData.shift} onChange={e => setFormData({...formData, shift: e.target.value as any})}>
-                          <option value="Matutino">Matutino</option>
-                          <option value="Vespertino">Vespertino</option>
-                          <option value="Integral">Integral</option>
-                        </select>
-                         <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400">
-                            <ChevronRight size={16} className="rotate-90" />
-                         </div>
-                      </div>
-                    </div>
-                    <div className="col-span-2">
-                       <InputWithIcon 
-                          label="Professor(a)"
-                          icon={User}
-                          placeholder="Nome do professor responsável"
-                          value={formData.teacherName}
-                          onChange={(e: any) => setFormData({...formData, teacherName: e.target.value})}
-                       />
-                    </div>
+                     </div>
+                     <InputWithIcon label="Professor" icon={User} value={formData.teacherName} onChange={(e: any) => setFormData({...formData, teacherName: e.target.value})} />
                   </div>
                 )}
               </div>
 
-              {/* Footer Buttons */}
               <div className="mt-8 flex justify-end gap-3 pt-6 border-t border-slate-50">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 py-3 rounded-2xl text-slate-500 font-bold hover:bg-slate-50 transition-colors">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl text-slate-400 font-bold hover:bg-slate-50 text-sm transition-colors">
                   Cancelar
                 </button>
-                <button type="submit" className="px-8 py-3 rounded-2xl bg-brand-green hover:bg-green-600 text-white font-bold shadow-lg shadow-green-200 flex items-center gap-2 transition-all transform hover:-translate-y-0.5">
-                  <Save size={18} />
+                <button type="submit" className="px-6 py-2.5 rounded-xl bg-brand-green hover:bg-green-600 text-white font-bold shadow-md shadow-green-100 flex items-center gap-2 text-sm transition-all hover:-translate-y-0.5 hover:shadow-lg active:scale-95">
+                  <Save size={16} />
                   Salvar
                 </button>
               </div>

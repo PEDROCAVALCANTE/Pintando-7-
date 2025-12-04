@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, UserRole, Student, MealLog, Appointment, WeeklyGoal } from './types';
+import { User, UserRole, Student, MealLog, Appointment, WeeklyGoal, Expense } from './types';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import StudentsPage from './pages/Students';
 import StudentProfile from './pages/StudentProfile';
 import NutritionPanel from './pages/NutritionPanel';
+import ExpensesPage from './pages/Expenses';
 import { Palette, Loader2, ArrowRight, Bell } from 'lucide-react';
 import { auth, db, messaging, onMessage, requestNotificationPermission } from './services/firebase';
 import { 
@@ -43,6 +44,7 @@ interface DataContextType {
   logs: MealLog[];
   appointments: Appointment[];
   goals: WeeklyGoal[];
+  expenses: Expense[];
   addStudent: (s: Student) => void;
   updateStudent: (s: Student) => void;
   deleteStudent: (id: string) => void;
@@ -52,6 +54,9 @@ interface DataContextType {
   addGoal: (g: WeeklyGoal) => void;
   toggleGoal: (id: string, status: boolean) => void;
   deleteGoal: (id: string) => void;
+  addExpense: (e: Expense) => void;
+  updateExpense: (e: Expense) => void;
+  deleteExpense: (id: string) => void;
 }
 const DataContext = createContext<DataContextType>({} as DataContextType);
 
@@ -98,10 +103,15 @@ const LoginPage = () => {
             {/* Imagem da Capa */}
             <div className="relative flex justify-center w-full max-w-[600px]">
                <img 
-                 src={logoUrl} 
+                 src="/cover.png" 
                  onError={(e) => {
-                   e.currentTarget.style.display = 'none';
-                   e.currentTarget.parentElement?.classList.add('show-fallback');
+                   // Tenta carregar do URL se o local falhar (para preview funcionar antes do usuário colocar arquivo)
+                   if (e.currentTarget.src !== logoUrl) {
+                      e.currentTarget.src = logoUrl;
+                   } else {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement?.classList.add('show-fallback');
+                   }
                  }}
                  alt="Escola Berçário Pintando 7" 
                  className="w-full h-auto object-contain animate-fade-in-up hover:scale-[1.02] transition-transform duration-700" 
@@ -114,7 +124,7 @@ const LoginPage = () => {
                   </div>
                   <h1 className="font-display text-5xl font-black text-slate-800 tracking-tight mb-2">Pintando 7</h1>
                   <p className="text-slate-400 font-bold text-sm bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
-                    Erro ao carregar imagem. Verifique o link.
+                    Sistema de Gestão
                   </p>
                </div>
             </div>
@@ -132,7 +142,7 @@ const LoginPage = () => {
           
           <div className="mb-10 text-center lg:text-left">
              <div className="flex items-center justify-center lg:justify-start mb-6">
-                <img src={logoUrl} className="h-20 w-auto object-contain lg:hidden" alt="Logo Mobile" />
+                <img src="/cover.png" className="h-20 w-auto object-contain lg:hidden" alt="Logo Mobile" onError={(e) => e.currentTarget.src = logoUrl} />
                 <div className="hidden lg:inline-flex items-center justify-center w-14 h-14 rounded-3xl bg-brand-red/10 text-brand-red shadow-sm">
                    <Palette size={28} />
                 </div>
@@ -217,6 +227,7 @@ export default function App() {
   const [logs, setLogs] = useState<MealLog[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
   
   // Navigation State
   const [activePage, setActivePage] = useState('dashboard');
@@ -275,6 +286,7 @@ export default function App() {
       setLogs([]);
       setAppointments([]);
       setGoals([]);
+      setExpenses([]);
       return;
     }
 
@@ -327,11 +339,18 @@ export default function App() {
       setGoals(goalData);
     });
 
+    const qExpenses = query(collection(db, "expenses"), orderBy("date", "desc"));
+    const unsubExpenses = onSnapshot(qExpenses, (snapshot) => {
+      const expenseData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Expense));
+      setExpenses(expenseData);
+    });
+
     return () => {
       unsubStudents();
       unsubLogs();
       unsubApts();
       unsubGoals();
+      unsubExpenses();
     };
   }, [user]);
 
@@ -428,6 +447,27 @@ export default function App() {
     try { await deleteDoc(doc(db, "goals", id)); } catch (e) { console.error(e); }
   };
 
+  const addExpense = async (e: Expense) => {
+    try {
+      const { id, ...data } = e;
+      await addDoc(collection(db, "expenses"), data);
+    } catch (e) { console.error(e); }
+  };
+
+  const updateExpense = async (e: Expense) => {
+    try {
+      const { id, ...data } = e;
+      await updateDoc(doc(db, "expenses", id), data as any);
+    } catch (e) { console.error(e); }
+  };
+
+  const deleteExpense = async (id: string) => {
+    if(confirm('Tem certeza que deseja excluir esta despesa?')) {
+      try { await deleteDoc(doc(db, "expenses", id)); } catch (e) { console.error(e); }
+    }
+  };
+
+
   const handleNavigate = (page: string) => {
     setActivePage(page);
     setSelectedStudent(null);
@@ -452,9 +492,10 @@ export default function App() {
   return (
     <AuthContext.Provider value={{ user, login, register, logout, loading: false, error: authError, setError: setAuthError }}>
       <DataContext.Provider value={{ 
-        students, logs, appointments, goals,
+        students, logs, appointments, goals, expenses,
         addStudent, updateStudent, deleteStudent, addLog,
-        addAppointment, deleteAppointment, addGoal, toggleGoal, deleteGoal
+        addAppointment, deleteAppointment, addGoal, toggleGoal, deleteGoal,
+        addExpense, updateExpense, deleteExpense
       }}>
         {notificationMsg && <NotificationToast message={notificationMsg} onClose={() => setNotificationMsg(null)} />}
         <Layout activePage={selectedStudent ? 'students' : activePage} onNavigate={handleNavigate}>
@@ -487,6 +528,14 @@ export default function App() {
                   onAddGoal={addGoal}
                   onToggleGoal={toggleGoal}
                   onDeleteGoal={deleteGoal}
+                />
+              )}
+              {activePage === 'expenses' && (
+                <ExpensesPage 
+                  expenses={expenses}
+                  onAddExpense={addExpense}
+                  onUpdateExpense={updateExpense}
+                  onDeleteExpense={deleteExpense}
                 />
               )}
             </>

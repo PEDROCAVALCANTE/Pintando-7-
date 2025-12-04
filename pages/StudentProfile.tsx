@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Student, MealType, AIAnalysisResult, MealLog } from '../types';
 import { generateStudentReport } from '../services/geminiService';
-import { ArrowLeft, BrainCircuit, Activity, Clock, ChevronDown, CheckCircle, AlertTriangle, FileText, Loader2, Salad, BellRing, Utensils } from 'lucide-react';
+import { ArrowLeft, BrainCircuit, Activity, Clock, ChevronDown, CheckCircle, AlertTriangle, FileText, Loader2, Salad, BellRing, Utensils, Sparkles } from 'lucide-react';
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface StudentProfileProps {
@@ -26,6 +26,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
 
   const handleGenerateReport = async () => {
     setIsLoadingAi(true);
+    setAiResult(null); // Reset to show skeleton
     const result = await generateStudentReport(student);
     setAiResult(result);
     setIsLoadingAi(false);
@@ -68,21 +69,38 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
     consumption: l.consumptionPercentage
   }));
 
+  // Skeleton Loader Component
+  const ReportSkeleton = () => (
+    <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 animate-pulse relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer" style={{ backgroundSize: '1000px 100%' }}></div>
+      <div className="flex items-center gap-4 mb-6">
+         <div className="w-10 h-10 bg-slate-200 rounded-full"></div>
+         <div className="h-6 w-48 bg-slate-200 rounded-lg"></div>
+      </div>
+      <div className="space-y-3 mb-8">
+         <div className="h-4 w-full bg-slate-100 rounded"></div>
+         <div className="h-4 w-full bg-slate-100 rounded"></div>
+         <div className="h-4 w-2/3 bg-slate-100 rounded"></div>
+      </div>
+      <div className="h-32 bg-slate-50 rounded-2xl"></div>
+    </div>
+  );
+
   return (
     <div className="space-y-8 animate-fade-in pb-10">
       {/* Top Nav */}
       <div className="flex items-center justify-between">
-         <button onClick={onBack} className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors font-bold text-sm bg-white px-4 py-2 rounded-2xl shadow-sm">
+         <button onClick={onBack} className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors font-bold text-sm bg-white px-4 py-2 rounded-2xl shadow-sm hover:shadow-md active:scale-95">
             <ArrowLeft size={18} />
             Voltar
          </button>
       </div>
 
       {/* Profile Header Minimal */}
-      <div className="bg-white rounded-[2rem] p-8 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] relative overflow-hidden">
+      <div className="bg-white rounded-[2rem] p-8 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] relative overflow-hidden transition-all hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)]">
          {notificationSent && (
-            <div className="absolute top-0 left-0 w-full bg-green-500 text-white p-2 text-center text-xs font-bold animate-fade-in-down flex items-center justify-center gap-2 z-10">
-              <BellRing size={14} />
+            <div className="absolute top-0 left-0 w-full bg-green-500 text-white p-2 text-center text-xs font-bold animate-slide-up flex items-center justify-center gap-2 z-10 shadow-lg">
+              <BellRing size={14} className="animate-bounce-slow" />
               Responsável notificado!
             </div>
          )}
@@ -97,7 +115,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
                <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-6">
                   <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wide">{student.schoolClass}</span>
                   {student.medical.hasRestriction && (
-                     <span className="bg-red-50 text-red-600 px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wide border border-transparent">
+                     <span className="bg-red-50 text-red-600 px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wide border border-transparent animate-pulse">
                         Restrições
                      </span>
                   )}
@@ -118,7 +136,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
             <div className="flex flex-col gap-3 w-full md:w-auto">
                <button 
                  onClick={() => setIsLogOpen(!isLogOpen)}
-                 className="bg-brand-blue hover:bg-blue-600 text-white px-6 py-3.5 rounded-2xl font-bold shadow-lg shadow-blue-200 transition-all flex items-center justify-center gap-2 text-sm"
+                 className="bg-brand-blue hover:bg-blue-600 text-white px-6 py-3.5 rounded-2xl font-bold shadow-lg shadow-blue-200 transition-all flex items-center justify-center gap-2 text-sm hover:-translate-y-1 active:scale-95"
                >
                  <Utensils size={18} />
                  Registrar Refeição
@@ -126,7 +144,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
                <button 
                  onClick={handleGenerateReport}
                  disabled={isLoadingAi}
-                 className="bg-purple-50 hover:bg-purple-100 text-purple-700 px-6 py-3.5 rounded-2xl font-bold transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-70"
+                 className="bg-purple-50 hover:bg-purple-100 text-purple-700 px-6 py-3.5 rounded-2xl font-bold transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-70 hover:shadow-md hover:-translate-y-1 active:scale-95"
                >
                  {isLoadingAi ? <Loader2 className="animate-spin" size={18} /> : <BrainCircuit size={18} />}
                  Gerar Relatório IA
@@ -135,17 +153,17 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
          </div>
       </div>
 
-      {/* Log Meal Form (Inline) */}
+      {/* Log Meal Form (Inline with Slide Animation) */}
       {isLogOpen && (
         <div className="bg-white rounded-[2rem] p-8 shadow-xl animate-fade-in-down border border-slate-50 relative z-20">
           <div className="flex justify-between items-center mb-6">
              <h3 className="font-black text-slate-800 text-lg">Nova Refeição</h3>
-             <button onClick={() => setIsLogOpen(false)} className="text-slate-400 hover:text-slate-600 font-bold text-sm">Cancelar</button>
+             <button onClick={() => setIsLogOpen(false)} className="text-slate-400 hover:text-slate-600 font-bold text-sm bg-slate-50 px-3 py-1 rounded-lg transition-colors">Cancelar</button>
           </div>
           <form onSubmit={handleAddLog} className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
             <div>
               <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Tipo</label>
-              <select className="w-full p-3 bg-slate-50 rounded-2xl outline-none font-bold text-slate-700"
+              <select className="w-full p-3 bg-slate-50 rounded-2xl outline-none font-bold text-slate-700 focus:ring-2 focus:ring-brand-blue/10 transition-all"
                 value={logMealType} onChange={e => setLogMealType(e.target.value as MealType)}>
                 {Object.values(MealType).map(t => <option key={t} value={t}>{t}</option>)}
               </select>
@@ -157,7 +175,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
             </div>
             <div>
               <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Reação</label>
-               <select className="w-full p-3 bg-slate-50 rounded-2xl outline-none font-bold text-slate-700"
+               <select className="w-full p-3 bg-slate-50 rounded-2xl outline-none font-bold text-slate-700 focus:ring-2 focus:ring-brand-blue/10 transition-all"
                 value={logMood} onChange={e => setLogMood(e.target.value as any)}>
                 <option value="Happy">Comeu bem</option>
                 <option value="Neutral">Normal</option>
@@ -165,7 +183,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
                 <option value="Refused">Recusou</option>
               </select>
             </div>
-            <button type="submit" className="bg-brand-green text-white font-bold py-3.5 px-6 rounded-2xl hover:bg-green-600 transition-colors shadow-lg shadow-green-200">
+            <button type="submit" className="bg-brand-green text-white font-bold py-3.5 px-6 rounded-2xl hover:bg-green-600 transition-all shadow-lg shadow-green-200 hover:-translate-y-1 active:scale-95">
               Salvar
             </button>
           </form>
@@ -177,26 +195,28 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
         {/* Left Col */}
         <div className="lg:col-span-2 space-y-8">
           
-          {/* AI Result */}
-          {aiResult && (
-             <div className="bg-purple-600 text-white p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
+          {/* AI Result or Loading Skeleton */}
+          {isLoadingAi && <ReportSkeleton />}
+          
+          {aiResult && !isLoadingAi && (
+             <div className="bg-purple-600 text-white p-8 rounded-[2rem] shadow-xl relative overflow-hidden animate-pop">
                 <div className="absolute -right-10 -top-10 text-purple-500 opacity-20">
                    <BrainCircuit size={150} />
                 </div>
                 
                 <h3 className="text-xl font-black mb-6 flex items-center gap-3 relative z-10">
-                   <BrainCircuit /> Análise Inteligente
+                   <Sparkles className="animate-pulse text-yellow-300" /> Análise Inteligente
                 </h3>
                 
-                <div className="space-y-6 relative z-10">
+                <div className="space-y-6 relative z-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
                    <p className="leading-relaxed font-medium opacity-90">{aiResult.summary}</p>
                    
                    <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm">
                       <h4 className="font-bold mb-4 opacity-80 uppercase text-xs tracking-widest">Recomendações</h4>
                       <ul className="space-y-3">
                          {aiResult.recommendations.map((rec, idx) => (
-                            <li key={idx} className="flex items-start gap-3 text-sm font-medium">
-                               <CheckCircle size={18} className="text-green-300 shrink-0" />
+                            <li key={idx} className="flex items-start gap-3 text-sm font-medium animate-slide-up" style={{ animationDelay: `${300 + (idx * 100)}ms` }}>
+                               <CheckCircle size={18} className="text-green-300 shrink-0 mt-0.5" />
                                {rec}
                             </li>
                          ))}
@@ -207,15 +227,15 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
           )}
 
           {/* Medical */}
-          <div className="bg-white p-8 rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+          <div className="bg-white p-8 rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow">
              <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-2">
                 <Activity className="text-red-500" /> Histórico de Saúde
              </h3>
              <div className="space-y-6">
                 {student.medical.allergies.length > 0 ? (
                    <div className="flex flex-wrap gap-3">
-                      {student.medical.allergies.map(a => (
-                         <span key={a.id} className="bg-red-50 text-red-600 px-4 py-2 rounded-xl text-sm font-bold">
+                      {student.medical.allergies.map((a, i) => (
+                         <span key={a.id} className="bg-red-50 text-red-600 px-4 py-2 rounded-xl text-sm font-bold animate-pop" style={{ animationDelay: `${i * 100}ms` }}>
                             {a.name} ({a.severity})
                          </span>
                       ))}
@@ -237,21 +257,21 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
         {/* Right Col */}
         <div className="space-y-8">
            {/* Chart */}
-           <div className="bg-white p-8 rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+           <div className="bg-white p-8 rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow">
               <h3 className="text-lg font-black text-slate-800 mb-6">Consumo Semanal</h3>
               <div className="h-40">
                  <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={chartData}>
                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fill: '#94a3b8', fontWeight: 700}} />
                        <Tooltip cursor={{fill: '#f1f5f9', radius: 8}} contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'}} />
-                       <Bar dataKey="consumption" fill="#10B981" radius={[6, 6, 6, 6]} barSize={32} />
+                       <Bar dataKey="consumption" fill="#10B981" radius={[6, 6, 6, 6]} barSize={32} animationDuration={1500} />
                     </BarChart>
                  </ResponsiveContainer>
               </div>
            </div>
 
            {/* History */}
-           <div className="bg-white p-8 rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+           <div className="bg-white p-8 rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow">
               <h3 className="text-lg font-black text-slate-800 mb-6">Histórico</h3>
               <div className="space-y-0 relative">
                  {/* Timeline Line */}
@@ -260,15 +280,15 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
                  {studentLogs.length === 0 ? (
                     <p className="text-slate-400 font-medium text-center py-4">Sem registros.</p>
                  ) : (
-                    studentLogs.slice().reverse().map(log => (
-                       <div key={log.id} className="flex items-start gap-4 pb-6 last:pb-0 relative">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm ${
+                    studentLogs.slice().reverse().map((log, i) => (
+                       <div key={log.id} className="flex items-start gap-4 pb-6 last:pb-0 relative animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm transition-transform hover:scale-110 ${
                              log.consumptionPercentage >= 75 ? 'bg-green-100 text-green-600' :
                              log.consumptionPercentage >= 50 ? 'bg-yellow-100 text-yellow-600' : 'bg-red-100 text-red-600'
                           }`}>
                              <span className="text-[10px] font-black">{log.consumptionPercentage}%</span>
                           </div>
-                          <div className="bg-slate-50 p-3 rounded-2xl flex-1">
+                          <div className="bg-slate-50 p-3 rounded-2xl flex-1 hover:bg-slate-100 transition-colors cursor-default">
                              <div className="flex justify-between items-start">
                                 <p className="font-bold text-slate-800 text-sm">{log.mealType}</p>
                                 <span className="text-[10px] text-slate-400 font-bold uppercase">{new Date(log.date).toLocaleDateString()}</span>

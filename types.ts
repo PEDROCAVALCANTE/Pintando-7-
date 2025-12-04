@@ -87,3 +87,28 @@ export interface WeeklyGoal {
   completed: boolean;
   createdAt: string;
 }
+
+export type PaymentMethod = 'Pix' | 'Dinheiro' | 'Cartão Crédito' | 'Cartão Débito' | 'Boleto' | 'Transferência';
+
+export const EXPENSE_CATEGORIES = [
+  'Alimentação',
+  'Material Escolar',
+  'Salários',
+  'Manutenção',
+  'Contas (Água/Luz/Net)',
+  'Marketing',
+  'Impostos',
+  'Outros'
+] as const;
+
+export interface Expense {
+  id: string;
+  description: string;
+  category: string;
+  amount: number;
+  date: string; // ISO YYYY-MM-DD
+  paymentMethod: PaymentMethod;
+  supplier: string;
+  notes?: string;
+  createdAt: string;
+}
