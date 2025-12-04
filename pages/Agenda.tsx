@@ -19,7 +19,8 @@ import {
   ChevronRight,
   Eye,
   Trash2,
-  Loader2
+  Loader2,
+  ExternalLink
 } from 'lucide-react';
 
 interface AgendaProps {
@@ -98,7 +99,10 @@ const Agenda: React.FC<AgendaProps> = ({
     setIsModalOpen(false);
   };
 
-  // --- MOCKED WHATSAPP WORKER ---
+  // Helper para limpar telefone
+  const cleanPhone = (phone: string) => phone.replace(/\D/g, '');
+
+  // --- WHATSAPP HANDLER ---
   const handlePublishAndSend = async (event: SchoolEvent) => {
     if (event.whatsappStatus === 'COMPLETED') {
         if(!confirm('Este evento já foi enviado. Deseja reenviar?')) return;
@@ -113,22 +117,47 @@ const Agenda: React.FC<AgendaProps> = ({
     else if (event.audience === 'CLASS') recipients = students.filter(s => s.schoolClass === event.targetId);
     else if (event.audience === 'STUDENT') recipients = students.filter(s => s.id === event.targetId);
 
-    const total = recipients.length || 1; // avoid divide by zero
+    const total = recipients.length || 1;
     let successCount = 0;
     
     // Update status to SENDING
     onUpdateEvent({ ...event, status: 'PUBLISHED', whatsappStatus: 'SENDING' });
 
-    // 2. Simulate API Calls (Loop)
-    for (let i = 0; i < recipients.length; i++) {
-      // Simulate network delay (100ms - 500ms)
-      await new Promise(resolve => setTimeout(resolve, Math.random() * 400 + 100));
-      
-      // Mock success/fail (95% success rate)
-      const success = Math.random() > 0.05;
-      if (success) successCount++;
-      
-      setSendProgress(Math.round(((i + 1) / total) * 100));
+    // 2. Lógica de Envio
+    // Se for UM aluno específico, abrimos o WhatsApp Web Realmente
+    if (event.audience === 'STUDENT' && recipients.length === 1) {
+       const student = recipients[0];
+       if (student.contactPhone) {
+          const phone = cleanPhone(student.contactPhone);
+          // Adiciona 55 se não tiver
+          const finalPhone = phone.length <= 11 ? `55${phone}` : phone;
+          
+          const message = encodeURIComponent(
+             `*Escola Berçário Pintando 7*\n\n` +
+             `Olá ${student.guardianName}, nova atualização na agenda:\n\n` +
+             `*${event.title}*\n` +
+             `📅 ${new Date(event.date).toLocaleDateString('pt-BR')} às ${event.time}\n` +
+             `📝 ${event.description}\n\n` +
+             `Acesse o app para mais detalhes.`
+          );
+          
+          // Abre WhatsApp em nova aba
+          window.open(`https://wa.me/${finalPhone}?text=${message}`, '_blank');
+          successCount = 1;
+          setSendProgress(100);
+       }
+    } else {
+       // Se for EM MASSA (Turma/Global), mantemos a simulação pois o navegador bloqueia abrir 50 abas
+       // Em produção, isso chamaria sua API de Backend (ex: Z-API, Twilio)
+       
+       for (let i = 0; i < recipients.length; i++) {
+         // Simula delay de rede e processamento da API
+         await new Promise(resolve => setTimeout(resolve, Math.random() * 200 + 100));
+         
+         // Mock success (simulando 100% de sucesso para teste)
+         successCount++;
+         setSendProgress(Math.round(((i + 1) / total) * 100));
+       }
     }
 
     // 3. Complete
@@ -287,7 +316,7 @@ const Agenda: React.FC<AgendaProps> = ({
                          className="flex items-center gap-1.5 bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm transition-all disabled:opacity-50"
                        >
                          {isSending ? <Loader2 size={10} className="animate-spin"/> : <Send size={10} />}
-                         Publicar
+                         {event.audience === 'STUDENT' ? 'Enviar WhatsApp' : 'Publicar'}
                        </button>
                      )}
                   </div>
@@ -400,7 +429,7 @@ const Agenda: React.FC<AgendaProps> = ({
               <div className="bg-green-50 p-4 rounded-xl border border-green-100 flex items-start gap-3">
                  <MessageCircle className="text-green-600 shrink-0 mt-0.5" size={18} />
                  <p className="text-xs text-green-800 font-medium leading-relaxed">
-                    Ao publicar, uma notificação será enviada automaticamente para o WhatsApp dos responsáveis selecionados.
+                    <strong>Importante:</strong> Para envio individual, o WhatsApp Web abrirá automaticamente. Para envio em massa (Turma/Global), o sistema simulará o processo (requer API paga para envio real).
                  </p>
               </div>
 
