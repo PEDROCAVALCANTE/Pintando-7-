@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Student, AllergySeverity, Allergy } from '../types';
 import { 
@@ -157,7 +158,11 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
       {/* Student List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredStudents.map(student => (
-          <div key={student.id} className="bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow overflow-hidden group">
+          <div 
+            key={student.id} 
+            className="bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group cursor-pointer"
+            onClick={() => onViewStudent(student)}
+          >
             <div className="p-6">
               <div className="flex justify-between items-start mb-4">
                  <div className="flex items-center gap-3">
@@ -188,7 +193,7 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-50 flex justify-end gap-2">
+              <div className="pt-4 border-t border-slate-50 flex justify-end gap-2" onClick={(e) => e.stopPropagation()}>
                 <button onClick={() => onViewStudent(student)} className="p-2 text-slate-400 hover:text-brand-blue hover:bg-blue-50 rounded-lg transition-colors" title="Ver Perfil">
                   <Eye size={18} />
                 </button>
