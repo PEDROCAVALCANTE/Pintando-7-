@@ -236,7 +236,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                   </defs>
                   <Tooltip 
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontSize: '12px', fontWeight: 'bold' }}
-                    formatter={(value: any) => formatCurrency(Number(value as any))}
+                    formatter={(value: number | string) => [formatCurrency(Number(value)), "Total"]}
                   />
                   <Area type="monotone" dataKey="total" stroke="#E6332A" strokeWidth={3} fillOpacity={1} fill="url(#colorTotal)" />
                 </AreaChart>
@@ -332,7 +332,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                     ))}
                   </Pie>
                   <Tooltip 
-                    formatter={(value: any) => formatCurrency(Number(value as any))}
+                    formatter={(value: number | string) => formatCurrency(Number(value))}
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontWeight: 'bold' }}
                   />
                 </PieChart>

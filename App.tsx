@@ -90,8 +90,8 @@ const LoginPage = () => {
     }
   };
 
-  // URL Direta da Imagem (Convertido de freeimage.host para link direto iili.io para renderização correta)
-  const logoUrl = "https://iili.io/fIinK9j.png";
+  // URL Direta da Imagem (Atualizada para nova versão com fundo branco)
+  const logoUrl = "https://iili.io/fIiTt9e.png";
 
   return (
     <div className="min-h-screen flex bg-white">
@@ -103,15 +103,10 @@ const LoginPage = () => {
             {/* Imagem da Capa */}
             <div className="relative flex justify-center w-full max-w-[600px]">
                <img 
-                 src="/cover.png" 
+                 src={logoUrl}
                  onError={(e) => {
-                   // Tenta carregar do URL se o local falhar (para preview funcionar antes do usuário colocar arquivo)
-                   if (e.currentTarget.src !== logoUrl) {
-                      e.currentTarget.src = logoUrl;
-                   } else {
-                      e.currentTarget.style.display = 'none';
-                      e.currentTarget.parentElement?.classList.add('show-fallback');
-                   }
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.parentElement?.classList.add('show-fallback');
                  }}
                  alt="Escola Berçário Pintando 7" 
                  className="w-full h-auto object-contain animate-fade-in-up hover:scale-[1.02] transition-transform duration-700" 
@@ -142,7 +137,7 @@ const LoginPage = () => {
           
           <div className="mb-10 text-center lg:text-left">
              <div className="flex items-center justify-center lg:justify-start mb-6">
-                <img src="/cover.png" className="h-20 w-auto object-contain lg:hidden" alt="Logo Mobile" onError={(e) => e.currentTarget.src = logoUrl} />
+                <img src={logoUrl} className="h-20 w-auto object-contain lg:hidden" alt="Logo Mobile" onError={(e) => e.currentTarget.style.display = 'none'} />
                 <div className="hidden lg:inline-flex items-center justify-center w-14 h-14 rounded-3xl bg-brand-red/10 text-brand-red shadow-sm">
                    <Palette size={28} />
                 </div>
