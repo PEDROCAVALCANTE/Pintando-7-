@@ -38,11 +38,12 @@ interface ExpensesPageProps {
 }
 
 // Helper to format currency
-const formatCurrency = (value: number) => {
+const formatCurrency = (value: unknown) => {
+  const num = Number(value);
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL'
-  }).format(value);
+  }).format(isNaN(num) ? 0 : num);
 };
 
 const InputWithIcon = ({ 

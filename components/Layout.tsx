@@ -30,51 +30,20 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
     { id: 'agenda', label: 'Agenda', icon: CalendarDays, color: 'text-brand-yellow', activeBg: 'bg-yellow-50' },
   ];
 
-  // Minimalist Logo Component
-  const BrandLogo = ({ size = 'normal' }: { size?: 'normal' | 'small' }) => (
-    <div className={`flex flex-col items-center justify-center ${size === 'normal' ? 'scale-90' : 'scale-75'} select-none transition-transform`}>
-       {/* Parte central: Logo Artístico Limpo */}
-       <div className="relative flex items-end justify-center">
-         <h1 className="font-display text-3xl font-black tracking-tight leading-none">
-           <span className="text-brand-red">P</span>
-           <span className="text-brand-green">i</span>
-           <span className="text-brand-blue">n</span>
-           <span className="text-brand-yellow">t</span>
-           <span className="text-brand-pink">a</span>
-           <span className="text-brand-blue">n</span>
-           <span className="text-brand-green">d</span>
-           <span className="text-brand-pink">o</span>
-         </h1>
-         <span className="font-display text-4xl font-black text-brand-red ml-1.5 -rotate-12">
-           7
-         </span>
-         {/* Arced text effect simulation using transforms */}
-         <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-max">
-            <svg width="200" height="40" viewBox="0 0 200 40" className="overflow-visible">
-               <path id="curve" d="M 10 40 Q 100 0 190 40" fill="transparent" />
-               <text width="200">
-                  <textPath href="#curve" startOffset="50%" textAnchor="middle" className="fill-brand-red font-display font-black text-[14px] tracking-widest uppercase">
-                     Escola Berçário
-                  </textPath>
-               </text>
-            </svg>
-         </div>
-       </div>
-    </div>
-  );
+  // URL da Logo (Mesma do Login)
+  const logoUrl = "https://iili.io/fIiTt9e.png";
 
   return (
     <div className="min-h-screen bg-brand-cream flex font-sans text-stone-600 selection:bg-brand-red/20">
       {/* Sidebar - Desktop (Minimalist) */}
       <aside className="hidden md:flex flex-col w-20 lg:w-64 bg-white fixed h-full z-20 border-r border-stone-100/80 transition-all duration-300 shadow-[2px_0_24px_-12px_rgba(0,0,0,0.05)]">
         <div className="h-32 flex items-center justify-center pt-4">
-          <div className="hidden lg:block">
-            {/* Imagem Local da Logo para manter consistência */}
-            <img src="/cover.png" alt="Pintando 7" className="w-40 h-auto object-contain" />
+          <div className="hidden lg:block px-6">
+            {/* Imagem da Logo para manter consistência com Login */}
+            <img src={logoUrl} alt="Pintando 7" className="w-full h-auto object-contain max-h-24" />
           </div>
           <div className="lg:hidden">
-             {/* Fallback icon if needed, but using image is preferred */}
-             <img src="/cover.png" alt="P7" className="w-12 h-auto object-contain" />
+             <img src={logoUrl} alt="P7" className="w-12 h-auto object-contain" />
           </div>
         </div>
 
@@ -121,8 +90,8 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => 
 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 w-full bg-white/80 backdrop-blur-md z-30 px-6 py-4 flex items-center justify-between border-b border-stone-100">
-         <div className="scale-75 origin-left -ml-4">
-             <img src="/cover.png" alt="P7" className="h-10 w-auto object-contain" />
+         <div className="h-10 flex items-center">
+             <img src={logoUrl} alt="P7" className="h-full w-auto object-contain" />
          </div>
          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-stone-600 p-2 rounded-xl hover:bg-stone-50">
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
