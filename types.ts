@@ -1,3 +1,4 @@
+
 export enum UserRole {
   ADMIN = 'ADMIN',
   NUTRITIONIST = 'NUTRITIONIST'
@@ -70,4 +71,19 @@ export interface AIAnalysisResult {
   summary: string;
   recommendations: string[];
   riskAssessment: string;
+}
+
+export interface Appointment {
+  id: string;
+  title: string;
+  date: string; // ISO String for Date and Time
+  type: 'Consultation' | 'Meeting' | 'Review';
+  notes?: string;
+}
+
+export interface WeeklyGoal {
+  id: string;
+  text: string;
+  completed: boolean;
+  createdAt: string;
 }
