@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Student, MealType, AIAnalysisResult, MealLog } from '../types';
 import { generateStudentReport } from '../services/geminiService';
-import { ArrowLeft, BrainCircuit, Activity, Clock, ChevronDown, CheckCircle, AlertTriangle, FileText, Loader2, Salad } from 'lucide-react';
+import { ArrowLeft, BrainCircuit, Activity, Clock, ChevronDown, CheckCircle, AlertTriangle, FileText, Loader2, Salad, BellRing } from 'lucide-react';
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface StudentProfileProps {
@@ -21,11 +21,32 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
   const [logPercentage, setLogPercentage] = useState(100);
   const [logMood, setLogMood] = useState<'Happy' | 'Neutral' | 'Fussy' | 'Refused'>('Happy');
 
+  // Simulation state for notifications
+  const [notificationSent, setNotificationSent] = useState(false);
+
   const handleGenerateReport = async () => {
     setIsLoadingAi(true);
     const result = await generateStudentReport(student);
     setAiResult(result);
     setIsLoadingAi(false);
+  };
+
+  // Function to simulate sending a push notification to the guardian
+  const notifyGuardian = (reason: string) => {
+    // 1. In a real app, this would call a Cloud Function:
+    //    await httpsCallable(functions, 'sendGuardianNotification')({ studentId: student.id, reason });
+    
+    // 2. Simulate Local Notification (Browser API)
+    if (Notification.permission === 'granted') {
+      new Notification(`Alerta: ${student.fullName}`, {
+        body: `Notificação enviada para ${student.guardianName}: ${reason}`,
+        icon: '/vite.svg'
+      });
+    }
+
+    // 3. Show UI Feedback
+    setNotificationSent(true);
+    setTimeout(() => setNotificationSent(false), 4000);
   };
 
   const handleAddLog = (e: React.FormEvent) => {
@@ -40,6 +61,12 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
       notes: ''
     };
     onAddLog(newLog);
+    
+    // Trigger notification if meal was refused
+    if (logMood === 'Refused' || logPercentage < 30) {
+      notifyGuardian(`Atenção! ${student.fullName} recusou a refeição (${logMealType}).`);
+    }
+
     setIsLogOpen(false);
   };
 
@@ -57,7 +84,14 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
       </button>
 
       {/* Header Profile */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col md:flex-row gap-6 items-start">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col md:flex-row gap-6 items-start relative overflow-hidden">
+         {notificationSent && (
+            <div className="absolute top-0 left-0 w-full bg-green-500 text-white p-2 text-center text-sm font-bold animate-fade-in-down flex items-center justify-center gap-2 z-10">
+              <BellRing size={16} />
+              Notificação Push enviada para {student.guardianName} com sucesso!
+            </div>
+         )}
+
          <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center text-4xl font-bold text-slate-400 border-4 border-white shadow-md">
             {student.fullName.charAt(0)}
          </div>
@@ -136,7 +170,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ student, onBack, logs, 
                 <option value="Happy">Comeu bem</option>
                 <option value="Neutral">Normal</option>
                 <option value="Fussy">Agitado</option>
-                <option value="Refused">Recusou</option>
+                <option value="Refused">Recusou (Gera Alerta)</option>
               </select>
             </div>
             <button type="submit" className="bg-brand-green text-white font-bold py-2.5 px-4 rounded-lg hover:bg-green-600 transition-colors">

@@ -4,8 +4,8 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import StudentsPage from './pages/Students';
 import StudentProfile from './pages/StudentProfile';
-import { Palette, Lock, Loader2, UserPlus, LogIn } from 'lucide-react';
-import { auth, db } from './services/firebase';
+import { Palette, Lock, Loader2, UserPlus, LogIn, Bell } from 'lucide-react';
+import { auth, db, messaging, onMessage, requestNotificationPermission } from './services/firebase';
 import { 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
@@ -46,6 +46,20 @@ interface DataContextType {
   addLog: (l: MealLog) => void;
 }
 const DataContext = createContext<DataContextType>({} as DataContextType);
+
+// --- Toast Notification Component ---
+const NotificationToast = ({ message, onClose }: { message: string; onClose: () => void }) => (
+  <div className="fixed top-4 right-4 z-50 bg-white border-l-4 border-brand-blue shadow-xl rounded-lg p-4 animate-fade-in flex items-start gap-3 max-w-sm">
+    <div className="bg-blue-100 p-2 rounded-full text-brand-blue">
+      <Bell size={20} />
+    </div>
+    <div className="flex-1">
+      <h4 className="font-bold text-slate-800 text-sm">Nova Notificação</h4>
+      <p className="text-slate-600 text-sm mt-1">{message}</p>
+    </div>
+    <button onClick={onClose} className="text-slate-400 hover:text-slate-600">×</button>
+  </div>
+);
 
 // --- Login Page Component ---
 const LoginPage = () => {
@@ -142,6 +156,9 @@ export default function App() {
   const [activePage, setActivePage] = useState('dashboard');
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
+  // Notification State
+  const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
+
   // Initialize Firebase Auth Listener
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -152,6 +169,15 @@ export default function App() {
           role: UserRole.ADMIN, // Defaulting to Admin for simplicity
           username: firebaseUser.email || ''
         });
+        
+        // Request Notification Permission on Login
+        requestNotificationPermission().then(token => {
+           if (token) {
+             // TODO: In a real app, save this token to the user's profile in Firestore
+             // updateDoc(doc(db, 'users', firebaseUser.uid), { fcmToken: token });
+           }
+        });
+
       } else {
         // Check for local legacy login
         const localUser = localStorage.getItem('local_user');
@@ -164,6 +190,21 @@ export default function App() {
       setLoading(false);
     });
     return () => unsubscribe();
+  }, []);
+
+  // Initialize Cloud Messaging Listener (Foreground)
+  useEffect(() => {
+    if (messaging) {
+      const unsubscribe = onMessage(messaging, (payload) => {
+        console.log('Message received. ', payload);
+        if (payload.notification) {
+          setNotificationMsg(`${payload.notification.title}: ${payload.notification.body}`);
+          // Auto dismiss after 5 seconds
+          setTimeout(() => setNotificationMsg(null), 5000);
+        }
+      });
+      return () => unsubscribe(); // This might not return an unsubscribe function in all versions, check SDK
+    }
   }, []);
 
   // Initialize Firestore Listeners
@@ -346,6 +387,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={{ user, login, register, logout, loading: false, error: authError, setError: setAuthError }}>
       <DataContext.Provider value={{ students, logs, addStudent, updateStudent, deleteStudent, addLog }}>
+        {notificationMsg && <NotificationToast message={notificationMsg} onClose={() => setNotificationMsg(null)} />}
         <Layout activePage={selectedStudent ? 'students' : activePage} onNavigate={handleNavigate}>
           
           {selectedStudent ? (
