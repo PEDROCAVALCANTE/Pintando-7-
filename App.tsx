@@ -105,43 +105,43 @@ const LoginPage = () => {
       <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-brand-yellow/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-brand-blue/5 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="w-full max-w-[400px] bg-white p-8 md:p-10 rounded-[2.5rem] shadow-2xl shadow-stone-200/50 border border-stone-100 animate-fade-in-up relative z-10">
+      <div className="w-full max-w-[340px] bg-white p-6 md:p-8 rounded-[2rem] shadow-2xl shadow-stone-200/50 border border-stone-100 animate-fade-in-up relative z-10">
           
-        <div className="mb-10 text-center">
-            <div className="flex items-center justify-center mb-6">
+        <div className="mb-6 text-center">
+            <div className="flex items-center justify-center mb-4">
               <img 
                 src={logoUrl} 
-                className="h-28 w-auto object-contain hover:scale-105 transition-transform duration-500" 
+                className="h-20 w-auto object-contain hover:scale-105 transition-transform duration-500" 
                 alt="Logo" 
                 onError={(e) => e.currentTarget.style.display = 'none'} 
               />
             </div>
             
-            <h1 className="text-3xl font-black text-stone-800 mb-2 tracking-tight">
+            <h1 className="text-2xl font-black text-stone-800 mb-1 tracking-tight">
               {isRegistering ? 'Criar Conta' : 'Bem-vindo(a)'}
             </h1>
-            <p className="text-stone-400 font-bold text-xs uppercase tracking-widest">
+            <p className="text-stone-400 font-bold text-[10px] uppercase tracking-widest">
               {isRegistering ? 'Preencha os dados da escola' : 'Faça login para continuar'}
             </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-black text-stone-400 uppercase tracking-wider ml-1">Email ou Usuário</label>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1">
+            <label className="text-[9px] font-black text-stone-400 uppercase tracking-wider ml-1">Email ou Usuário</label>
             <input 
               type="text" 
-              className="w-full px-5 py-4 bg-stone-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-stone-800 placeholder-stone-300 border-2"
+              className="w-full px-4 py-3 bg-stone-50 border-transparent rounded-xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-sm text-stone-800 placeholder-stone-300 border-2"
               placeholder="ex: diretoria@pintando7.com"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
             />
           </div>
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-black text-stone-400 uppercase tracking-wider ml-1">Senha de Acesso</label>
+          <div className="space-y-1">
+            <label className="text-[9px] font-black text-stone-400 uppercase tracking-wider ml-1">Senha de Acesso</label>
             <input 
               type="password" 
-              className="w-full px-5 py-4 bg-stone-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-stone-800 placeholder-stone-300 border-2"
+              className="w-full px-4 py-3 bg-stone-50 border-transparent rounded-xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-sm text-stone-800 placeholder-stone-300 border-2"
               placeholder="••••••••"
               value={password}
               onChange={e => setPassword(e.target.value)}
@@ -150,8 +150,8 @@ const LoginPage = () => {
           </div>
           
           {error && (
-            <div className="bg-red-50 text-red-500 text-xs p-4 rounded-2xl flex items-center gap-3 font-bold animate-shake border border-red-100">
-                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+            <div className="bg-red-50 text-red-500 text-[10px] p-3 rounded-xl flex items-center gap-2 font-bold animate-shake border border-red-100">
+                <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
                 {error}
             </div>
           )}
@@ -159,21 +159,21 @@ const LoginPage = () => {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-brand-red hover:bg-red-600 text-white font-bold py-4 rounded-2xl shadow-xl shadow-red-100 hover:shadow-red-200 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
+            className="w-full bg-brand-red hover:bg-red-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-red-100 hover:shadow-red-200 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-2 text-sm"
           >
-            {loading ? <Loader2 className="animate-spin" size={20} /> : (
+            {loading ? <Loader2 className="animate-spin" size={18} /> : (
               <>
                 <span>{isRegistering ? 'Finalizar Cadastro' : 'Entrar no Sistema'}</span>
-                <ArrowRight size={20} />
+                <ArrowRight size={18} />
               </>
             )}
           </button>
         </form>
 
-        <div className="mt-10 text-center border-t border-stone-50 pt-6">
+        <div className="mt-6 text-center border-t border-stone-50 pt-4">
           <button 
             onClick={() => { setIsRegistering(!isRegistering); setError(''); }}
-            className="text-xs text-stone-400 font-bold hover:text-brand-blue uppercase tracking-widest transition-colors"
+            className="text-[10px] text-stone-400 font-bold hover:text-brand-blue uppercase tracking-widest transition-colors"
           >
             {isRegistering ? 'Já possui conta? Fazer Login' : 'Primeiro acesso? Criar Conta'}
           </button>
