@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   SchoolEvent, 
@@ -262,7 +263,7 @@ const Agenda: React.FC<AgendaProps> = ({
                 <div key={day} className={`min-h-[70px] rounded-xl p-1.5 border flex flex-col gap-1 transition-colors ${
                     isToday ? 'border-brand-blue/30 bg-blue-50/20' : 'border-stone-50 bg-white hover:border-stone-200'
                 }`}>
-                  <span className={`text-[10px] font-bold block text-right leading-none ${isToday ? 'text-brand-blue' : 'text-stone-300'}`}>{day}</span>
+                  <span className={`text-sm font-black block text-right leading-none mb-1 ${isToday ? 'text-brand-blue' : 'text-stone-600'}`}>{day}</span>
                   {dayEvents.map(ev => (
                     <div 
                       key={ev.id} 
