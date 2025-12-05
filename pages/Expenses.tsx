@@ -161,9 +161,9 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
   };
 
   return (
-    <div className="space-y-8 animate-fade-in pb-10">
+    <div className="space-y-8 pb-10">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-fade-in">
         <div>
           <h2 className="text-3xl font-black text-stone-800 tracking-tight">Financeiro</h2>
           <p className="text-stone-400 font-medium">Controle de Despesas</p>
@@ -186,7 +186,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in" style={{ animationDelay: '100ms' }}>
         <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-stone-100 flex flex-col justify-between">
           <div className="flex justify-between items-start">
             <div>
@@ -246,7 +246,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
         {/* Main List */}
         <div className="lg:col-span-2 bg-white rounded-[2rem] shadow-sm border border-stone-100 p-8">
            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -280,8 +280,12 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                      <td colSpan={5} className="py-8 text-center text-stone-400 font-medium italic">Nenhuma despesa encontrada neste período.</td>
                    </tr>
                  ) : (
-                   filteredExpenses.map((expense) => (
-                     <tr key={expense.id} className="group hover:bg-stone-50/50 transition-colors border-b border-stone-50 last:border-0">
+                   filteredExpenses.map((expense, index) => (
+                     <tr 
+                       key={expense.id} 
+                       className="group hover:bg-stone-50/50 transition-colors border-b border-stone-50 last:border-0 opacity-0 animate-slide-up"
+                       style={{ animationDelay: `${index * 50}ms` }}
+                     >
                        <td className="py-4 pl-4 font-bold text-stone-500 whitespace-nowrap">
                          <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center text-stone-400">

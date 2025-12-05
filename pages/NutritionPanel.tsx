@@ -75,15 +75,15 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
   };
 
   return (
-    <div className="space-y-8 animate-fade-in pb-10">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="space-y-8 pb-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-fade-in">
         <div>
           <h2 className="text-3xl font-black text-stone-800 tracking-tight">Agenda & Metas</h2>
           <p className="text-stone-500 font-medium">Planejamento Nutricional</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         {/* Calendar Card */}
         <div className="lg:col-span-2 bg-white rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-8">
           <div className="flex items-center justify-between mb-8">
@@ -141,7 +141,7 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
                 <h3 className="font-bold text-stone-800 text-lg">Eventos</h3>
                 <p className="text-stone-400 text-xs font-bold uppercase tracking-wider">{selectedDate.getDate()} de {monthNames[selectedDate.getMonth()]}</p>
               </div>
-              <button onClick={() => setIsAptModalOpen(true)} className="bg-brand-blue text-white w-10 h-10 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200">
+              <button onClick={() => setIsAptModalOpen(true)} className="bg-brand-blue text-white w-10 h-10 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200 hover:scale-105 active:scale-95">
                 <Plus size={20} />
               </button>
             </div>
@@ -182,19 +182,23 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
               <input 
                 type="text" 
                 placeholder="Nova meta..." 
-                className="flex-1 px-4 py-3 text-sm bg-white/10 border border-white/20 rounded-xl outline-none focus:bg-white/20 text-white placeholder-purple-200 font-medium"
+                className="flex-1 px-4 py-3 text-sm bg-white/10 border border-white/20 rounded-xl outline-none focus:bg-white/20 text-white placeholder-purple-200 font-medium transition-all"
                 value={newGoalText}
                 onChange={(e) => setNewGoalText(e.target.value)}
               />
-              <button type="submit" className="bg-white text-brand-purple px-4 rounded-xl hover:bg-purple-50 transition-colors font-bold">
+              <button type="submit" className="bg-white text-brand-purple px-4 rounded-xl hover:bg-purple-50 transition-colors font-bold hover:scale-105 active:scale-95">
                 <Plus size={18} />
               </button>
             </form>
 
             <div className="space-y-3 relative z-10">
-              {goals.map(goal => (
-                <div key={goal.id} className="flex items-center gap-3 group">
-                  <button onClick={() => onToggleGoal(goal.id, goal.completed)} className="shrink-0 text-white/80 hover:text-white transition-colors">
+              {goals.map((goal, index) => (
+                <div 
+                  key={goal.id} 
+                  className="flex items-center gap-3 group animate-slide-up"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <button onClick={() => onToggleGoal(goal.id, goal.completed)} className="shrink-0 text-white/80 hover:text-white transition-colors hover:scale-110">
                     {goal.completed ? <CheckCircle size={20} className="text-green-300" /> : <Circle size={20} />}
                   </button>
                   <span className={`text-sm flex-1 font-medium ${goal.completed ? 'opacity-50 line-through' : 'opacity-100'}`}>
@@ -215,7 +219,7 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
       {/* Modal */}
       {isAptModalOpen && (
         <div className="fixed inset-0 bg-stone-900/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl w-full max-w-sm shadow-2xl p-8 animate-fade-in-up">
+          <div className="bg-white rounded-3xl w-full max-w-sm shadow-2xl p-8 animate-pop">
             <h3 className="text-xl font-black text-stone-800 mb-6">Novo Evento</h3>
             <form onSubmit={handleSaveAppointment} className="space-y-4">
               <input 
@@ -241,7 +245,7 @@ const NutritionPanel: React.FC<NutritionPanelProps> = ({
               </div>
               <div className="flex gap-2 pt-4">
                 <button type="button" onClick={() => setIsAptModalOpen(false)} className="flex-1 py-3.5 rounded-2xl font-bold text-stone-500 hover:bg-stone-50">Cancelar</button>
-                <button type="submit" className="flex-1 py-3.5 bg-brand-blue text-white rounded-2xl font-bold hover:bg-blue-600 shadow-lg shadow-blue-200">Salvar</button>
+                <button type="submit" className="flex-1 py-3.5 bg-brand-blue text-white rounded-2xl font-bold hover:bg-blue-600 shadow-lg shadow-blue-200 hover:scale-105 active:scale-95 transition-all">Salvar</button>
               </div>
             </form>
           </div>

@@ -529,55 +529,57 @@ export default function App() {
         {notificationMsg && <NotificationToast message={notificationMsg} onClose={() => setNotificationMsg(null)} />}
         <Layout activePage={selectedStudent ? 'students' : activePage} onNavigate={handleNavigate}>
           
-          {selectedStudent ? (
-            <StudentProfile 
-              student={selectedStudent} 
-              onBack={() => setSelectedStudent(null)} 
-              logs={logs}
-              onAddLog={addLog}
-            />
-          ) : (
-            <>
-              {activePage === 'dashboard' && <Dashboard students={students} />}
-              {activePage === 'students' && (
-                <StudentsPage 
-                  students={students} 
-                  onAddStudent={addStudent} 
-                  onUpdateStudent={updateStudent} 
-                  onDeleteStudent={deleteStudent}
-                  onViewStudent={(s) => setSelectedStudent(s)}
-                />
-              )}
-              {activePage === 'nutrition' && (
-                <NutritionPanel 
-                  appointments={appointments}
-                  goals={goals}
-                  onAddAppointment={addAppointment}
-                  onDeleteAppointment={deleteAppointment}
-                  onAddGoal={addGoal}
-                  onToggleGoal={toggleGoal}
-                  onDeleteGoal={deleteGoal}
-                />
-              )}
-              {activePage === 'expenses' && (
-                <ExpensesPage 
-                  expenses={expenses}
-                  onAddExpense={addExpense}
-                  onUpdateExpense={updateExpense}
-                  onDeleteExpense={deleteExpense}
-                />
-              )}
-              {activePage === 'agenda' && (
-                <Agenda 
-                  events={events}
-                  students={students}
-                  onAddEvent={addEvent}
-                  onUpdateEvent={updateEvent}
-                  onDeleteEvent={deleteEvent}
-                />
-              )}
-            </>
-          )}
+          <div key={selectedStudent ? 'profile' : activePage} className="animate-fade-in">
+            {selectedStudent ? (
+              <StudentProfile 
+                student={selectedStudent} 
+                onBack={() => setSelectedStudent(null)} 
+                logs={logs}
+                onAddLog={addLog}
+              />
+            ) : (
+              <>
+                {activePage === 'dashboard' && <Dashboard students={students} />}
+                {activePage === 'students' && (
+                  <StudentsPage 
+                    students={students} 
+                    onAddStudent={addStudent} 
+                    onUpdateStudent={updateStudent} 
+                    onDeleteStudent={deleteStudent}
+                    onViewStudent={(s) => setSelectedStudent(s)}
+                  />
+                )}
+                {activePage === 'nutrition' && (
+                  <NutritionPanel 
+                    appointments={appointments}
+                    goals={goals}
+                    onAddAppointment={addAppointment}
+                    onDeleteAppointment={deleteAppointment}
+                    onAddGoal={addGoal}
+                    onToggleGoal={toggleGoal}
+                    onDeleteGoal={deleteGoal}
+                  />
+                )}
+                {activePage === 'expenses' && (
+                  <ExpensesPage 
+                    expenses={expenses}
+                    onAddExpense={addExpense}
+                    onUpdateExpense={updateExpense}
+                    onDeleteExpense={deleteExpense}
+                  />
+                )}
+                {activePage === 'agenda' && (
+                  <Agenda 
+                    events={events}
+                    students={students}
+                    onAddEvent={addEvent}
+                    onUpdateEvent={updateEvent}
+                    onDeleteEvent={deleteEvent}
+                  />
+                )}
+              </>
+            )}
+          </div>
 
         </Layout>
       </DataContext.Provider>

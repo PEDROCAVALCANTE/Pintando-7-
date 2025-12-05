@@ -183,8 +183,8 @@ const Agenda: React.FC<AgendaProps> = ({
   const successRate = totalRecipients > 0 ? Math.round((messagesSent / totalRecipients) * 100) : 100;
 
   return (
-    <div className="space-y-8 animate-fade-in pb-10">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="space-y-8 pb-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-fade-in">
         <div>
           <h2 className="text-3xl font-black text-stone-800 tracking-tight">Agenda Escolar</h2>
           <p className="text-stone-500 font-medium">Eventos e Comunicação</p>
@@ -199,7 +199,7 @@ const Agenda: React.FC<AgendaProps> = ({
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in" style={{ animationDelay: '100ms' }}>
         <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-stone-100 flex items-center gap-4">
            <div className="w-12 h-12 bg-green-50 text-brand-green rounded-2xl flex items-center justify-center">
              <MessageCircle size={24} />
@@ -229,7 +229,7 @@ const Agenda: React.FC<AgendaProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
         {/* Calendar View */}
         <div className="lg:col-span-2 bg-white rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-8">
           <div className="flex items-center justify-between mb-8">
@@ -282,8 +282,12 @@ const Agenda: React.FC<AgendaProps> = ({
             {events
               .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
               .filter(e => new Date(e.date) >= new Date())
-              .map(event => (
-                <div key={event.id} className="bg-stone-50 p-4 rounded-2xl group hover:bg-white hover:shadow-md transition-all border border-transparent hover:border-stone-100">
+              .map((event, index) => (
+                <div 
+                  key={event.id} 
+                  className="bg-stone-50 p-4 rounded-2xl group hover:bg-white hover:shadow-md transition-all border border-transparent hover:border-stone-100 opacity-0 animate-slide-up"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex flex-col">
                       <span className="text-xs font-bold text-brand-blue bg-blue-50 px-2 py-0.5 rounded-md w-fit mb-1">
@@ -313,7 +317,7 @@ const Agenda: React.FC<AgendaProps> = ({
                        <button 
                          onClick={() => handlePublishAndSend(event)}
                          disabled={isSending}
-                         className="flex items-center gap-1.5 bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm transition-all disabled:opacity-50"
+                         className="flex items-center gap-1.5 bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm transition-all disabled:opacity-50 hover:scale-105 active:scale-95"
                        >
                          {isSending ? <Loader2 size={10} className="animate-spin"/> : <Send size={10} />}
                          {event.audience === 'STUDENT' ? 'Enviar WhatsApp' : 'Publicar'}
