@@ -152,8 +152,8 @@ const StudentsPage: React.FC<StudentsPageProps> = ({ students, onAddStudent, onU
         {filteredStudents.map((student, index) => (
           <div 
             key={student.id} 
-            className="bg-white rounded-[2rem] p-6 border border-stone-100 shadow-sm hover:shadow-lg hover:shadow-stone-100 hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden opacity-0 animate-fade-in-up"
-            style={{ animationDelay: `${index * 50}ms` }}
+            className="bg-white rounded-[2rem] p-6 border border-stone-100 shadow-sm hover:shadow-lg hover:shadow-stone-100 hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden opacity-0 animate-slide-up"
+            style={{ animationDelay: `${index * 100}ms` }}
             onClick={() => onViewStudent(student)}
           >
             <div className="flex flex-col items-center text-center">

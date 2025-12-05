@@ -182,72 +182,76 @@ const Agenda: React.FC<AgendaProps> = ({
   const totalRecipients = events.reduce((acc, curr) => acc + (curr.deliveryStats?.total || 0), 0);
   const successRate = totalRecipients > 0 ? Math.round((messagesSent / totalRecipients) * 100) : 100;
 
+  // Compact KPI Card Component
+  const KPICard = ({ title, value, icon: Icon, color }: any) => (
+    <div className="bg-white px-4 py-3 rounded-2xl shadow-sm border border-stone-100 flex items-center gap-3">
+        <div className={`w-8 h-8 ${color.bg} ${color.text} rounded-xl flex items-center justify-center`}>
+            <Icon size={16} />
+        </div>
+        <div>
+            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wide leading-none mb-1">{title}</p>
+            <h3 className="text-lg font-black text-stone-800 leading-none">{value}</h3>
+        </div>
+    </div>
+  );
+
   return (
-    <div className="space-y-8 pb-10">
+    <div className="space-y-6 pb-10">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-fade-in">
         <div>
-          <h2 className="text-3xl font-black text-stone-800 tracking-tight">Agenda Escolar</h2>
-          <p className="text-stone-500 font-medium">Eventos e Comunicação</p>
+          <h2 className="text-2xl font-black text-stone-800 tracking-tight">Agenda</h2>
+          <p className="text-stone-400 font-medium text-xs">Eventos e Comunicação</p>
         </div>
         <button 
           onClick={() => handleOpenModal()}
-          className="bg-brand-yellow text-brand-brown px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all duration-300 shadow-md shadow-yellow-100 text-sm hover:shadow-lg hover:scale-105 active:scale-95 border border-yellow-200"
+          className="bg-brand-yellow text-brand-brown px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-all duration-300 shadow-sm text-xs hover:shadow-md hover:scale-105 active:scale-95 border border-yellow-200"
         >
-          <Plus size={18} />
+          <Plus size={16} />
           <span>Novo Evento</span>
         </button>
       </div>
 
-      {/* KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in" style={{ animationDelay: '100ms' }}>
-        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-stone-100 flex items-center gap-4">
-           <div className="w-12 h-12 bg-green-50 text-brand-green rounded-2xl flex items-center justify-center">
-             <MessageCircle size={24} />
-           </div>
-           <div>
-             <p className="text-xs font-bold text-stone-400 uppercase tracking-wide">Mensagens Enviadas</p>
-             <h3 className="text-2xl font-black text-stone-800">{messagesSent}</h3>
-           </div>
-        </div>
-        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-stone-100 flex items-center gap-4">
-           <div className="w-12 h-12 bg-blue-50 text-brand-blue rounded-2xl flex items-center justify-center">
-             <CheckCircle size={24} />
-           </div>
-           <div>
-             <p className="text-xs font-bold text-stone-400 uppercase tracking-wide">Taxa de Entrega</p>
-             <h3 className="text-2xl font-black text-stone-800">{successRate}%</h3>
-           </div>
-        </div>
-        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-stone-100 flex items-center gap-4">
-           <div className="w-12 h-12 bg-purple-50 text-purple-500 rounded-2xl flex items-center justify-center">
-             <Calendar size={24} />
-           </div>
-           <div>
-             <p className="text-xs font-bold text-stone-400 uppercase tracking-wide">Eventos Publicados</p>
-             <h3 className="text-2xl font-black text-stone-800">{publishedEvents}</h3>
-           </div>
-        </div>
+      {/* KPIs Compactos */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in" style={{ animationDelay: '100ms' }}>
+        <KPICard 
+            title="Enviadas" 
+            value={messagesSent} 
+            icon={MessageCircle} 
+            color={{ bg: 'bg-green-50', text: 'text-brand-green' }} 
+        />
+        <KPICard 
+            title="Entrega" 
+            value={`${successRate}%`} 
+            icon={CheckCircle} 
+            color={{ bg: 'bg-blue-50', text: 'text-brand-blue' }} 
+        />
+        <KPICard 
+            title="Eventos" 
+            value={publishedEvents} 
+            icon={Calendar} 
+            color={{ bg: 'bg-purple-50', text: 'text-purple-500' }} 
+        />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-        {/* Calendar View */}
-        <div className="lg:col-span-2 bg-white rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-8">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="text-xl font-black text-stone-800 flex items-center gap-2">
-              {monthNames[currentDate.getMonth()]} <span className="text-stone-300">{currentDate.getFullYear()}</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+        {/* Calendar View - Compact */}
+        <div className="lg:col-span-2 bg-white rounded-[1.5rem] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] p-5 border border-stone-100">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-black text-stone-800 flex items-center gap-2">
+              {monthNames[currentDate.getMonth()]} <span className="text-stone-300 text-sm">{currentDate.getFullYear()}</span>
             </h3>
-            <div className="flex gap-2 bg-stone-50 rounded-2xl p-1">
-              <button onClick={handlePrevMonth} className="p-2 hover:bg-white rounded-xl text-stone-600 shadow-sm transition-all"><ChevronLeft size={18} /></button>
-              <button onClick={handleNextMonth} className="p-2 hover:bg-white rounded-xl text-stone-600 shadow-sm transition-all"><ChevronRight size={18} /></button>
+            <div className="flex gap-1 bg-stone-50 rounded-xl p-1">
+              <button onClick={handlePrevMonth} className="p-1.5 hover:bg-white rounded-lg text-stone-600 shadow-sm transition-all"><ChevronLeft size={16} /></button>
+              <button onClick={handleNextMonth} className="p-1.5 hover:bg-white rounded-lg text-stone-600 shadow-sm transition-all"><ChevronRight size={16} /></button>
             </div>
           </div>
 
-          <div className="grid grid-cols-7 gap-2 mb-4">
+          <div className="grid grid-cols-7 gap-1 mb-2">
             {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map(day => (
-              <div key={day} className="text-center text-xs font-bold text-stone-300 uppercase py-2">{day}</div>
+              <div key={day} className="text-center text-[10px] font-bold text-stone-300 uppercase py-1">{day}</div>
             ))}
           </div>
-          <div className="grid grid-cols-7 gap-3">
+          <div className="grid grid-cols-7 gap-1">
             {Array.from({ length: firstDayOfMonth }).map((_, i) => <div key={`empty-${i}`} />)}
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1;
@@ -255,78 +259,79 @@ const Agenda: React.FC<AgendaProps> = ({
               const isToday = day === new Date().getDate() && currentDate.getMonth() === new Date().getMonth();
 
               return (
-                <div key={day} className={`min-h-[100px] rounded-2xl p-2 border ${isToday ? 'border-brand-blue/30 bg-blue-50/30' : 'border-stone-100 bg-stone-50/30'} flex flex-col gap-1 hover:border-brand-blue/50 transition-colors`}>
-                  <span className={`text-xs font-bold mb-1 block text-right ${isToday ? 'text-brand-blue' : 'text-stone-400'}`}>{day}</span>
+                <div key={day} className={`min-h-[70px] rounded-xl p-1.5 border flex flex-col gap-1 transition-colors ${
+                    isToday ? 'border-brand-blue/30 bg-blue-50/20' : 'border-stone-50 bg-white hover:border-stone-200'
+                }`}>
+                  <span className={`text-[10px] font-bold block text-right leading-none ${isToday ? 'text-brand-blue' : 'text-stone-300'}`}>{day}</span>
                   {dayEvents.map(ev => (
                     <div 
                       key={ev.id} 
                       onClick={() => handleOpenModal(ev)}
-                      className={`text-[10px] font-bold p-1.5 rounded-lg truncate cursor-pointer transition-all hover:scale-105 ${
-                        ev.status === 'PUBLISHED' ? 'bg-green-100 text-green-700' : 'bg-stone-200 text-stone-600'
+                      className={`h-1.5 w-full rounded-full cursor-pointer transition-all hover:scale-105 ${
+                        ev.status === 'PUBLISHED' ? 'bg-green-400' : 'bg-stone-300'
                       }`}
-                      title={ev.title}
-                    >
-                      {ev.time} {ev.title}
-                    </div>
+                      title={`${ev.time} - ${ev.title}`}
+                    />
                   ))}
+                  {dayEvents.length > 0 && (
+                      <span className="text-[9px] font-bold text-stone-500 truncate pl-0.5">{dayEvents[0].title}</span>
+                  )}
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* Next Events List */}
-        <div className="bg-white rounded-[2rem] shadow-sm border border-stone-100 p-8 flex flex-col">
-          <h3 className="text-lg font-black text-stone-800 mb-6">Próximos Eventos</h3>
-          <div className="flex-1 space-y-4 overflow-y-auto max-h-[600px] pr-2 custom-scrollbar">
+        {/* Next Events List - Compact */}
+        <div className="bg-white rounded-[1.5rem] shadow-sm border border-stone-100 p-5 flex flex-col h-full">
+          <h3 className="text-base font-black text-stone-800 mb-4">Próximos</h3>
+          <div className="flex-1 space-y-3 overflow-y-auto max-h-[500px] pr-1 custom-scrollbar">
             {events
               .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
               .filter(e => new Date(e.date) >= new Date())
               .map((event, index) => (
                 <div 
                   key={event.id} 
-                  className="bg-stone-50 p-4 rounded-2xl group hover:bg-white hover:shadow-md transition-all border border-transparent hover:border-stone-100 opacity-0 animate-slide-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  className="bg-stone-50 p-3 rounded-xl group hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-stone-100 opacity-0 animate-slide-up"
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <div className="flex justify-between items-start mb-2">
+                  <div className="flex justify-between items-start mb-1">
                     <div className="flex flex-col">
-                      <span className="text-xs font-bold text-brand-blue bg-blue-50 px-2 py-0.5 rounded-md w-fit mb-1">
-                        {new Date(event.date).toLocaleDateString('pt-BR', {day: '2-digit', month: 'short'})} • {event.time}
+                      <span className="text-[10px] font-bold text-brand-blue bg-blue-50 px-1.5 py-0.5 rounded w-fit mb-1">
+                        {new Date(event.date).toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit'})} • {event.time}
                       </span>
-                      <h4 className="font-bold text-stone-800 text-sm leading-tight">{event.title}</h4>
+                      <h4 className="font-bold text-stone-800 text-xs leading-tight truncate w-32">{event.title}</h4>
                     </div>
                     <div className="flex gap-1">
-                      <button onClick={() => handleOpenModal(event)} className="p-1.5 text-stone-400 hover:text-brand-blue rounded-lg"><Eye size={14}/></button>
-                      <button onClick={() => onDeleteEvent(event.id)} className="p-1.5 text-stone-400 hover:text-red-500 rounded-lg"><Trash2 size={14}/></button>
+                      <button onClick={() => handleOpenModal(event)} className="p-1 text-stone-400 hover:text-brand-blue rounded"><Eye size={12}/></button>
+                      <button onClick={() => onDeleteEvent(event.id)} className="p-1 text-stone-400 hover:text-red-500 rounded"><Trash2 size={12}/></button>
                     </div>
                   </div>
                   
-                  <p className="text-xs text-stone-500 line-clamp-2 mb-3 leading-relaxed">{event.description}</p>
-                  
-                  <div className="flex items-center justify-between border-t border-stone-100 pt-3">
-                     <span className="text-[10px] font-bold uppercase text-stone-400 flex items-center gap-1">
-                       <Users size={10} /> {event.audience === 'GLOBAL' ? 'Todos' : event.audience === 'CLASS' ? 'Turma' : 'Aluno'}
+                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-stone-100/50">
+                     <span className="text-[9px] font-bold uppercase text-stone-400 flex items-center gap-1">
+                       <Users size={8} /> {event.audience === 'GLOBAL' ? 'Todos' : event.audience === 'CLASS' ? 'Turma' : 'Aluno'}
                      </span>
                      
                      {event.status === 'PUBLISHED' ? (
-                       <div className="flex items-center gap-1.5">
-                          <CheckCircle size={12} className="text-green-500" />
-                          <span className="text-[10px] font-bold text-green-600">Enviado ({event.deliveryStats?.success}/{event.deliveryStats?.total})</span>
+                       <div className="flex items-center gap-1">
+                          <CheckCircle size={10} className="text-green-500" />
+                          <span className="text-[9px] font-bold text-green-600">Enviado</span>
                        </div>
                      ) : (
                        <button 
                          onClick={() => handlePublishAndSend(event)}
                          disabled={isSending}
-                         className="flex items-center gap-1.5 bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm transition-all disabled:opacity-50 hover:scale-105 active:scale-95"
+                         className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-[9px] font-bold transition-all disabled:opacity-50"
                        >
-                         {isSending ? <Loader2 size={10} className="animate-spin"/> : <Send size={10} />}
-                         {event.audience === 'STUDENT' ? 'Enviar WhatsApp' : 'Publicar'}
+                         {isSending ? <Loader2 size={8} className="animate-spin"/> : <Send size={8} />}
+                         {event.audience === 'STUDENT' ? 'Whats' : 'Enviar'}
                        </button>
                      )}
                   </div>
                 </div>
             ))}
-            {events.length === 0 && <p className="text-stone-400 text-center italic text-sm">Nenhum evento futuro.</p>}
+            {events.length === 0 && <p className="text-stone-400 text-center italic text-xs py-4">Sem eventos.</p>}
           </div>
         </div>
       </div>
@@ -334,18 +339,16 @@ const Agenda: React.FC<AgendaProps> = ({
       {/* Sending Overlay */}
       {isSending && (
         <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center backdrop-blur-sm">
-           <div className="bg-white p-8 rounded-[2rem] w-full max-w-sm text-center shadow-2xl animate-pop">
-              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 relative">
-                 <MessageCircle size={32} />
+           <div className="bg-white p-6 rounded-[2rem] w-full max-w-xs text-center shadow-2xl animate-pop">
+              <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3 relative">
+                 <MessageCircle size={24} />
                  <div className="absolute inset-0 border-4 border-green-500/30 rounded-full animate-ping" />
               </div>
-              <h3 className="text-xl font-black text-stone-800 mb-2">Enviando Notificações</h3>
-              <p className="text-stone-500 text-sm font-medium mb-6">Disparando mensagens via WhatsApp...</p>
-              
-              <div className="w-full h-3 bg-stone-100 rounded-full overflow-hidden mb-2">
+              <h3 className="text-lg font-black text-stone-800 mb-1">Enviando...</h3>
+              <div className="w-full h-2 bg-stone-100 rounded-full overflow-hidden mb-2 mt-4">
                  <div className="h-full bg-green-500 transition-all duration-300" style={{ width: `${sendProgress}%` }} />
               </div>
-              <p className="text-xs font-bold text-stone-400">{sendProgress}% concluído</p>
+              <p className="text-[10px] font-bold text-stone-400">{sendProgress}% concluído</p>
            </div>
         </div>
       )}
@@ -353,22 +356,22 @@ const Agenda: React.FC<AgendaProps> = ({
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-stone-900/20 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white rounded-[2.5rem] w-full max-w-lg shadow-2xl animate-pop border border-stone-100 max-h-[90vh] overflow-y-auto">
-             <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-8 py-6 border-b border-stone-50 flex justify-between items-center">
-              <h3 className="text-xl font-black text-stone-800">
+          <div className="bg-white rounded-[2rem] w-full max-w-md shadow-2xl animate-pop border border-stone-100 max-h-[90vh] overflow-y-auto">
+             <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-6 py-4 border-b border-stone-50 flex justify-between items-center">
+              <h3 className="text-lg font-black text-stone-800">
                 {editingEvent ? 'Editar Evento' : 'Novo Evento'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="bg-stone-50 p-2 rounded-full text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-all hover:rotate-90">
-                <X size={20} />
+              <button onClick={() => setIsModalOpen(false)} className="bg-stone-50 p-1.5 rounded-full text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-all hover:rotate-90">
+                <X size={16} />
               </button>
             </div>
 
-            <form onSubmit={handleSave} className="p-8 space-y-5">
+            <form onSubmit={handleSave} className="p-6 space-y-4">
               <div>
-                <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Título do Evento</label>
+                <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Título do Evento</label>
                 <input 
                   type="text" required
-                  className="w-full px-4 py-3 bg-stone-50 border-none rounded-xl text-stone-800 font-bold focus:ring-2 focus:ring-brand-blue/10 outline-none"
+                  className="w-full px-4 py-2.5 bg-stone-50 border-none rounded-xl text-stone-800 font-bold focus:ring-2 focus:ring-brand-blue/10 outline-none text-sm"
                   value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})}
                   placeholder="Ex: Reunião de Pais"
                 />
@@ -376,21 +379,21 @@ const Agenda: React.FC<AgendaProps> = ({
 
               <div className="grid grid-cols-2 gap-4">
                  <div>
-                    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Data</label>
-                    <input type="date" required className="w-full px-4 py-3 bg-stone-50 rounded-xl font-medium text-stone-700 outline-none" 
+                    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Data</label>
+                    <input type="date" required className="w-full px-4 py-2.5 bg-stone-50 rounded-xl font-medium text-stone-700 outline-none text-sm" 
                       value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} />
                  </div>
                  <div>
-                    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Hora</label>
-                    <input type="time" required className="w-full px-4 py-3 bg-stone-50 rounded-xl font-medium text-stone-700 outline-none" 
+                    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Hora</label>
+                    <input type="time" required className="w-full px-4 py-2.5 bg-stone-50 rounded-xl font-medium text-stone-700 outline-none text-sm" 
                       value={formData.time} onChange={e => setFormData({...formData, time: e.target.value})} />
                  </div>
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Público Alvo</label>
+                <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Público Alvo</label>
                 <select 
-                  className="w-full px-4 py-3 bg-stone-50 rounded-xl font-bold text-stone-700 outline-none"
+                  className="w-full px-4 py-2.5 bg-stone-50 rounded-xl font-bold text-stone-700 outline-none text-sm"
                   value={formData.audience} onChange={e => setFormData({...formData, audience: e.target.value as EventAudience})}
                 >
                   <option value="GLOBAL">Todos os Responsáveis</option>
@@ -401,8 +404,8 @@ const Agenda: React.FC<AgendaProps> = ({
 
               {formData.audience === 'CLASS' && (
                  <div>
-                    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Selecione a Turma</label>
-                    <select className="w-full px-4 py-3 bg-stone-50 rounded-xl font-medium text-stone-700" value={formData.targetId} onChange={e => setFormData({...formData, targetId: e.target.value})}>
+                    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Selecione a Turma</label>
+                    <select className="w-full px-4 py-2.5 bg-stone-50 rounded-xl font-medium text-stone-700 text-sm" value={formData.targetId} onChange={e => setFormData({...formData, targetId: e.target.value})}>
                        <option value="">Selecione...</option>
                        <option value="Berçário 1">Berçário 1</option>
                        <option value="Berçário 2">Berçário 2</option>
@@ -413,8 +416,8 @@ const Agenda: React.FC<AgendaProps> = ({
 
               {formData.audience === 'STUDENT' && (
                  <div>
-                    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Selecione o Aluno</label>
-                    <select className="w-full px-4 py-3 bg-stone-50 rounded-xl font-medium text-stone-700" value={formData.targetId} onChange={e => setFormData({...formData, targetId: e.target.value})}>
+                    <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Selecione o Aluno</label>
+                    <select className="w-full px-4 py-2.5 bg-stone-50 rounded-xl font-medium text-stone-700 text-sm" value={formData.targetId} onChange={e => setFormData({...formData, targetId: e.target.value})}>
                        <option value="">Selecione...</option>
                        {students.map(s => <option key={s.id} value={s.id}>{s.fullName}</option>)}
                     </select>
@@ -422,24 +425,24 @@ const Agenda: React.FC<AgendaProps> = ({
               )}
 
               <div>
-                <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">Descrição</label>
+                <label className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Descrição</label>
                 <textarea 
-                  className="w-full px-4 py-3 bg-stone-50 rounded-xl font-medium text-stone-700 h-24 resize-none outline-none focus:ring-2 focus:ring-brand-blue/10"
+                  className="w-full px-4 py-2.5 bg-stone-50 rounded-xl font-medium text-stone-700 h-20 resize-none outline-none focus:ring-2 focus:ring-brand-blue/10 text-sm"
                   placeholder="Detalhes do evento..."
                   value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})}
                 />
               </div>
 
-              <div className="bg-green-50 p-4 rounded-xl border border-green-100 flex items-start gap-3">
-                 <MessageCircle className="text-green-600 shrink-0 mt-0.5" size={18} />
-                 <p className="text-xs text-green-800 font-medium leading-relaxed">
-                    <strong>Importante:</strong> Para envio individual, o WhatsApp Web abrirá automaticamente. Para envio em massa (Turma/Global), o sistema simulará o processo (requer API paga para envio real).
+              <div className="bg-green-50 p-3 rounded-xl border border-green-100 flex items-start gap-2">
+                 <MessageCircle className="text-green-600 shrink-0 mt-0.5" size={14} />
+                 <p className="text-[10px] text-green-800 font-medium leading-relaxed">
+                    <strong>Nota:</strong> Envio individual abre WhatsApp Web. Envio em massa é simulado.
                  </p>
               </div>
 
-              <div className="flex gap-2 pt-4">
-                 <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-3.5 rounded-2xl font-bold text-stone-500 hover:bg-stone-50 transition-colors">Cancelar</button>
-                 <button type="submit" className="flex-1 py-3.5 bg-brand-yellow text-brand-brown rounded-2xl font-bold hover:bg-yellow-400 shadow-lg shadow-yellow-100 transition-colors">Salvar Rascunho</button>
+              <div className="flex gap-2 pt-2">
+                 <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-2.5 rounded-xl font-bold text-stone-500 hover:bg-stone-50 transition-colors text-xs">Cancelar</button>
+                 <button type="submit" className="flex-1 py-2.5 bg-brand-yellow text-brand-brown rounded-xl font-bold hover:bg-yellow-400 shadow-sm transition-colors text-xs">Salvar</button>
               </div>
             </form>
           </div>
