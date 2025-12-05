@@ -99,7 +99,8 @@ const LoginPage = () => {
   const logoUrl = "https://iili.io/fIiTt9e.png";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-brand-cream p-4 relative overflow-hidden">
+    // Adicionei font-brand aqui para forçar Nunito apenas no Login
+    <div className="min-h-screen flex items-center justify-center bg-brand-cream p-4 relative overflow-hidden font-brand">
       {/* Background decorations */}
       <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-brand-yellow/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-brand-blue/5 rounded-full blur-[100px] pointer-events-none" />

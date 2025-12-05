@@ -22,7 +22,10 @@
               }
             },
             fontFamily: {
-              sans: ['Nunito', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+              // 'sans' agora usa Inter para um visual limpo e profissional no painel
+              sans: ['Inter', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+              // 'brand' mantém a Nunito para o Login e títulos lúdicos se necessário
+              brand: ['Nunito', 'sans-serif'],
               display: ['Comic Sans MS', 'Chalkboard SE', 'sans-serif']
             },
             animation: {
@@ -76,7 +79,8 @@
         }
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Importando Inter e Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script type="importmap">
 {
   "imports": {
