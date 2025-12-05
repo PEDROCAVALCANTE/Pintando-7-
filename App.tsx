@@ -79,7 +79,7 @@ const NotificationToast = ({ message, onClose }: { message: string; onClose: () 
   </div>
 );
 
-// --- Login Page Modern Split ---
+// --- Login Page Minimalist Centered ---
 const LoginPage = () => {
   const { login, register, error, loading, setError } = useAuth();
   const [email, setEmail] = useState('');
@@ -95,120 +95,87 @@ const LoginPage = () => {
     }
   };
 
-  // URL Direta da Imagem (Atualizada para nova versão com fundo branco)
+  // URL Direta da Imagem
   const logoUrl = "https://iili.io/fIiTt9e.png";
 
   return (
-    <div className="min-h-screen flex bg-brand-cream">
-      {/* Left Side - Visual Cover */}
-      {/* Fundo branco para combinar com a logo enviada */}
-      <div className="hidden lg:flex w-1/2 bg-white relative items-center justify-center p-8 overflow-hidden border-r border-stone-100">
-         
-         <div className="relative z-10 text-center w-full flex flex-col items-center justify-center h-full">
-            {/* Imagem da Capa */}
-            <div className="relative flex justify-center w-full max-w-[600px]">
-               <img 
-                 src={logoUrl}
-                 onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.parentElement?.classList.add('show-fallback');
-                 }}
-                 alt="Escola Berçário Pintando 7" 
-                 className="w-full h-auto object-contain animate-fade-in-up hover:scale-[1.02] transition-transform duration-700" 
-               />
-               
-               {/* Fallback apenas se a imagem não for encontrada */}
-               <div className="hidden show-fallback flex-col items-center justify-center py-20 w-full">
-                  <div className="bg-stone-50 p-8 rounded-[3rem] shadow-sm mb-6">
-                    <Palette size={80} className="text-brand-red" />
-                  </div>
-                  <h1 className="font-display text-5xl font-black text-stone-800 tracking-tight mb-2">Pintando 7</h1>
-                  <p className="text-stone-400 font-bold text-sm bg-stone-50 px-4 py-2 rounded-full border border-stone-100">
-                    Sistema de Gestão
-                  </p>
-               </div>
-            </div>
-            
-            {/* Texto de apoio sutil */}
-            <div className="mt-8 animate-fade-in delay-200 opacity-80">
-               <p className="text-stone-400 font-bold text-xs tracking-[0.3em] uppercase mb-1">Sistema de Gestão Escolar</p>
-            </div>
-         </div>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-brand-cream p-4 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-brand-yellow/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-brand-blue/5 rounded-full blur-[100px] pointer-events-none" />
 
-      {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-brand-cream/50">
-        <div className="w-full max-w-[380px] animate-fade-in bg-white p-8 rounded-[2.5rem] shadow-xl shadow-stone-200/50 border border-stone-100">
+      <div className="w-full max-w-[400px] bg-white p-8 md:p-10 rounded-[2.5rem] shadow-2xl shadow-stone-200/50 border border-stone-100 animate-fade-in-up relative z-10">
           
-          <div className="mb-10 text-center lg:text-left">
-             <div className="flex items-center justify-center lg:justify-start mb-6">
-                <img src={logoUrl} className="h-20 w-auto object-contain lg:hidden" alt="Logo Mobile" onError={(e) => e.currentTarget.style.display = 'none'} />
-                <div className="hidden lg:inline-flex items-center justify-center w-14 h-14 rounded-3xl bg-brand-red/10 text-brand-red shadow-sm">
-                   <Palette size={28} />
-                </div>
-             </div>
-             
-             <h1 className="text-3xl font-black text-stone-800 mb-2 tracking-tight">
-               {isRegistering ? 'Criar Conta' : 'Bem-vindo(a)'}
-             </h1>
-             <p className="text-stone-400 font-bold text-xs uppercase tracking-widest">
-               {isRegistering ? 'Preencha os dados da escola' : 'Faça login para continuar'}
-             </p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-stone-400 uppercase tracking-wider ml-1">Email ou Usuário</label>
-              <input 
-                type="text" 
-                className="w-full px-5 py-4 bg-stone-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-stone-800 placeholder-stone-300 border-2"
-                placeholder="ex: diretoria@pintando7.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-stone-400 uppercase tracking-wider ml-1">Senha de Acesso</label>
-              <input 
-                type="password" 
-                className="w-full px-5 py-4 bg-stone-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-stone-800 placeholder-stone-300 border-2"
-                placeholder="••••••••"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
+        <div className="mb-10 text-center">
+            <div className="flex items-center justify-center mb-6">
+              <img 
+                src={logoUrl} 
+                className="h-28 w-auto object-contain hover:scale-105 transition-transform duration-500" 
+                alt="Logo" 
+                onError={(e) => e.currentTarget.style.display = 'none'} 
               />
             </div>
             
-            {error && (
-              <div className="bg-red-50 text-red-500 text-xs p-4 rounded-2xl flex items-center gap-3 font-bold animate-shake border border-red-100">
-                 <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                 {error}
-              </div>
-            )}
+            <h1 className="text-3xl font-black text-stone-800 mb-2 tracking-tight">
+              {isRegistering ? 'Criar Conta' : 'Bem-vindo(a)'}
+            </h1>
+            <p className="text-stone-400 font-bold text-xs uppercase tracking-widest">
+              {isRegistering ? 'Preencha os dados da escola' : 'Faça login para continuar'}
+            </p>
+        </div>
 
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="w-full bg-brand-red hover:bg-red-600 text-white font-bold py-4 rounded-2xl shadow-xl shadow-red-100 hover:shadow-red-200 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
-            >
-              {loading ? <Loader2 className="animate-spin" size={20} /> : (
-                <>
-                  <span>{isRegistering ? 'Finalizar Cadastro' : 'Entrar no Sistema'}</span>
-                  <ArrowRight size={20} />
-                </>
-              )}
-            </button>
-          </form>
-
-          <div className="mt-10 text-center border-t border-stone-50 pt-6">
-            <button 
-              onClick={() => { setIsRegistering(!isRegistering); setError(''); }}
-              className="text-xs text-stone-400 font-bold hover:text-brand-blue uppercase tracking-widest transition-colors"
-            >
-              {isRegistering ? 'Já possui conta? Fazer Login' : 'Primeiro acesso? Criar Conta'}
-            </button>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-black text-stone-400 uppercase tracking-wider ml-1">Email ou Usuário</label>
+            <input 
+              type="text" 
+              className="w-full px-5 py-4 bg-stone-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-stone-800 placeholder-stone-300 border-2"
+              placeholder="ex: diretoria@pintando7.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
           </div>
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-black text-stone-400 uppercase tracking-wider ml-1">Senha de Acesso</label>
+            <input 
+              type="password" 
+              className="w-full px-5 py-4 bg-stone-50 border-transparent rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-brand-blue/10 focus:border-brand-blue transition-all font-bold text-stone-800 placeholder-stone-300 border-2"
+              placeholder="••••••••"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          
+          {error && (
+            <div className="bg-red-50 text-red-500 text-xs p-4 rounded-2xl flex items-center gap-3 font-bold animate-shake border border-red-100">
+                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                {error}
+            </div>
+          )}
+
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="w-full bg-brand-red hover:bg-red-600 text-white font-bold py-4 rounded-2xl shadow-xl shadow-red-100 hover:shadow-red-200 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
+          >
+            {loading ? <Loader2 className="animate-spin" size={20} /> : (
+              <>
+                <span>{isRegistering ? 'Finalizar Cadastro' : 'Entrar no Sistema'}</span>
+                <ArrowRight size={20} />
+              </>
+            )}
+          </button>
+        </form>
+
+        <div className="mt-10 text-center border-t border-stone-50 pt-6">
+          <button 
+            onClick={() => { setIsRegistering(!isRegistering); setError(''); }}
+            className="text-xs text-stone-400 font-bold hover:text-brand-blue uppercase tracking-widest transition-colors"
+          >
+            {isRegistering ? 'Já possui conta? Fazer Login' : 'Primeiro acesso? Criar Conta'}
+          </button>
         </div>
       </div>
     </div>
