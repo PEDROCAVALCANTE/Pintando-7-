@@ -27,7 +27,9 @@ import {
   Cell, 
   Tooltip, 
   AreaChart, 
-  Area
+  Area,
+  XAxis,
+  CartesianGrid
 } from 'recharts';
 
 interface ExpensesPageProps {
@@ -119,6 +121,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
 
   // Data for Charts
   const pieData = Object.entries(expensesByCategory).map(([name, value]) => ({ name, value: value as number }));
+  // Paleta de cores da marca + neutros
   const COLORS = ['#009FE3', '#E6332A', '#3EB149', '#FFED00', '#E5007E', '#966036', '#8B5CF6', '#64748B'];
 
   // Monthly Trend Data (Last 6 months)
@@ -133,6 +136,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
         .reduce((acc, curr) => acc + curr.amount, 0);
       data.push({
         name: d.toLocaleDateString('pt-BR', { month: 'short' }),
+        fullName: d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }),
         total: total
       });
     }
@@ -225,8 +229,10 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
         </div>
 
         <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-stone-100 flex flex-col justify-between lg:col-span-2">
-           <p className="text-stone-400 text-xs font-bold uppercase tracking-wider mb-4">Evolução Semestral</p>
-           <div className="h-24 w-full">
+           <div className="flex justify-between items-center mb-4">
+             <p className="text-stone-400 text-xs font-bold uppercase tracking-wider">Evolução Mensal (Últimos 6 meses)</p>
+           </div>
+           <div className="h-32 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={trendData}>
                   <defs>
@@ -235,11 +241,23 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                       <stop offset="95%" stopColor="#E6332A" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{fontSize: 10, fill: '#a8a29e', fontWeight: 600}} 
+                    dy={10}
+                  />
                   <Tooltip 
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontSize: '12px', fontWeight: 'bold' }}
                     formatter={(value: any) => [formatCurrency(value as number), "Total"]}
+                    labelFormatter={(label) => {
+                      const item = trendData.find(d => d.name === label);
+                      return item ? item.fullName : label;
+                    }}
                   />
-                  <Area type="monotone" dataKey="total" stroke="#E6332A" strokeWidth={3} fillOpacity={1} fill="url(#colorTotal)" />
+                  <Area type="monotone" dataKey="total" stroke="#E6332A" strokeWidth={3} fillOpacity={1} fill="url(#colorTotal)" animationDuration={1500} />
                 </AreaChart>
               </ResponsiveContainer>
            </div>
@@ -320,7 +338,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
 
         {/* Charts Side */}
         <div className="bg-white rounded-[2rem] shadow-sm border border-stone-100 p-8 flex flex-col">
-           <h3 className="text-lg font-black text-stone-800 mb-6">Por Categoria</h3>
+           <h3 className="text-lg font-black text-stone-800 mb-6">Distribuição por Categoria</h3>
            <div className="flex-1 min-h-[300px] relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -331,6 +349,7 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
                     paddingAngle={5}
                     dataKey="value"
                     cornerRadius={5}
+                    animationDuration={1500}
                   >
                     {pieData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} strokeWidth={0} />
@@ -344,15 +363,19 @@ const ExpensesPage: React.FC<ExpensesPageProps> = ({ expenses, onAddExpense, onU
               </ResponsiveContainer>
               {/* Legend */}
               <div className="mt-4 space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
-                 {pieData.map((entry, index) => (
-                    <div key={index} className="flex justify-between items-center text-xs">
-                       <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-                          <span className="font-bold text-stone-600">{entry.name}</span>
-                       </div>
-                       <span className="font-bold text-stone-400">{((entry.value / (totalMonth || 1)) * 100).toFixed(0)}%</span>
-                    </div>
-                 ))}
+                 {pieData.length === 0 ? (
+                    <p className="text-stone-400 text-xs text-center italic">Sem dados para o período.</p>
+                 ) : (
+                    pieData.map((entry, index) => (
+                        <div key={index} className="flex justify-between items-center text-xs">
+                        <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+                            <span className="font-bold text-stone-600 truncate max-w-[120px]" title={entry.name}>{entry.name}</span>
+                        </div>
+                        <span className="font-bold text-stone-400">{((entry.value / (totalMonth || 1)) * 100).toFixed(0)}%</span>
+                        </div>
+                    ))
+                 )}
               </div>
            </div>
         </div>
